@@ -156,6 +156,33 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <div id="changes-list"><p class="muted">Loading…</p></div>
 </section>
 
+<section id="tab-contrib" hidden>
+  <h2>Contributions</h2>
+  <p class="lede">Enter each alliance's KvK and AvA totals for the scoring window. Everything below is calculated from these two numbers and nothing else, so anyone can check the ranking by re-entering the same figures.</p>
+  <div class="field" style="max-width:420px"><label for="cw">Scoring window</label>
+    <input id="cw" placeholder="e.g. 5 weeks to 15 Aug 2026"></div>
+  <div class="tablescroll"><table class="reg" id="contrib-table"></table></div>
+  <p class="derivation" id="contrib-note"></p>
+  <h3>What the numbers say about the pool</h3>
+  <div class="card" id="pool-advice"></div>
+  <div class="btnrow"><button class="btn" id="apply-scores">Apply these scores to the pool</button></div>
+  <p id="apply-msg" style="font-size:14px;margin-top:8px"></p>
+</section>
+
+<section id="tab-import" hidden>
+  <h2>Read a map screenshot</h2>
+  <p class="lede">Attach screenshots of the world map. They are checked against the register and you get back a list of differences to tick — nothing is changed for you, and nothing is published without you publishing it.</p>
+  <div class="card" style="margin-bottom:14px">
+    <div class="field"><label for="imgs">Screenshots</label>
+      <input type="file" id="imgs" accept="image/png,image/jpeg,image/webp" multiple></div>
+    <div class="field"><label for="hint">Anything worth saying about them</label>
+      <input id="hint" placeholder="e.g. north half of the map only, taken this morning"></div>
+    <div class="btnrow"><button class="btn" id="analyse" disabled>Check against the register</button></div>
+    <p id="imp-msg" style="font-size:14px;margin:10px 0 0"></p>
+  </div>
+  <div id="imp-results"></div>
+</section>
+
 <section id="tab-history" hidden>
   <h2>Who held what, and when</h2>
   <p class="lede" id="hist-lede">—</p>
@@ -1261,7 +1288,11 @@ var REGISTER = {
       "kind": "Note",
       "text": "Rotation pool seeded with the three current Level 6 holders and the two remaining Level 5 holders. A proposal only, until contribution scores are published."
     }
-  ]
+  ],
+  "contributions": {
+    "window": "",
+    "entries": {}
+  }
 };
 /* REGISTER:END */
 
@@ -1435,7 +1466,7 @@ var $=function(id){
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
-var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
+var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
 var active="now", viewCycle=null, cityFilter="", histFilter="";
 
 function renderTabs(){
@@ -1574,6 +1605,107 @@ function renderCities(){
     }).join(""):"<tr><td colspan='5' class='muted'>Nothing matches that.</td></tr>")+"</tbody>";
 }
 
+/* Every alliance that holds a city or sits in the pool. */
+function allAlliances(){
+  var set={};
+  REGISTER.pool.forEach(function(a){ set[a.tag]=true; });
+  REGISTER.cities.forEach(function(c){ if(c.holder) set[c.holder]=true; });
+  return Object.keys(set).sort();
+}
+
+/* Score from KvK and AvA alliance totals. Each is scaled against the best
+   alliance in that measure to give 0–100, and the two are averaged.
+
+   An alliance with nothing entered is NOT scored zero. Zero is a claim that
+   they contributed nothing; no entry is a claim that nobody looked. They are
+   left out of the ranking until someone enters a number. */
+function contribScores(){
+  var E=(REGISTER.contributions&&REGISTER.contributions.entries)||{};
+  var tags=allAlliances(), v={}, max={kvk:0,ava:0};
+  tags.forEach(function(t){
+    var e=E[t]||{};
+    var entered = (e.kvk!=null && e.kvk!=="") || (e.ava!=null && e.ava!=="");
+    v[t]={ entered:entered, kvk:+e.kvk||0, ava:+e.ava||0 };
+    if(entered){ if(v[t].kvk>max.kvk) max.kvk=v[t].kvk; if(v[t].ava>max.ava) max.ava=v[t].ava; }
+  });
+  var out={};
+  tags.forEach(function(t){
+    var nk = max.kvk>0 ? 100*v[t].kvk/max.kvk : 0;
+    var na = max.ava>0 ? 100*v[t].ava/max.ava : 0;
+    out[t]={ entered:v[t].entered, kvk:nk, ava:na, score: v[t].entered ? (nk+na)/2 : null };
+  });
+  return out;
+}
+
+function renderContrib(){
+  var E=(REGISTER.contributions&&REGISTER.contributions.entries)||{};
+  var sc=contribScores(), tags=allAlliances();
+  $("cw").value=(REGISTER.contributions&&REGISTER.contributions.window)||REGISTER.scoreWindow||"";
+
+  var ranked=tags.filter(function(t){ return sc[t].entered; })
+    .sort(function(a,b){ return sc[b].score-sc[a].score; });
+  var rank={}; ranked.forEach(function(t,i){ rank[t]=i+1; });
+  var inPool={}; REGISTER.pool.forEach(function(a){ inPool[a.tag]=true; });
+
+  $("contrib-table").innerHTML=
+    "<thead><tr><th>Alliance</th><th class='num'>KvK</th><th class='num'>AvA</th>"+
+    "<th class='num'>Score</th><th class='num'>Rank</th></tr></thead><tbody>"+
+    tags.map(function(t){
+      var e=E[t]||{}, r=sc[t];
+      var f=function(k){ return "<input class='mono' type='number' min='0' data-cb='"+esc(k)+"' data-tag='"+esc(t)+"' value='"+
+        (e[k]==null?"":esc(e[k]))+"' placeholder='—' style='min-height:34px;padding:4px 7px;font-size:14px;text-align:right'>"; };
+      return "<tr><td><b>"+esc(t)+"</b>"+(inPool[t]?" <span class='pill'>pool</span>":"")+"</td>"+
+        "<td>"+f("kvk")+"</td><td>"+f("ava")+"</td>"+
+        "<td class='num'>"+(r.entered?r.score.toFixed(1):"<span class='muted'>no data</span>")+"</td>"+
+        "<td class='num'>"+(r.entered?rank[t]:"<span class='muted'>—</span>")+"</td></tr>";
+    }).join("")+"</tbody>";
+
+  $("contrib-note").innerHTML="<b>How the score is worked out.</b> Each alliance's KvK and AvA totals are scaled "+
+    "against the highest total in that measure, giving 0–100 for each, and the two are averaged. "+
+    "Nothing else feeds in — no donations, no per-player figures — so any alliance leader can check "+
+    "the whole ranking with the two numbers on screen and a calculator.";
+
+  var margin=+REGISTER.relegationMargin||0, size=REGISTER.pool.length;
+  if(!ranked.length){
+    $("pool-advice").innerHTML="<p style='margin:0' class='muted'>Nothing entered yet. Fill in at least the "+size+" pool alliances and this works out who belongs in the pool.</p>";
+  } else {
+    var byScore=ranked.slice(0,size);
+    var lowestIn=REGISTER.pool.map(function(a){ return sc[a.tag]&&sc[a.tag].entered?sc[a.tag].score:null; })
+      .filter(function(x){ return x!==null; }).sort(function(a,b){ return a-b; })[0];
+    var moves=[];
+    ranked.forEach(function(t){
+      if(inPool[t]||lowestIn==null) return;
+      if(sc[t].score>=lowestIn+margin) moves.push({tag:t,score:sc[t].score});
+    });
+    var missing=REGISTER.pool.filter(function(a){ return !sc[a.tag].entered; }).map(function(a){ return a.tag; });
+    $("pool-advice").innerHTML=
+      "<p style='margin:0 0 10px'>By score, the top "+size+" are <b>"+byScore.map(esc).join(", ")+"</b>.</p>"+
+      (missing.length?"<p style='margin:0 0 10px' class='now'>No figures yet for "+missing.map(esc).join(", ")+" — they are in the pool but cannot be ranked, so this comparison is incomplete.</p>":"")+
+      (moves.length
+        ? "<p style='margin:0 0 6px'>Clearing the "+margin+"-point margin to take a pool place: <b>"+
+          moves.map(function(m){ return esc(m.tag)+" ("+m.score.toFixed(1)+")"; }).join(", ")+"</b>.</p>"
+        : "<p style='margin:0 0 6px'>Nobody outside the pool clears the "+margin+"-point margin. Incumbents keep their places.</p>")+
+      "<p style='margin:8px 0 0;font-size:13px' class='muted'>Pool membership is reviewed once per cycle, not per term. "+
+      "Applying scores updates pick order straight away; it does not reorder the rotation, which stays locked.</p>";
+  }
+}
+
+/* Recompute the score and rank columns without rebuilding the inputs, so the
+   number you are typing does not lose focus mid-keystroke. */
+function renderContribLive(){
+  var sc=contribScores(), tags=allAlliances();
+  var ranked=tags.filter(function(t){ return sc[t].entered; }).sort(function(a,b){ return sc[b].score-sc[a].score; });
+  var rank={}; ranked.forEach(function(t,i){ rank[t]=i+1; });
+  var rows=document.querySelectorAll("#contrib-table tbody tr");
+  Array.prototype.forEach.call(rows,function(tr,i){
+    var t=tags[i]; if(!t) return;
+    var tds=tr.getElementsByTagName("td");
+    if(tds.length<5) return;
+    tds[3].innerHTML = sc[t].entered ? sc[t].score.toFixed(1) : "<span class='muted'>no data</span>";
+    tds[4].innerHTML = sc[t].entered ? rank[t] : "<span class='muted'>—</span>";
+  });
+}
+
 function renderHistory(){
   var f=histFilter.toLowerCase();
   var list=REGISTER.cities.filter(function(c){
@@ -1632,7 +1764,7 @@ function renderAlliances(){
 function renderPool(){
   var n=poolSize(), s=Math.min(slots(),n);
   $("pool-lede").innerHTML="The alliances in the rotation. Scores cover <b>"+esc(REGISTER.scoreWindow||"—")+
-    "</b> and are calculated per active member, so a well-run small alliance can outrank a coasting large one.";
+    "</b> and come from KvK and AvA alliance totals, scaled against the best in each and averaged.";
   var ranked=REGISTER.pool.map(function(a,i){ return {a:a,order:i}; }).sort(function(x,y){ return (y.a.score||0)-(x.a.score||0); });
   $("pool-table").innerHTML="<thead><tr><th class='num'>Rank</th><th>Alliance</th><th class='num'>Score</th><th class='num'>Members</th><th class='num'>Rotation position</th></tr></thead><tbody>"+
     ranked.map(function(r,i){ return "<tr><td class='num'>"+(i+1)+"</td><td><b>"+esc(r.a.name)+"</b></td>"+
@@ -1700,17 +1832,29 @@ function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
   $("pubby").textContent=REGISTER.publishedBy?"by "+REGISTER.publishedBy:"";
   $("foot-rules").textContent=REGISTER.rulesUrl||"—";
-  renderNow(); renderCycle(); renderCities(); renderHistory(); renderAlliances(); renderPool(); renderLog(); renderEdit();
+  renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderLog(); renderEdit();
   if(EDITOR) applyRoleLocks(EDITOR.role); }
 function softRefresh(){ _cache={}; _state={}; viewCycle=null;
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
-  renderQueries(); renderNow(); renderCycle(); renderCities(); renderHistory(); renderAlliances(); renderPool(); renderLog();
+  renderQueries(); renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderLog();
   $("export").value=JSON.stringify(REGISTER,null,2); }
 
 document.addEventListener("input",function(e){
   var el=e.target,i;
   if(el.id==="city-filter"){ cityFilter=el.value; renderCities(); return; }
   if(el.id==="hist-filter"){ histFilter=el.value; renderHistory(); return; }
+  if(el.id==="cw"){ REGISTER.contributions=REGISTER.contributions||{entries:{}};
+    REGISTER.contributions.window=el.value; return; }
+  if(el.dataset&&el.dataset.cb!==undefined){
+    REGISTER.contributions=REGISTER.contributions||{window:"",entries:{}};
+    REGISTER.contributions.entries=REGISTER.contributions.entries||{};
+    var tag=el.dataset.tag, E=REGISTER.contributions.entries;
+    E[tag]=E[tag]||{};
+    if(el.value==="") delete E[tag][el.dataset.cb]; else E[tag][el.dataset.cb]=parseFloat(el.value)||0;
+    var focused=el.dataset.cb+"|"+tag;
+    renderContribLive(focused);
+    return;
+  }
   if(el.dataset&&el.dataset.p!==undefined){ i=+el.dataset.i; var v=el.value;
     if(el.dataset.p==="score"||el.dataset.p==="members") v=parseFloat(v)||0;
     REGISTER.pool[i][el.dataset.p]=v; softRefresh(); }
@@ -1899,6 +2043,111 @@ $("import-go").onclick=function(){ var m=$("import-msg");
 $("cyc-prev").onclick=function(){ viewCycle=Math.max(0,(viewCycle||0)-1); renderCycle(); };
 $("cyc-next").onclick=function(){ viewCycle=(viewCycle||0)+1; renderCycle(); };
 $("cyc-now").onclick=function(){ viewCycle=Math.max(0,Math.floor(Math.max(currentTerm(),0)/poolSize())); renderCycle(); };
+
+$("apply-scores").onclick=function(){
+  var msg=$("apply-msg");
+  if(!EDITOR || EDITOR.role!=="keeper"){
+    msg.className="now"; msg.textContent="Applying scores changes pick order, so it needs a keeper token."; return;
+  }
+  var sc=contribScores(), n=0;
+  REGISTER.pool.forEach(function(a){
+    if(sc[a.tag]&&sc[a.tag].entered){ a.score=Math.round(sc[a.tag].score*10)/10; n++; }
+  });
+  if((REGISTER.contributions||{}).window) REGISTER.scoreWindow=REGISTER.contributions.window;
+  msg.className=""; msg.textContent=n+" of "+REGISTER.pool.length+" pool alliances updated. Publish to make it official.";
+  renderAll();
+};
+
+/* ---------- Import ---------- */
+var IMG=[];
+function fileToBase64(f){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ res({ media_type:f.type||"image/png", data:String(r.result).split(",")[1] }); };
+    r.onerror=function(){ rej(new Error("could not read "+f.name)); };
+    r.readAsDataURL(f);
+  });
+}
+$("imgs").onchange=async function(){
+  var msg=$("imp-msg"); IMG=[];
+  try{
+    var files=Array.prototype.slice.call(this.files||[]).slice(0,6);
+    for(var i=0;i<files.length;i++){
+      if(files[i].size>4.5*1024*1024){ msg.className="now"; msg.textContent=files[i].name+" is over about 4.5 MB. Screenshot a smaller area, or scale it down."; $("analyse").disabled=true; return; }
+      IMG.push(await fileToBase64(files[i]));
+    }
+    msg.className=""; msg.textContent=IMG.length?IMG.length+(IMG.length===1?" image ready.":" images ready."):"";
+    $("analyse").disabled=!IMG.length;
+  }catch(e){ msg.className="now"; msg.textContent=e.message; $("analyse").disabled=true; }
+};
+
+var PROPOSED=[];
+$("analyse").onclick=async function(){
+  var msg=$("imp-msg"), out=$("imp-results");
+  if(!EDITOR){ msg.className="now"; msg.textContent="Sign in on the Edit tab first."; return; }
+  var btn=this; btn.disabled=true; btn.textContent="Reading…"; msg.className=""; msg.textContent="";
+  out.innerHTML="";
+  try{
+    var r=await fetch("/api/import",{method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({ token:EDITOR.token, images:IMG, hint:$("hint").value,
+        cities:REGISTER.cities.map(function(c){ return {id:c.id,name:c.name,level:c.level,holder:holderMapNow()[c.id]||""}; }),
+        tags:allAlliances() })});
+    var j=await r.json();
+    if(!j.ok){ msg.className="now"; msg.textContent=j.error||"That did not work."; }
+    else { PROPOSED=j.changes||[]; renderImport(j); }
+  }catch(e){ msg.className="now"; msg.textContent="Could not reach the reading service. Nothing was changed."; }
+  btn.disabled=false; btn.textContent="Check against the register";
+};
+
+function renderImport(j){
+  var out=$("imp-results");
+  var cov="<div class='card' style='margin-bottom:12px'><p style='margin:0 0 6px'><b>Coverage.</b> "+
+    j.coverage+" of "+j.total+" cities were visible in what you attached.</p>"+
+    (j.notSeen.length
+      ? "<p style='margin:0;font-size:13px' class='muted'>Not seen, so unchanged and unchecked: "+j.notSeen.map(esc).join(", ")+"</p>"
+      : "<p style='margin:0;font-size:13px' class='muted'>Every city was visible.</p>")+"</div>";
+
+  var body;
+  if(!PROPOSED.length){
+    body="<div class='card'><p style='margin:0'>No differences found in what was legible. That is a clean result, not an empty one — but it only covers the "+j.coverage+" cities above.</p></div>";
+  } else {
+    body="<div class='card'><p style='margin:0 0 10px'><b>"+PROPOSED.length+
+      (PROPOSED.length===1?" difference":" differences")+" proposed.</b> Tick what is right. Nothing is applied until you press the button, and nothing is published until you publish.</p>"+
+      "<div class='tablescroll'><table class='reg'><thead><tr><th></th><th>City</th><th>Register says</th><th>Screenshot says</th><th>Confidence</th></tr></thead><tbody>"+
+      PROPOSED.map(function(c,i){
+        return "<tr><td><input type='checkbox' data-imp='"+i+"' "+(c.confidence==="high"?"checked":"")+" style='width:18px;height:18px;min-height:0'></td>"+
+          "<td><b>"+esc(c.city)+"</b> <span class='tag'>L"+esc(c.level)+"</span></td>"+
+          "<td>"+esc(c.from||"unclaimed")+"</td><td><b>"+esc(c.to||"unclaimed")+"</b></td>"+
+          "<td>"+(c.confidence==="high"?"<span class='pill'>high</span>":"<span class='pill rub'>low — check this one</span>")+
+          (c.note?"<br><span class='tag'>"+esc(c.note)+"</span>":"")+"</td></tr>";
+      }).join("")+"</tbody></table></div>"+
+      "<div class='btnrow'><button class='btn' id='apply-imp'>Apply the ticked changes</button></div>"+
+      "<p id='imp-applied' style='font-size:14px;margin:8px 0 0'></p></div>";
+  }
+  var extra="";
+  if((j.unreadable||[]).length) extra+="<p class='derivation'><b>Could not be matched to anything on the register:</b> "+
+    j.unreadable.map(esc).join(", ")+". These were left alone rather than guessed at.</p>";
+  if((j.rejected||[]).length) extra+="<p class='derivation alert'><b>"+j.rejected.length+
+    " reading(s) named a city or alliance that does not exist and were discarded.</b> If this keeps happening the screenshots are probably too small to read.</p>";
+  out.innerHTML=cov+body+extra;
+
+  var ap=$("apply-imp");
+  if(ap && ap.id) ap.onclick=function(){
+    var boxes=document.querySelectorAll("[data-imp]"), n=0, today=iso(todayMs());
+    Array.prototype.forEach.call(boxes,function(b){
+      if(!b.checked) return;
+      var c=PROPOSED[+b.dataset.imp]; if(!c) return;
+      REGISTER.transfers=REGISTER.transfers||[];
+      REGISTER.transfers.push({ date:today, city:c.id, to:c.to, reason:"read from a map screenshot, confirmed by "+EDITOR.name });
+      n++;
+    });
+    if(n){ REGISTER.log.push({ date:today, kind:"Correction",
+      text:n+(n===1?" city holder":" city holders")+" updated from a map screenshot, checked by "+EDITOR.name+"." });
+      renderAll(); active="import"; renderTabs();
+      $("imp-applied").textContent=n+" applied to this browser tab. Go to Edit and publish to make it official.";
+    } else $("imp-applied").textContent="Nothing was ticked.";
+  };
+}
 
 renderAll();
 </script>
