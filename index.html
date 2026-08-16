@@ -158,10 +158,13 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
 <section id="tab-contrib" hidden>
   <h2>Contributions</h2>
-  <p class="lede">Enter each alliance's KvK and AvA totals for the scoring window. Everything below is calculated from these two numbers and nothing else, so anyone can check the ranking by re-entering the same figures.</p>
-  <div class="field" style="max-width:420px"><label for="cw">Scoring window</label>
-    <input id="cw" placeholder="e.g. 5 weeks to 15 Aug 2026"></div>
+  <p class="lede">Enter each alliance's KvK and AvA totals, one week at a time. Everything below is calculated from these two numbers and nothing else, so anyone can check the ranking by re-entering the same figures.</p>
+  <div class="field" style="max-width:460px"><label for="cw">Week being entered</label>
+    <select id="cw"></select></div>
   <div class="tablescroll"><table class="reg" id="contrib-table"></table></div>
+  <h3>The window, week by week</h3>
+  <p class="lede">Each cell is that week's score out of 100. Blanks are weeks an alliance did not report, not weeks it scored nothing.</p>
+  <div class="tablescroll"><table class="reg" id="week-matrix"></table></div>
   <p class="derivation" id="contrib-note"></p>
   <h3>What the numbers say about the pool</h3>
   <div class="card" id="pool-advice"></div>
@@ -341,7 +344,7 @@ var REGISTER = {
   "repo": "starsoninc/server75-city-register",
   "cycleStart": "2026-08-21",
   "termDays": 7,
-  "scoreWindow": "[5 weeks to 15 Aug 2026 — not yet calculated]",
+  "scoreWindow": "[not yet calculated — enter weekly figures on the Contributions tab]",
   "relegationMargin": 5,
   "cityCap": 6,
   "openQuestions": [
@@ -1290,8 +1293,10 @@ var REGISTER = {
     }
   ],
   "contributions": {
-    "window": "",
-    "entries": {}
+    "anchor": "2026-06-07",
+    "window": 5,
+    "minWeeks": 3,
+    "weeks": {}
   }
 };
 /* REGISTER:END */
@@ -1467,7 +1472,7 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ retu
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
 var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
-var active="now", viewCycle=null, cityFilter="", histFilter="";
+var active="now", viewCycle=null, cityFilter="", histFilter="", SELWEEK=null;
 
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
@@ -1613,57 +1618,109 @@ function allAlliances(){
   return Object.keys(set).sort();
 }
 
-/* Score from KvK and AvA alliance totals. Each is scaled against the best
-   alliance in that measure to give 0–100, and the two are averaged.
+/* Weeks run Sunday to Saturday, the same convention the dashboard uses, so a
+   week key here means the same span it means there. */
+function weekKeyOf(ms){ var day=new Date(ms).getUTCDay(); return iso(addDays(ms,-day)); }
+function currentWeek(){ return weekKeyOf(todayMs()); }
+function windowWeeks(){
+  var n=Math.max(1,+((REGISTER.contributions||{}).window)||5), end=d(currentWeek()), out=[];
+  for(var i=n-1;i>=0;i--) out.push(iso(addDays(end,-7*i)));
+  return out;
+}
+function weekEntries(k){ return ((REGISTER.contributions||{}).weeks||{})[k]||{}; }
+function minWeeks(){ var m=(REGISTER.contributions||{}).minWeeks; return m==null?3:+m; }
 
-   An alliance with nothing entered is NOT scored zero. Zero is a claim that
-   they contributed nothing; no entry is a claim that nobody looked. They are
-   left out of the ranking until someone enters a number. */
-function contribScores(){
-  var E=(REGISTER.contributions&&REGISTER.contributions.entries)||{};
-  var tags=allAlliances(), v={}, max={kvk:0,ava:0};
-  tags.forEach(function(t){
-    var e=E[t]||{};
-    var entered = (e.kvk!=null && e.kvk!=="") || (e.ava!=null && e.ava!=="");
-    v[t]={ entered:entered, kvk:+e.kvk||0, ava:+e.ava||0 };
-    if(entered){ if(v[t].kvk>max.kvk) max.kvk=v[t].kvk; if(v[t].ava>max.ava) max.ava=v[t].ava; }
-  });
+/* Each week is scored on its own, then a alliance's weeks are averaged.
+   Scoring week by week matters: event sizes differ, and an alliance that
+   missed a week should be judged on the weeks it played rather than dragged
+   down by a zero it never earned.
+
+   An alliance below the minimum number of reported weeks is NOT scored zero
+   and NOT ranked. Too little data is a reason to say so, not to guess. */
+function weeklyScores(){
   var out={};
+  windowWeeks().forEach(function(k){
+    var E=weekEntries(k), maxK=0, maxA=0;
+    Object.keys(E).forEach(function(t){
+      var e=E[t]||{};
+      if((+e.kvk||0)>maxK) maxK=+e.kvk||0;
+      if((+e.ava||0)>maxA) maxA=+e.ava||0;
+    });
+    out[k]={};
+    Object.keys(E).forEach(function(t){
+      var e=E[t]||{};
+      var has=(e.kvk!=null&&e.kvk!=="")||(e.ava!=null&&e.ava!=="");
+      if(!has) return;
+      var nk=maxK>0?100*(+e.kvk||0)/maxK:0, na=maxA>0?100*(+e.ava||0)/maxA:0;
+      out[k][t]={ kvk:nk, ava:na, score:(nk+na)/2 };
+    });
+  });
+  return out;
+}
+
+function contribScores(){
+  var wk=weeklyScores(), weeks=windowWeeks(), tags=allAlliances(), need=minWeeks(), out={};
   tags.forEach(function(t){
-    var nk = max.kvk>0 ? 100*v[t].kvk/max.kvk : 0;
-    var na = max.ava>0 ? 100*v[t].ava/max.ava : 0;
-    out[t]={ entered:v[t].entered, kvk:nk, ava:na, score: v[t].entered ? (nk+na)/2 : null };
+    var vals=[];
+    weeks.forEach(function(k){ if(wk[k][t]) vals.push(wk[k][t].score); });
+    var mean=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:null;
+    out[t]={ weeksReported:vals.length, weeksNeeded:need, weeksInWindow:weeks.length,
+             entered: vals.length>=need, thin: vals.length>0 && vals.length<need,
+             score: vals.length>=need ? mean : null, provisional: mean };
   });
   return out;
 }
 
 function renderContrib(){
-  var E=(REGISTER.contributions&&REGISTER.contributions.entries)||{};
-  var sc=contribScores(), tags=allAlliances();
-  $("cw").value=(REGISTER.contributions&&REGISTER.contributions.window)||REGISTER.scoreWindow||"";
+  var weeks=windowWeeks(), sel=(SELWEEK&&weeks.indexOf(SELWEEK)>=0)?SELWEEK:weeks[weeks.length-1];
+  SELWEEK=sel;
+  var E=weekEntries(sel), sc=contribScores(), wk=weeklyScores(), tags=allAlliances();
 
-  var ranked=tags.filter(function(t){ return sc[t].entered; })
-    .sort(function(a,b){ return sc[b].score-sc[a].score; });
+  $("cw").innerHTML=weeks.map(function(k){
+    var n=Object.keys(weekEntries(k)).length;
+    return "<option value='"+k+"'"+(k===sel?" selected":"")+">Week of "+fmtDate(d(k))+
+      " — "+(n?n+" reported":"nothing entered")+(k===currentWeek()?" · this week":"")+"</option>";
+  }).join("");
+
+  var ranked=tags.filter(function(t){ return sc[t].entered; }).sort(function(a,b){ return sc[b].score-sc[a].score; });
   var rank={}; ranked.forEach(function(t,i){ rank[t]=i+1; });
   var inPool={}; REGISTER.pool.forEach(function(a){ inPool[a.tag]=true; });
 
   $("contrib-table").innerHTML=
     "<thead><tr><th>Alliance</th><th class='num'>KvK</th><th class='num'>AvA</th>"+
-    "<th class='num'>Score</th><th class='num'>Rank</th></tr></thead><tbody>"+
+    "<th class='num'>Weeks</th><th class='num'>Score</th><th class='num'>Rank</th></tr></thead><tbody>"+
     tags.map(function(t){
       var e=E[t]||{}, r=sc[t];
-      var f=function(k){ return "<input class='mono' type='number' min='0' data-cb='"+esc(k)+"' data-tag='"+esc(t)+"' value='"+
-        (e[k]==null?"":esc(e[k]))+"' placeholder='—' style='min-height:34px;padding:4px 7px;font-size:14px;text-align:right'>"; };
+      var f=function(k){ return "<input class='mono' type='number' min='0' data-cb='"+esc(k)+"' data-tag='"+esc(t)+
+        "' value='"+(e[k]==null?"":esc(e[k]))+"' placeholder='—' style='min-height:34px;padding:4px 7px;font-size:14px;text-align:right'>"; };
+      var score = r.entered ? r.score.toFixed(1)
+        : r.thin ? "<span class='muted'>"+r.provisional.toFixed(1)+" so far</span>"
+        : "<span class='muted'>no data</span>";
       return "<tr><td><b>"+esc(t)+"</b>"+(inPool[t]?" <span class='pill'>pool</span>":"")+"</td>"+
         "<td>"+f("kvk")+"</td><td>"+f("ava")+"</td>"+
-        "<td class='num'>"+(r.entered?r.score.toFixed(1):"<span class='muted'>no data</span>")+"</td>"+
+        "<td class='num'>"+r.weeksReported+" / "+r.weeksInWindow+
+          (r.thin?" <span class='pill rub'>thin</span>":"")+"</td>"+
+        "<td class='num'>"+score+"</td>"+
         "<td class='num'>"+(r.entered?rank[t]:"<span class='muted'>—</span>")+"</td></tr>";
     }).join("")+"</tbody>";
 
-  $("contrib-note").innerHTML="<b>How the score is worked out.</b> Each alliance's KvK and AvA totals are scaled "+
-    "against the highest total in that measure, giving 0–100 for each, and the two are averaged. "+
-    "Nothing else feeds in — no donations, no per-player figures — so any alliance leader can check "+
-    "the whole ranking with the two numbers on screen and a calculator.";
+  $("contrib-note").innerHTML="<b>How the score is worked out.</b> Within each week, an alliance's KvK and AvA totals "+
+    "are scaled against the best totals of that week to give 0–100 each, and averaged. An alliance's score is then the "+
+    "mean of its weeks across the "+weeks.length+"-week window. Scoring week by week keeps a big event week from "+
+    "drowning out a quiet one, and means a missed week costs an alliance nothing it did not lose on the field. "+
+    "Fewer than <b>"+minWeeks()+"</b> weeks reported and an alliance is not ranked at all — too little to judge on is "+
+    "a reason to say so, not to guess.";
+
+  $("week-matrix").innerHTML=
+    "<thead><tr><th>Alliance</th>"+weeks.map(function(k){
+      return "<th class='num'>"+fmtShort(d(k))+"</th>"; }).join("")+"<th class='num'>Mean</th></tr></thead><tbody>"+
+    tags.map(function(t){
+      var any=weeks.some(function(k){ return wk[k][t]; });
+      if(!any) return "";
+      return "<tr><td><b>"+esc(t)+"</b></td>"+weeks.map(function(k){
+        return "<td class='num'>"+(wk[k][t]?wk[k][t].score.toFixed(0):"<span class='muted'>·</span>")+"</td>";
+      }).join("")+"<td class='num'><b>"+(sc[t].score!=null?sc[t].score.toFixed(1):(sc[t].provisional!=null?sc[t].provisional.toFixed(1):"—"))+"</b></td></tr>";
+    }).join("")+"</tbody>";
 
   var margin=+REGISTER.relegationMargin||0, size=REGISTER.pool.length;
   if(!ranked.length){
@@ -1700,9 +1757,12 @@ function renderContribLive(){
   Array.prototype.forEach.call(rows,function(tr,i){
     var t=tags[i]; if(!t) return;
     var tds=tr.getElementsByTagName("td");
-    if(tds.length<5) return;
-    tds[3].innerHTML = sc[t].entered ? sc[t].score.toFixed(1) : "<span class='muted'>no data</span>";
-    tds[4].innerHTML = sc[t].entered ? rank[t] : "<span class='muted'>—</span>";
+    if(tds.length<6) return;
+    var r=sc[t];
+    tds[3].innerHTML = r.weeksReported+" / "+r.weeksInWindow+(r.thin?" <span class='pill rub'>thin</span>":"");
+    tds[4].innerHTML = r.entered ? r.score.toFixed(1)
+      : (r.thin ? "<span class='muted'>"+r.provisional.toFixed(1)+" so far</span>" : "<span class='muted'>no data</span>");
+    tds[5].innerHTML = r.entered ? rank[t] : "<span class='muted'>—</span>";
   });
 }
 
@@ -1843,16 +1903,15 @@ document.addEventListener("input",function(e){
   var el=e.target,i;
   if(el.id==="city-filter"){ cityFilter=el.value; renderCities(); return; }
   if(el.id==="hist-filter"){ histFilter=el.value; renderHistory(); return; }
-  if(el.id==="cw"){ REGISTER.contributions=REGISTER.contributions||{entries:{}};
-    REGISTER.contributions.window=el.value; return; }
   if(el.dataset&&el.dataset.cb!==undefined){
-    REGISTER.contributions=REGISTER.contributions||{window:"",entries:{}};
-    REGISTER.contributions.entries=REGISTER.contributions.entries||{};
-    var tag=el.dataset.tag, E=REGISTER.contributions.entries;
-    E[tag]=E[tag]||{};
-    if(el.value==="") delete E[tag][el.dataset.cb]; else E[tag][el.dataset.cb]=parseFloat(el.value)||0;
-    var focused=el.dataset.cb+"|"+tag;
-    renderContribLive(focused);
+    REGISTER.contributions=REGISTER.contributions||{window:5,minWeeks:3,weeks:{}};
+    REGISTER.contributions.weeks=REGISTER.contributions.weeks||{};
+    var W=REGISTER.contributions.weeks, k=SELWEEK||currentWeek(), tag=el.dataset.tag;
+    W[k]=W[k]||{}; W[k][tag]=W[k][tag]||{};
+    if(el.value==="") delete W[k][tag][el.dataset.cb]; else W[k][tag][el.dataset.cb]=parseFloat(el.value)||0;
+    if(!Object.keys(W[k][tag]).length) delete W[k][tag];
+    if(!Object.keys(W[k]).length) delete W[k];
+    renderContribLive();
     return;
   }
   if(el.dataset&&el.dataset.p!==undefined){ i=+el.dataset.i; var v=el.value;
@@ -1869,6 +1928,7 @@ document.addEventListener("input",function(e){
 });
 document.addEventListener("change",function(e){
   var el=e.target;
+  if(el.id==="cw"){ SELWEEK=el.value; renderContrib(); return; }
   if(el.dataset&&el.dataset.rot!==undefined){
     var c=REGISTER.cities[+el.dataset.rot];
     c.rotates=el.checked;
@@ -2053,7 +2113,8 @@ $("apply-scores").onclick=function(){
   REGISTER.pool.forEach(function(a){
     if(sc[a.tag]&&sc[a.tag].entered){ a.score=Math.round(sc[a.tag].score*10)/10; n++; }
   });
-  if((REGISTER.contributions||{}).window) REGISTER.scoreWindow=REGISTER.contributions.window;
+  var w=windowWeeks();
+  REGISTER.scoreWindow=w.length+" weeks, "+fmtDate(d(w[0]))+" to "+fmtDate(addDays(d(w[w.length-1]),6));
   msg.className=""; msg.textContent=n+" of "+REGISTER.pool.length+" pool alliances updated. Publish to make it official.";
   renderAll();
 };
