@@ -27,12 +27,17 @@
  *   GITHUB_REPO    "owner/name", e.g. "starsoninc/server75-city-register"
  *   GITHUB_BRANCH  optional, default "main"
  *   GITHUB_PATH    optional, default "index.html"
+ *   ANTHROPIC_API_KEY  optional. Without it the Import tab is switched off.
+ *   IMPORT_MODEL       optional, default below.
  *
  * Routes:
  *   GET  /api/health   is this configured
  *   POST /api/whoami   is my token good, and who does it say I am
  *   POST /api/publish  publish a register
+ *   POST /api/import   read a map screenshot and propose changes
  */
+
+const IMPORT_DEFAULT_MODEL = "claude-sonnet-4-6";
 
 const BEGIN = "/* REGISTER:BEGIN */";
 const END = "/* REGISTER:END */";
@@ -213,6 +218,16 @@ function officerViolations(prev, next, who) {
     }
   }
 
+  /* An officer enters their own alliance's KvK and AvA and nobody else's.
+     Without this, the numbers that decide pick order could be edited by the
+     people they rank. */
+  const pcon = (prev.contributions || {}).entries || {};
+  const ncon = (next.contributions || {}).entries || {};
+  for (const tag of new Set([...Object.keys(pcon), ...Object.keys(ncon)])) {
+    if (!eq(pcon[tag], ncon[tag]) && tag !== who.alliance) bad.push("contributions for " + tag);
+  }
+  if (!eq((prev.contributions || {}).window, (next.contributions || {}).window)) bad.push("the scoring window");
+
   const pt = prev.transfers || [], nt = next.transfers || [];
   if (nt.length < pt.length) bad.push("removing a recorded transfer");
   for (let i = 0; i < pt.length; i++) if (!eq(pt[i], nt[i])) { bad.push("an already recorded transfer"); break; }
@@ -376,6 +391,115 @@ async function handlePublish(request) {
   });
 }
 
+/* ---------- reading a map screenshot ----------
+ *
+ * The model is never asked to spell anything. It is handed the 87 city names
+ * and the 17 alliance tags that exist, and asked to choose from them. Anything
+ * it returns that is not on those lists is dropped here, not shown to a person
+ * as though it were a finding. Half these tags are spelled with stroked and
+ * accented letters that vision models reliably mangle, so a closed list is the
+ * difference between a useful tool and a confident liar.
+ *
+ * Nothing this endpoint returns is written to the register. It comes back as a
+ * proposal for someone to tick.
+ */
+async function handleImport(request) {
+  const key = Netlify.env.get("ANTHROPIC_API_KEY");
+  if (!key) return json({ ok: false, code: "setup", error: "No ANTHROPIC_API_KEY on this site, so the Import tab is switched off." }, 503);
+
+  let body = {};
+  try { body = await request.json(); } catch {
+    return json({ ok: false, error: "That request was not JSON." }, 400);
+  }
+  const who = whoIs(body.token || "");
+  if (!who) return json({ ok: false, error: "That token is not on the editor list." }, 401);
+
+  const images = Array.isArray(body.images) ? body.images.slice(0, 6) : [];
+  if (!images.length) return json({ ok: false, error: "No images were attached." }, 400);
+
+  const cities = Array.isArray(body.cities) ? body.cities : [];
+  const tags = Array.isArray(body.tags) ? body.tags : [];
+  if (!cities.length || !tags.length) return json({ ok: false, error: "The page did not send the city and alliance lists." }, 400);
+
+  const cityNames = cities.map(c => c.name);
+  const known = new Map(cities.map(c => [c.name, c]));
+  const tagSet = new Set(tags);
+
+  const system =
+    "You are reading screenshots of the world map in a mobile strategy game, to check them against a register of who holds which city.\n\n" +
+    "RULES:\n" +
+    "1. Only ever choose city names from CITIES and alliance tags from ALLIANCES. Never invent, correct, translate or re-spell either. If what you see resembles nothing on the lists, put it in `unreadable` verbatim and move on.\n" +
+    "2. Report a change only where you can actually read the holder tag. Blurry, cropped or partly covered is not a reading — say nothing rather than guess.\n" +
+    "3. `notSeen` must list every city from CITIES you did not clearly see in these images. An absence is not a vacancy; it means the image did not cover it.\n" +
+    "4. Reply with JSON only. No prose, no markdown fences.\n\n" +
+    "SHAPE:\n" +
+    '{"changes":[{"city":"<from CITIES>","to":"<from ALLIANCES, or \"\" if unclaimed>","confidence":"high|low","note":"<what you saw>"}],' +
+    '"notSeen":["<from CITIES>"],"unreadable":["<verbatim>"]}\n\n' +
+    "CITIES:\n" + cityNames.join("\n") + "\n\nALLIANCES:\n" + tags.join("\n") + "\n\n" +
+    "CURRENT REGISTER (city = holder):\n" +
+    cities.map(c => c.name + " = " + (c.holder || "unclaimed")).join("\n");
+
+  const content = images.map(im => ({
+    type: "image",
+    source: { type: "base64", media_type: String(im.media_type || "image/png"), data: String(im.data || "") }
+  }));
+  content.push({ type: "text", text: String(body.hint || "Compare these against the register and report only what differs.") });
+
+  let data;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" },
+      body: JSON.stringify({
+        model: Netlify.env.get("IMPORT_MODEL") || IMPORT_DEFAULT_MODEL,
+        max_tokens: 4000,
+        system,
+        messages: [{ role: "user", content }]
+      })
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      return json({ ok: false, error: "The reading service returned " + res.status + ". " + t.slice(0, 200) }, 502);
+    }
+    data = await res.json();
+  } catch (e) {
+    return json({ ok: false, error: "Could not reach the reading service." }, 502);
+  }
+
+  const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
+  let parsed;
+  try { parsed = JSON.parse(text.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim()); }
+  catch { return json({ ok: false, error: "The reading came back in a shape this page could not use. Nothing was changed." }, 502); }
+
+  /* Everything below this line is the model being checked, not trusted. */
+  const accepted = [], rejected = [];
+  for (const c of (Array.isArray(parsed.changes) ? parsed.changes : [])) {
+    const city = known.get(c && c.city);
+    if (!city) { rejected.push({ why: "no such city", raw: c && c.city }); continue; }
+    const to = String((c && c.to) || "");
+    if (to && !tagSet.has(to)) { rejected.push({ why: "no such alliance", raw: to, city: city.name }); continue; }
+    if ((city.holder || "") === to) continue;
+    accepted.push({
+      city: city.name, id: city.id, level: city.level,
+      from: city.holder || "", to,
+      confidence: c.confidence === "high" ? "high" : "low",
+      note: String(c.note || "").slice(0, 160)
+    });
+  }
+  const notSeen = (Array.isArray(parsed.notSeen) ? parsed.notSeen : []).filter(n => known.has(n));
+
+  return json({
+    ok: true,
+    by: who.name,
+    changes: accepted,
+    notSeen,
+    coverage: cityNames.length - notSeen.length,
+    total: cityNames.length,
+    unreadable: (Array.isArray(parsed.unreadable) ? parsed.unreadable : []).slice(0, 20).map(String),
+    rejected
+  });
+}
+
 function handleHealth() {
   let editors = 0, keepers = 0;
   try {
@@ -392,7 +516,9 @@ function handleHealth() {
     editors: editors < 0 ? "EDITORS is not valid JSON" : editors,
     keepers: editors < 0 ? null : keepers,
     officers: editors < 0 ? null : editors - keepers,
-    repo: Netlify.env.get("GITHUB_REPO") || null
+    repo: Netlify.env.get("GITHUB_REPO") || null,
+    imports: !!Netlify.env.get("ANTHROPIC_API_KEY"),
+    importModel: Netlify.env.get("IMPORT_MODEL") || IMPORT_DEFAULT_MODEL
   });
 }
 
@@ -404,6 +530,10 @@ export default async function registerGate(request) {
   if (p === "/api/whoami") {
     if (request.method !== "POST") return json({ ok: false, error: "POST only" }, 405);
     return handleWhoami(request);
+  }
+  if (p === "/api/import") {
+    if (request.method !== "POST") return json({ ok: false, error: "POST only" }, 405);
+    return handleImport(request);
   }
   if (p === "/api/publish") {
     if (request.method !== "POST") return json({ ok: false, error: "POST only" }, 405);
