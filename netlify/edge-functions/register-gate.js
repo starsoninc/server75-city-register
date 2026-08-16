@@ -221,12 +221,19 @@ function officerViolations(prev, next, who) {
   /* An officer enters their own alliance's KvK and AvA and nobody else's.
      Without this, the numbers that decide pick order could be edited by the
      people they rank. */
-  const pcon = (prev.contributions || {}).entries || {};
-  const ncon = (next.contributions || {}).entries || {};
-  for (const tag of new Set([...Object.keys(pcon), ...Object.keys(ncon)])) {
-    if (!eq(pcon[tag], ncon[tag]) && tag !== who.alliance) bad.push("contributions for " + tag);
+  const pw = (prev.contributions || {}).weeks || {};
+  const nw = (next.contributions || {}).weeks || {};
+  for (const week of new Set([...Object.keys(pw), ...Object.keys(nw)])) {
+    const a = pw[week] || {}, b = nw[week] || {};
+    for (const tag of new Set([...Object.keys(a), ...Object.keys(b)])) {
+      if (!eq(a[tag], b[tag]) && tag !== who.alliance) {
+        bad.push("contributions for " + tag + " in the week of " + week);
+      }
+    }
   }
-  if (!eq((prev.contributions || {}).window, (next.contributions || {}).window)) bad.push("the scoring window");
+  for (const k of ["window", "minWeeks", "anchor"]) {
+    if (!eq((prev.contributions || {})[k], (next.contributions || {})[k])) bad.push("the scoring window settings");
+  }
 
   const pt = prev.transfers || [], nt = next.transfers || [];
   if (nt.length < pt.length) bad.push("removing a recorded transfer");
