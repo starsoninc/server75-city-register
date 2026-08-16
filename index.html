@@ -115,7 +115,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 <header class="mast">
   <div class="mast-row">
     <h1><span class="sub">Last Asylum: Plague</span>Server 75 City Register</h1>
-    <div class="fingerprint"><b id="fp">—</b>register fingerprint<br>published <span id="pubdate" class="mono">—</span></div>
+    <div class="fingerprint"><b id="fp">—</b>register fingerprint<br>published <span id="pubdate" class="mono">—</span><br><span id="pubby"></span></div>
   </div>
   <p class="mast-note">The public record of who holds which city, for how long, and what changes next. Every alliance can read it. The rotation is <em>computed</em>, not stored.</p>
 </header>
@@ -310,7 +310,7 @@ var REGISTER = {
   "published": "2026-08-16",
   "publishedBy": "",
   "rulesUrl": "[RULES URL]",
-  "repo": "[owner]/[repo]",
+  "repo": "starsoninc/server75-city-register",
   "cycleStart": "2026-08-21",
   "termDays": 7,
   "scoreWindow": "[5 weeks to 15 Aug 2026 — not yet calculated]",
@@ -1420,7 +1420,17 @@ function fingerprint(){
 }
 
 /* ========================= rendering ========================= */
-var $=function(id){ return document.getElementById(id); };
+/* A missing element used to throw here and stop every later render, leaving a
+   page of empty headings. Now it degrades to a harmless stand-in and says so in
+   the console, so one bad id costs one field rather than the whole register. */
+var _missing={};
+var $=function(id){
+  var el=document.getElementById(id);
+  if(el) return el;
+  if(!_missing[id]){ _missing[id]=true; try{ console.warn("register: no element #"+id); }catch(e){} }
+  return _missing[id+"|node"] || (_missing[id+"|node"]={ innerHTML:"", textContent:"", value:"", hidden:true,
+    disabled:false, checked:false, dataset:{}, style:{}, focus:function(){}, select:function(){}, setSelectionRange:function(){} });
+};
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
