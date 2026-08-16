@@ -194,8 +194,29 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
 <section id="tab-edit" hidden>
   <h2>Edit and publish</h2>
-  <p class="lede">Changes here live in this browser tab only. To publish, copy the register block at the bottom into the file and redeploy. Nothing saves by itself — that is deliberate.</p>
+  <p class="lede">Sign in below, make your changes, then publish. Edits live in this browser tab until you publish them — nothing saves by itself.</p>
   <div class="warn">A register that can be changed quietly is not a register. Publishing through the repo gives every change an author, a timestamp and a diff, and the fingerprint at the top changes when the contents do. Any alliance can check the fingerprint they were shown against the one the page reports.</div>
+
+  <div id="signin-box" class="card" style="margin-bottom:14px">
+    <div id="signed-out">
+      <div class="field" style="max-width:420px;margin-bottom:8px">
+        <label for="tok">Editor token</label>
+        <input id="tok" class="mono" type="password" placeholder="paste the token you were given" autocomplete="off">
+      </div>
+      <div class="btnrow"><button class="btn" id="signin">Sign in</button></div>
+      <p style="margin:10px 0 0;font-size:13px" class="muted">Kept in this browser so you only paste it once. Anyone with your token publishes as you — treat it like a password.</p>
+      <p id="signin-msg" style="font-size:14px;margin:8px 0 0"></p>
+    </div>
+    <div id="signed-in" hidden>
+      <p style="margin:0 0 8px">Signed in as <b id="who-name">—</b> <span class="tag" id="who-ally"></span> <span class="pill" id="who-role"></span></p>
+      <p id="role-note" style="margin:0 0 8px;font-size:13px" class="muted"></p>
+      <label id="override-wrap" hidden style="display:flex;gap:9px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px;margin-bottom:8px">
+        <input type="checkbox" id="override" style="width:18px;height:18px;min-height:0;flex:none;margin-top:2px">
+        <span>Override the cycle lock. Only needed when changing the pool order, cycle start or term length while a cycle is running. It is recorded as an override in the record, permanently.</span></label>
+      <div class="btnrow"><button class="btn ghost small" id="signout">Sign out</button></div>
+    </div>
+  </div>
+
 
   <h3>Cycle settings</h3>
   <div class="grid grid-2">
@@ -248,26 +269,6 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <div class="btnrow"><button class="btn" id="add-log">Add to record</button></div>
 
   <h3>Publish</h3>
-  <div id="signin-box" class="card" style="margin-bottom:14px">
-    <div id="signed-out">
-      <div class="field" style="max-width:420px;margin-bottom:8px">
-        <label for="tok">Editor token</label>
-        <input id="tok" class="mono" type="password" placeholder="paste the token you were given" autocomplete="off">
-      </div>
-      <div class="btnrow"><button class="btn" id="signin">Sign in</button></div>
-      <p style="margin:10px 0 0;font-size:13px" class="muted">Kept in this browser so you only paste it once. Anyone with your token publishes as you — treat it like a password.</p>
-      <p id="signin-msg" style="font-size:14px;margin:8px 0 0"></p>
-    </div>
-    <div id="signed-in" hidden>
-      <p style="margin:0 0 8px">Signed in as <b id="who-name">—</b> <span class="tag" id="who-ally"></span> <span class="pill" id="who-role"></span></p>
-      <p id="role-note" style="margin:0 0 8px;font-size:13px" class="muted"></p>
-      <label id="override-wrap" hidden style="display:flex;gap:9px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px;margin-bottom:8px">
-        <input type="checkbox" id="override" style="width:18px;height:18px;min-height:0;flex:none;margin-top:2px">
-        <span>Override the cycle lock. Only needed when changing the pool order, cycle start or term length while a cycle is running. It is recorded as an override in the record, permanently.</span></label>
-      <div class="btnrow"><button class="btn ghost small" id="signout">Sign out</button></div>
-    </div>
-  </div>
-
   <div class="field"><label for="pub-note">What changed</label>
     <input id="pub-note" placeholder="e.g. RAE releases Sailport for term 2">
     <span style="font-size:13px;color:var(--ink-3)">Becomes the commit message and a record entry. Write it for whoever reads it in two months.</span></div>
