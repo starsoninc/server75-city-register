@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Server 75 — City Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#d5d8cf; --panel:#e3e5dd; --panel-2:#edeee8;
+  --ink:#161b17; --ink-2:#4e574e; --ink-3:#79837a;
+  --rule:#b2b8ac; --rule-strong:#8f978b;
+  --rubric:#a32b1e; --indigo:#2f4b6e;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --display:"Fraunces",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 72px}
+
+.mast{border-bottom:2px solid var(--ink);padding-bottom:14px}
+.mast-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;justify-content:space-between}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,42px);line-height:1.02;letter-spacing:-.015em;margin:0}
+h1 .sub{display:block;font-size:.42em;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-bottom:6px}
+.fingerprint{font-family:var(--mono);font-size:12px;color:var(--ink-2);text-align:right;line-height:1.5}
+.fingerprint b{display:block;font-weight:600;color:var(--ink);font-size:14px;letter-spacing:.08em}
+.mast-note{font-size:13px;color:var(--ink-2);margin:10px 0 0;max-width:62ch}
+
+nav{display:flex;gap:2px;overflow-x:auto;margin:18px 0 22px;border-bottom:1px solid var(--rule);-webkit-overflow-scrolling:touch}
+nav button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-2);padding:9px 14px;min-height:44px;cursor:pointer;white-space:nowrap}
+nav button:hover{color:var(--ink)}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+nav button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em;margin:0 0 4px}
+h3{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin:26px 0 10px}
+p{margin:0 0 12px}
+.lede{color:var(--ink-2);font-size:14px;max-width:66ch;margin:0 0 20px}
+.muted{color:var(--ink-3)} .mono{font-family:var(--mono)}
+section[hidden]{display:none}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:16px 18px}
+.grid{display:grid;gap:12px}
+@media(min-width:760px){.grid-3{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}}
+.now{color:var(--rubric)}
+
+.hold{background:var(--panel);border:1px solid var(--rule);border-top:3px solid var(--rubric);border-radius:3px;padding:14px 16px}
+.hold.crown{border-top-color:var(--ink)}
+.hold .lvl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--rubric);font-weight:600}
+.hold.crown .lvl{color:var(--ink)}
+.hold .city{font-family:var(--display);font-size:19px;font-weight:700;line-height:1.15;margin:2px 0 8px}
+.hold .holder{font-size:16px;font-weight:600}
+.hold .meta{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:8px;line-height:1.7}
+.hold .buff{font-size:13px;color:var(--ink-2);margin-top:8px;border-top:1px solid var(--rule);padding-top:8px}
+
+.lattice-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+table.lattice{border-collapse:collapse;font-family:var(--mono);font-size:12px}
+table.lattice th,table.lattice td{border:1px solid var(--rule);padding:0;text-align:center}
+table.lattice thead th{background:var(--panel-2);font-weight:600;font-size:11px;letter-spacing:.06em;padding:7px 9px;white-space:nowrap;color:var(--ink-2)}
+table.lattice thead th.is-now{color:var(--rubric);border-bottom-width:2px;border-bottom-color:var(--rubric)}
+table.lattice th.rowhead{background:var(--panel-2);text-align:left;padding:0 12px;font-family:var(--sans);font-size:13px;font-weight:500;white-space:nowrap;position:sticky;left:0;z-index:1;border-right:2px solid var(--rule-strong)}
+.cell{display:block;height:46px;line-height:46px;min-width:82px;color:var(--ink-3);padding:0 6px}
+.cell.past{background:var(--panel);color:var(--ink-2)}
+.cell.current{background:var(--rubric);color:var(--panel-2);font-weight:600}
+.cell.future{background:var(--panel-2);color:var(--indigo)}
+.cell.out{opacity:.45}
+.derivation{font-size:13px;color:var(--ink-2);border-left:2px solid var(--ink);padding:2px 0 2px 14px;margin:16px 0 0;max-width:66ch}
+.derivation.alert{border-left-color:var(--rubric)}
+
+table.reg{width:100%;border-collapse:collapse;font-size:14px}
+table.reg th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600;padding:0 10px 7px;border-bottom:1px solid var(--rule-strong);white-space:nowrap}
+table.reg td{padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.reg td.num,table.reg th.num{text-align:right;font-family:var(--mono)}
+table.reg tr:last-child td{border-bottom:0}
+.tablescroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;border:1px solid var(--rule-strong);border-radius:2px;padding:1px 6px;color:var(--ink-2);white-space:nowrap}
+.pill.rub{border-color:var(--rubric);color:var(--rubric)}
+
+.query{border:1px solid var(--rubric);border-radius:3px;padding:14px 16px;margin:0 0 22px;background:var(--panel)}
+.query h4{margin:0 0 8px;font-family:var(--sans);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--rubric)}
+.query ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2)}
+.query li{margin-bottom:6px}
+
+.log-entry{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule)}
+.log-entry:last-child{border-bottom:0}
+.log-date{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.log-kind{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block}
+
+label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:600;margin:0 0 4px}
+input,select,textarea{font-family:var(--sans);font-size:16px;width:100%;background:var(--panel-2);color:var(--ink);border:1px solid var(--rule-strong);border-radius:2px;padding:8px 10px;min-height:40px}
+input.mono,textarea.mono{font-family:var(--mono);font-size:14px}
+textarea{resize:vertical;line-height:1.5}
+.field{margin-bottom:14px}
+.btn{appearance:none;font-family:var(--sans);font-size:14px;font-weight:500;background:var(--ink);color:var(--panel-2);border:1px solid var(--ink);border-radius:2px;padding:9px 16px;min-height:44px;cursor:pointer}
+.btn:hover{background:#000}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--panel-2)}
+.btn.small{font-size:13px;padding:5px 10px;min-height:36px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.rowedit{display:grid;gap:8px;grid-template-columns:1fr;align-items:end;padding:12px;border:1px solid var(--rule);border-radius:3px;background:var(--panel-2);margin-bottom:8px}
+@media(min-width:640px){.rowedit.pool{grid-template-columns:1.4fr .7fr .7fr .7fr auto}}
+.rowedit .field{margin:0}
+.warn{border-left:2px solid var(--rubric);padding-left:14px;font-size:14px;color:var(--ink-2);margin:16px 0}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);font-family:var(--mono)}
+@media(prefers-reduced-motion:no-preference){section{animation:fade .18s ease-out}@keyframes fade{from{opacity:0}to{opacity:1}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div class="mast-row">
+    <h1><span class="sub">Last Asylum: Plague</span>Server 75 City Register</h1>
+    <div class="fingerprint"><b id="fp">—</b>register fingerprint<br>published <span id="pubdate" class="mono">—</span></div>
+  </div>
+  <p class="mast-note">The public record of who holds which city, for how long, and what changes next. Every alliance can read it. The rotation is <em>computed</em>, not stored.</p>
+</header>
+
+<nav role="tablist" id="tabs"></nav>
+
+<section id="tab-now">
+  <div class="query" id="queries"></div>
+  <h2>In force now</h2>
+  <p class="lede" id="now-term">—</p>
+  <div class="grid grid-3" id="now-cards"></div>
+  <h3>Held with the crown</h3>
+  <div class="grid grid-3" id="crown-cards"></div>
+  <h3>Next handover</h3>
+  <div class="card" id="next-handover"></div>
+  <h3>Releases required</h3>
+  <div class="card" id="release-panel"></div>
+</section>
+
+<section id="tab-cycle" hidden>
+  <h2>The rotation</h2>
+  <p class="lede" id="cycle-lede">—</p>
+  <div class="btnrow" style="margin-bottom:14px">
+    <button class="btn ghost small" id="cyc-prev">← Previous cycle</button>
+    <button class="btn ghost small" id="cyc-now">Current cycle</button>
+    <button class="btn ghost small" id="cyc-next">Next cycle →</button>
+  </div>
+  <div class="lattice-scroll"><table class="lattice" id="lattice"></table></div>
+  <p class="derivation" id="derivation"></p>
+  <p class="derivation alert" id="gcd-warn" hidden></p>
+  <h3>Term detail</h3>
+  <div class="tablescroll"><table class="reg" id="terms-table"></table></div>
+</section>
+
+<section id="tab-changes" hidden>
+  <h2>Every change ever published</h2>
+  <p class="lede">Pulled live from the repository. Each entry is one published version, with who published it and what they said they changed. Open any of them to see exactly what moved.</p>
+  <div id="changes-list"><p class="muted">Loading…</p></div>
+</section>
+
+<section id="tab-history" hidden>
+  <h2>Who held what, and when</h2>
+  <p class="lede" id="hist-lede">—</p>
+  <div class="field" style="max-width:340px"><label for="hist-filter">Find a city or alliance</label>
+    <input id="hist-filter" placeholder="type to filter"></div>
+  <div id="hist-list"></div>
+</section>
+
+<section id="tab-cities" hidden>
+  <h2>Cities</h2>
+  <p class="lede" id="cities-lede">—</p>
+  <div class="field" style="max-width:340px"><label for="city-filter">Find a city or alliance</label>
+    <input id="city-filter" placeholder="type to filter"></div>
+  <div class="tablescroll"><table class="reg" id="cities-table"></table></div>
+</section>
+
+<section id="tab-alliances" hidden>
+  <h2>Alliances</h2>
+  <p class="lede">Every alliance holding a city on this server, and what it holds. Counts include the rotating cities as allocated for the current term.</p>
+  <div class="tablescroll"><table class="reg" id="alliances-table"></table></div>
+  <p class="derivation" id="cap-note"></p>
+</section>
+
+<section id="tab-pool" hidden>
+  <h2>The rotation pool</h2>
+  <p class="lede" id="pool-lede">—</p>
+  <div class="tablescroll"><table class="reg" id="pool-table"></table></div>
+  <p class="derivation" id="pool-note"></p>
+</section>
+
+<section id="tab-log" hidden>
+  <h2>Record</h2>
+  <p class="lede">Every skip, penalty, pool change and correction, with the date it was decided. Entries are added, never edited away.</p>
+  <div class="card" id="log-list"></div>
+</section>
+
+<section id="tab-edit" hidden>
+  <h2>Edit and publish</h2>
+  <p class="lede">Changes here live in this browser tab only. To publish, copy the register block at the bottom into the file and redeploy. Nothing saves by itself — that is deliberate.</p>
+  <div class="warn">A register that can be changed quietly is not a register. Publishing through the repo gives every change an author, a timestamp and a diff, and the fingerprint at the top changes when the contents do. Any alliance can check the fingerprint they were shown against the one the page reports.</div>
+
+  <h3>Cycle settings</h3>
+  <div class="grid grid-2">
+    <div class="field"><label for="e-start">Cycle start</label><input type="date" id="e-start" class="mono"></div>
+    <div class="field"><label for="e-term">Term length (days)</label><input type="number" id="e-term" class="mono" min="1" max="28"></div>
+    <div class="field"><label for="e-pub">Published date</label><input type="date" id="e-pub" class="mono"></div>
+    <div class="field"><label for="e-by">Published by</label><input type="text" id="e-by"></div>
+    <div class="field"><label for="e-margin">Relegation margin (points)</label><input type="number" id="e-margin" class="mono" step="0.1"></div>
+    <div class="field"><label for="e-window">Score window</label><input type="text" id="e-window"></div>
+    <div class="field"><label for="e-cap">City cap per alliance (0 = none / unconfirmed)</label><input type="number" id="e-cap" class="mono" min="0" max="20"></div>
+  </div>
+
+  <p id="lock-note" hidden class="warn">Greyed-out fields need a keeper token. Your token records what happened to your own alliance; it does not set the terms of the rotation.</p>
+
+  <h3>Rotation pool — order sets the schedule</h3>
+  <p class="lede">Order is the rotation order and is locked for the cycle. Score sets pick order when cities come free.</p>
+  <div id="e-pool"></div>
+  <div class="btnrow"><button class="btn ghost small" id="add-pool">Add alliance</button></div>
+
+  <h3>Which cities rotate</h3>
+  <p class="lede">Tick a city to put it into the rotation. Untick to give it a standing holder instead. Adding the four Blessing Temples here turns the Level 6 rotation into a full top-tier ladder.</p>
+  <div id="e-rot"></div>
+
+  <h3>Record a change of holder</h3>
+  <p class="lede">For cities outside the rotation — a standing allocation, a released city picked up, a correction. Rotating cities follow the schedule and do not need an entry.</p>
+  <div class="grid grid-2">
+    <div class="field"><label for="t-city">City</label><select id="t-city"></select></div>
+    <div class="field"><label for="t-to">New holder</label><input id="t-to" placeholder="alliance tag, or leave blank for unclaimed"></div>
+    <div class="field"><label for="t-date">Date it took effect</label><input type="date" id="t-date" class="mono"></div>
+    <div class="field"><label for="t-why">Reason</label><input id="t-why" placeholder="e.g. standing allocation, released under the cap"></div>
+  </div>
+  <div class="btnrow"><button class="btn" id="add-transfer">Record it</button></div>
+
+  <h3>Name a release</h3>
+  <p class="lede">When an alliance at the cap takes up a term, record which of its own cities it gave up. The alliance chooses; this only writes down what it chose.</p>
+  <div class="grid grid-2">
+    <div class="field"><label for="r-term">Term</label><select id="r-term"></select></div>
+    <div class="field"><label for="r-city">City released</label><select id="r-city"></select></div>
+  </div>
+  <div class="btnrow"><button class="btn" id="add-release">Record the release</button></div>
+  <div id="release-list" style="margin-top:12px"></div>
+
+  <h3>Add a record entry</h3>
+  <div class="grid grid-2">
+    <div class="field"><label for="l-date">Date</label><input type="date" id="l-date" class="mono"></div>
+    <div class="field"><label for="l-kind">Kind</label><select id="l-kind">
+      <option>Pool change</option><option>Skip</option><option>Penalty</option><option>Correction</option><option>Handover</option><option>Note</option></select></div>
+  </div>
+  <div class="field"><label for="l-text">What was decided, and why</label><textarea id="l-text" rows="3" placeholder="Plain sentences. This is the part people read in two months."></textarea></div>
+  <div class="btnrow"><button class="btn" id="add-log">Add to record</button></div>
+
+  <h3>Publish</h3>
+  <div id="signin-box" class="card" style="margin-bottom:14px">
+    <div id="signed-out">
+      <div class="field" style="max-width:420px;margin-bottom:8px">
+        <label for="tok">Editor token</label>
+        <input id="tok" class="mono" type="password" placeholder="paste the token you were given" autocomplete="off">
+      </div>
+      <div class="btnrow"><button class="btn" id="signin">Sign in</button></div>
+      <p style="margin:10px 0 0;font-size:13px" class="muted">Kept in this browser so you only paste it once. Anyone with your token publishes as you — treat it like a password.</p>
+      <p id="signin-msg" style="font-size:14px;margin:8px 0 0"></p>
+    </div>
+    <div id="signed-in" hidden>
+      <p style="margin:0 0 8px">Signed in as <b id="who-name">—</b> <span class="tag" id="who-ally"></span> <span class="pill" id="who-role"></span></p>
+      <p id="role-note" style="margin:0 0 8px;font-size:13px" class="muted"></p>
+      <label id="override-wrap" hidden style="display:flex;gap:9px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px;margin-bottom:8px">
+        <input type="checkbox" id="override" style="width:18px;height:18px;min-height:0;flex:none;margin-top:2px">
+        <span>Override the cycle lock. Only needed when changing the pool order, cycle start or term length while a cycle is running. It is recorded as an override in the record, permanently.</span></label>
+      <div class="btnrow"><button class="btn ghost small" id="signout">Sign out</button></div>
+    </div>
+  </div>
+
+  <div class="field"><label for="pub-note">What changed</label>
+    <input id="pub-note" placeholder="e.g. RAE releases Sailport for term 2">
+    <span style="font-size:13px;color:var(--ink-3)">Becomes the commit message and a record entry. Write it for whoever reads it in two months.</span></div>
+  <div class="btnrow">
+    <button class="btn" id="publish" disabled>Publish to the register</button>
+    <button class="btn ghost" id="manual-toggle">Publish by hand instead</button>
+  </div>
+  <p id="pub-msg" style="font-size:14px;margin-top:10px"></p>
+
+  <div id="manual-box" hidden style="margin-top:14px">
+    <p class="lede">The fallback if the write path is down. Copy this into <span class="mono">index.html</span> between the two REGISTER markers and commit.</p>
+    <textarea id="export" class="mono" rows="12" readonly></textarea>
+    <div class="btnrow">
+      <button class="btn" id="copy">Copy register</button>
+      <button class="btn ghost" id="import-toggle">Paste a register in</button>
+    </div>
+  </div>
+  <div id="import-box" hidden style="margin-top:14px">
+    <div class="field"><label for="import-text">Paste a published register</label><textarea id="import-text" class="mono" rows="8" placeholder="{ ... }"></textarea></div>
+    <div class="btnrow"><button class="btn" id="import-go">Load it</button></div>
+    <p id="import-msg" style="font-size:14px;margin-top:8px"></p>
+  </div>
+</section>
+
+<footer>Server 75 city register · rules at <span id="foot-rules">—</span> · this page computes the rotation from the block below and holds no other state</footer>
+</div>
+
+<script>
+/* ============================================================================
+   THE REGISTER — the whole of the stored state.
+   The rotation is NOT stored. It is computed from the pool order and the cycle
+   start date, so it cannot be quietly edited: change either and the schedule
+   visibly moves and the fingerprint changes with it.
+   Replace this block to publish. Keep the markers.
+   ========================================================================= */
+/* REGISTER:BEGIN */
+var REGISTER = {
+  "schema": 3,
+  "server": 75,
+  "published": "2026-08-16",
+  "publishedBy": "",
+  "rulesUrl": "[RULES URL]",
+  "repo": "[owner]/[repo]",
+  "cycleStart": "2026-08-21",
+  "termDays": 7,
+  "scoreWindow": "[5 weeks to 15 Aug 2026 — not yet calculated]",
+  "relegationMargin": 5,
+  "cityCap": 6,
+  "openQuestions": [
+    "Contribution scores are all zero. The pool order below is a proposal, not a decision, until real scores are published.",
+    "Buffs are blank for every city, so pick order currently decides nothing. Fill these in before the first handover.",
+    "RAE is at the cap and must name a release before taking up term 2. Nothing can be scheduled for that term until it does.",
+    "The tracker estimates 20 unmapped cities from the six-city cap. The cap is confirmed; that every alliance sits at it is not. Count AngC or ROVA in game."
+  ],
+  "pool": [
+    {
+      "name": "ŘĘĞŇ",
+      "tag": "ŘĘĞŇ",
+      "score": 0,
+      "members": 0
+    },
+    {
+      "name": "HoG",
+      "tag": "HoG",
+      "score": 0,
+      "members": 0
+    },
+    {
+      "name": "ZΞN",
+      "tag": "ZΞN",
+      "score": 0,
+      "members": 0
+    },
+    {
+      "name": "RAE",
+      "tag": "RAE",
+      "score": 0,
+      "members": 0
+    },
+    {
+      "name": "ZfP",
+      "tag": "ZfP",
+      "score": 0,
+      "members": 0
+    }
+  ],
+  "cities": [
+    {
+      "id": "royalcity",
+      "name": "Royal City",
+      "level": 7,
+      "type": "Royal City",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false,
+      "crown": true
+    },
+    {
+      "id": "lionheartf",
+      "name": "Lionheart Fortress",
+      "level": 6,
+      "type": "Noble Fortress",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": true,
+      "pickRank": 1
+    },
+    {
+      "id": "nightfallf",
+      "name": "Nightfall Forest",
+      "level": 6,
+      "type": "Noble Fortress",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": true,
+      "pickRank": 2
+    },
+    {
+      "id": "skyfortres",
+      "name": "Sky Fortress",
+      "level": 6,
+      "type": "Noble Fortress",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": true,
+      "pickRank": 3
+    },
+    {
+      "id": "templeofch",
+      "name": "Temple of Chaos",
+      "level": 5,
+      "type": "Blessing Temple",
+      "holder": "ZfP",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "templeofna",
+      "name": "Temple of Nature",
+      "level": 5,
+      "type": "Blessing Temple",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "templeofor",
+      "name": "Temple of Order",
+      "level": 5,
+      "type": "Blessing Temple",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "templeofwa",
+      "name": "Temple of War",
+      "level": 5,
+      "type": "Blessing Temple",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "dawnhold",
+      "name": "Dawnhold",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "emeraldcit",
+      "name": "Emerald City",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "ZfP",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "everpeak",
+      "name": "Everpeak",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "mithrilhal",
+      "name": "Mithril Hall",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "phantomcit",
+      "name": "Phantom City",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "sandwindke",
+      "name": "Sandwind Keep",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "sunspireci",
+      "name": "Sunspire City",
+      "level": 4,
+      "type": "Military Fortress",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "cliffsidec",
+      "name": "Cliffside Citadel",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "ZfP",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "cloudtophi",
+      "name": "Cloudtop Highlands",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "deepmereto",
+      "name": "Deepmere Town",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "drywelltow",
+      "name": "Drywell Tower",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "falconskee",
+      "name": "Falcon's Keep",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "frostwolfc",
+      "name": "Frostwolf Camp",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "galeheight",
+      "name": "Gale Heights",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "HoG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "holyspring",
+      "name": "Holyspring City",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "ironwallci",
+      "name": "Ironwall City",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "silverleaf",
+      "name": "Silverleaf Grove",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stillwater",
+      "name": "Stillwater River",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stormgate",
+      "name": "Stormgate",
+      "level": 3,
+      "type": "Ancient Ruins",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "amberroad",
+      "name": "Amber Road",
+      "level": 2,
+      "type": "Village",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "anviltown",
+      "name": "Anvil Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "beaconpoin",
+      "name": "Beacon Point",
+      "level": 2,
+      "type": "Village",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "blackwater",
+      "name": "Blackwater Ferry",
+      "level": 2,
+      "type": "Village",
+      "holder": "VEND",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "copperstre",
+      "name": "Copper Street",
+      "level": 2,
+      "type": "Village",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "echotown",
+      "name": "Echo Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "goldgraint",
+      "name": "Goldgrain Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "greatwoodt",
+      "name": "Greatwood Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "ZΞN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "irongateto",
+      "name": "Irongate Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "ZfP",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "larklane",
+      "name": "Lark Lane",
+      "level": 2,
+      "type": "Village",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "nymphfalls",
+      "name": "Nymph Falls",
+      "level": 2,
+      "type": "Village",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "rosecourt",
+      "name": "Rose Court",
+      "level": 2,
+      "type": "Village",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "rosegarden",
+      "name": "Rose Garden",
+      "level": 2,
+      "type": "Village",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "sailport",
+      "name": "Sailport",
+      "level": 2,
+      "type": "Village",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "sailshadow",
+      "name": "Sailshadow Harbor",
+      "level": 2,
+      "type": "Village",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stagcallva",
+      "name": "Stagcall Vale",
+      "level": 2,
+      "type": "Village",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stardustro",
+      "name": "Stardust Road",
+      "level": 2,
+      "type": "Village",
+      "holder": "ŘĘĞŇ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stonechant",
+      "name": "Stonechant Market",
+      "level": 2,
+      "type": "Village",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "twinspiret",
+      "name": "Twinspire Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "violet",
+      "name": "Violet",
+      "level": 2,
+      "type": "Village",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "whitestone",
+      "name": "Whitestone Town",
+      "level": 2,
+      "type": "Village",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "windwhispe",
+      "name": "Windwhisper Market",
+      "level": 2,
+      "type": "Village",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "birchwoodg",
+      "name": "Birchwood Grove",
+      "level": 1,
+      "type": "Manor",
+      "holder": "",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "bluestones",
+      "name": "Bluestone Slope",
+      "level": 1,
+      "type": "Manor",
+      "holder": "RAE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "brokenbrid",
+      "name": "Broken Bridgehead",
+      "level": 1,
+      "type": "Manor",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "coalpit",
+      "name": "Coal Pit",
+      "level": 1,
+      "type": "Manor",
+      "holder": "",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "crowsbeak",
+      "name": "Crow's Beak",
+      "level": 1,
+      "type": "Manor",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "drippingca",
+      "name": "Dripping Cavern",
+      "level": 1,
+      "type": "Manor",
+      "holder": "ZfP",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "drywell",
+      "name": "Dry Well",
+      "level": 1,
+      "type": "Manor",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "eaglespeak",
+      "name": "Eagles' Peak",
+      "level": 1,
+      "type": "Manor",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "fishersbay",
+      "name": "Fisher's Bay",
+      "level": 1,
+      "type": "Manor",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "foxden",
+      "name": "Fox Den",
+      "level": 1,
+      "type": "Manor",
+      "holder": "AngC",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "frostleafm",
+      "name": "Frostleaf Market",
+      "level": 1,
+      "type": "Manor",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "gravelslop",
+      "name": "Gravel Slope",
+      "level": 1,
+      "type": "Manor",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "graywolfva",
+      "name": "Graywolf Vale",
+      "level": 1,
+      "type": "Manor",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "haystack",
+      "name": "Haystack",
+      "level": 1,
+      "type": "Manor",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "howlingval",
+      "name": "Howling Vale",
+      "level": 1,
+      "type": "Manor",
+      "holder": "",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "lamppavili",
+      "name": "Lamp Pavilion",
+      "level": 1,
+      "type": "Manor",
+      "holder": "OGS7",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "mapletown",
+      "name": "Maple Town",
+      "level": 1,
+      "type": "Manor",
+      "holder": "RISE",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "millstonec",
+      "name": "Millstone Creek",
+      "level": 1,
+      "type": "Manor",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "mistveilvi",
+      "name": "Mistveil Village",
+      "level": 1,
+      "type": "Manor",
+      "holder": "",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "mossycrag",
+      "name": "Mossy Crag",
+      "level": 1,
+      "type": "Manor",
+      "holder": "ROVA",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "narroway",
+      "name": "Narroway",
+      "level": 1,
+      "type": "Manor",
+      "holder": "FÂFÔ",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "oldmill",
+      "name": "Old Mill",
+      "level": 1,
+      "type": "Manor",
+      "holder": "K13",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "oldoak",
+      "name": "Old Oak",
+      "level": 1,
+      "type": "Manor",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "opalmine",
+      "name": "Opal Mine",
+      "level": 1,
+      "type": "Manor",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "pineconema",
+      "name": "Pinecone Market",
+      "level": 1,
+      "type": "Manor",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "pinewoodgr",
+      "name": "Pinewood Grove",
+      "level": 1,
+      "type": "Manor",
+      "holder": "MMAG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "plasterwal",
+      "name": "Plaster Wall",
+      "level": 1,
+      "type": "Manor",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "ravensroos",
+      "name": "Raven's Roost",
+      "level": 1,
+      "type": "Manor",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "redbrickho",
+      "name": "Redbrick House",
+      "level": 1,
+      "type": "Manor",
+      "holder": "IWAR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "redsoilwas",
+      "name": "Redsoil Wastes",
+      "level": 1,
+      "type": "Manor",
+      "holder": "UKR",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "scavenger",
+      "name": "Scavenger",
+      "level": 1,
+      "type": "Manor",
+      "holder": "VEND",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "snailshell",
+      "name": "Snail Shell",
+      "level": 1,
+      "type": "Manor",
+      "holder": "VEND",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "springhead",
+      "name": "Springhead",
+      "level": 1,
+      "type": "Manor",
+      "holder": "INVS",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stagpath",
+      "name": "Stag Path",
+      "level": 1,
+      "type": "Manor",
+      "holder": "MMAG",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "stonebrook",
+      "name": "Stonebrook Town",
+      "level": 1,
+      "type": "Manor",
+      "holder": "AngC",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "wheatsheaf",
+      "name": "Wheatsheaf",
+      "level": 1,
+      "type": "Manor",
+      "holder": "AngC",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "wildberryt",
+      "name": "Wildberry Thicket",
+      "level": 1,
+      "type": "Manor",
+      "holder": "VEND",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    },
+    {
+      "id": "windmillto",
+      "name": "Windmill Town",
+      "level": 1,
+      "type": "Manor",
+      "holder": "ĚØN",
+      "buff": "",
+      "coords": "",
+      "rotates": false
+    }
+  ],
+  "picks": {},
+  "skips": [],
+  "transfers": [],
+  "releases": {},
+  "log": [
+    {
+      "date": "2026-08-16",
+      "kind": "Note",
+      "text": "Register opened from the world-map snapshot of 16 Aug 2026, 17:20. 87 cities recorded across 17 alliances."
+    },
+    {
+      "date": "2026-08-16",
+      "kind": "Correction",
+      "text": "Nightfall Forest (Level 6, Noble Fortress, ŘĘĞŇ) was absent from the first tracker and added by hand."
+    },
+    {
+      "date": "2026-08-16",
+      "kind": "Note",
+      "text": "Royal City is held with the crown, sits outside the rotation, and does not count toward the cap."
+    },
+    {
+      "date": "2026-08-16",
+      "kind": "Note",
+      "text": "City cap confirmed at six. An alliance at the cap releases one of its own cities, of its own choosing, before taking up a rotation term."
+    },
+    {
+      "date": "2026-08-16",
+      "kind": "Note",
+      "text": "Rotation pool seeded with the three current Level 6 holders and the two remaining Level 5 holders. A proposal only, until contribution scores are published."
+    }
+  ]
+};
+/* REGISTER:END */
+
+/* ========================= derivation ========================= */
+function rotCities(){ return REGISTER.cities.filter(function(c){ return c.rotates; })
+  .sort(function(a,b){ return (a.pickRank||99)-(b.pickRank||99); }); }
+function crownCities(){ return REGISTER.cities.filter(function(c){ return c.crown; }); }
+function slots(){ return rotCities().length; }
+function poolSize(){ return REGISTER.pool.length; }
+
+function d(iso){ var p=String(iso||"").split("-"); return Date.UTC(+p[0],(+p[1]||1)-1,+p[2]||1); }
+function addDays(ms,n){ return ms+n*86400000; }
+function iso(ms){ return new Date(ms).toISOString().slice(0,10); }
+function fmtDate(ms){ return new Date(ms).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}); }
+function fmtShort(ms){ return new Date(ms).toLocaleDateString(undefined,{day:"numeric",month:"short",timeZone:"UTC"}); }
+function todayMs(){ var n=new Date(); return Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()); }
+function termStart(t){ return addDays(d(REGISTER.cycleStart), t*REGISTER.termDays); }
+function termEnd(t){ return addDays(termStart(t+1),-1); }
+function currentTerm(){ return Math.floor((todayMs()-d(REGISTER.cycleStart))/(REGISTER.termDays*86400000)); }
+function gcd(a,b){ while(b){ var t=b; b=a%b; a=t; } return a; }
+
+function holdersForTerm(t){
+  var n=poolSize(), s=Math.min(slots(),n), out=[], taken={}, skipped={};
+  (REGISTER.skips||[]).forEach(function(x){ if(x.term===t) skipped[x.tag]=true; });
+  for(var i=0;i<s;i++){
+    var k=((s*t+i)%n+n)%n, guard=0;
+    while(guard<n && (taken[REGISTER.pool[k].tag]||skipped[REGISTER.pool[k].tag])){ k=(k+1)%n; guard++; }
+    taken[REGISTER.pool[k].tag]=true; out.push(REGISTER.pool[k]);
+  }
+  return out;
+}
+
+var _cache={};
+function assignmentsForTerm(t){
+  if(t<0) return {};
+  if(_cache[t]) return _cache[t];
+  var prev = t===0 ? {} : assignmentsForTerm(t-1);
+  var holders=holdersForTerm(t), map={}, used={};
+  holders.forEach(function(a){ if(prev[a.tag] && cityById(prev[a.tag])){ map[a.tag]=prev[a.tag]; used[prev[a.tag]]=true; } });
+  var rec=(REGISTER.picks||{})[String(t)]||{};
+  holders.forEach(function(a){ if(!map[a.tag]&&rec[a.tag]&&!used[rec[a.tag]]){ map[a.tag]=rec[a.tag]; used[rec[a.tag]]=true; } });
+  var incoming=holders.filter(function(a){ return !map[a.tag]; }).sort(function(x,y){ return (y.score||0)-(x.score||0); });
+  var free=rotCities().filter(function(c){ return !used[c.id]; });
+  incoming.forEach(function(a,i){ if(free[i]){ map[a.tag]=free[i].id; used[free[i].id]=true; } });
+  _cache[t]=map; return map;
+}
+function isProjected(t){ return !((REGISTER.picks||{})[String(t)]) && t>currentTerm(); }
+function cityById(id){ for(var i=0;i<REGISTER.cities.length;i++) if(REGISTER.cities[i].id===id) return REGISTER.cities[i]; return null; }
+function allianceByTag(tag){ for(var i=0;i<REGISTER.pool.length;i++) if(REGISTER.pool[i].tag===tag) return REGISTER.pool[i]; return null; }
+
+/* Who holds every city at term t.
+   Seed holders, then recorded transfers, then recorded releases, then the
+   rotation laid over the top. Before the rotation starts the seed stands —
+   absence of an assignment is not an empty city. */
+var _state={};
+function stateAtTerm(t){
+  var key=String(t);
+  if(_state[key]) return _state[key];
+  var st={};
+  REGISTER.cities.forEach(function(c){ st[c.id]=c.holder||""; });
+
+  var cutoff = t>=0 ? termStart(t) : todayMs();
+  (REGISTER.transfers||[]).slice().sort(function(a,b){ return a.date<b.date?-1:1; })
+    .forEach(function(x){ if(d(x.date)<=cutoff && st[x.city]!==undefined) st[x.city]=x.to||""; });
+
+  Object.keys(REGISTER.releases||{}).forEach(function(k){
+    if(+k<=t){ var r=REGISTER.releases[k];
+      Object.keys(r).forEach(function(tag){ if(st[r[tag]]===tag) st[r[tag]]=""; }); }
+  });
+
+  if(t>=0){
+    var m=assignmentsForTerm(t);
+    rotCities().forEach(function(c){ st[c.id]=""; });
+    Object.keys(m).forEach(function(tag){ if(m[tag]) st[m[tag]]=tag; });
+  }
+  _state[key]=st; return st;
+}
+function holderMapNow(){ return stateAtTerm(currentTerm()); }
+
+/* Cities counting toward the cap: the crown city sits outside it, and a
+   rotating city is counted separately because it is the one being taken up. */
+function capCount(tag, st){
+  var n=0;
+  REGISTER.cities.forEach(function(c){
+    if(st[c.id]===tag && !c.crown && !c.rotates) n++;
+  });
+  return n;
+}
+
+/* Who must drop a city to take up term t, and what they have named. */
+function releasesFor(t){
+  var cap=REGISTER.cityCap||0;
+  if(!cap || t<0) return [];
+  var prevH = t>0 ? holdersForTerm(t-1).map(function(a){ return a.tag; }) : [];
+  var st = stateAtTerm(t-1);
+  var rec = (REGISTER.releases||{})[String(t)] || {};
+  return holdersForTerm(t).filter(function(a){ return prevH.indexOf(a.tag)<0; })
+    .map(function(a){
+      var held=capCount(a.tag, st);
+      return { tag:a.tag, name:a.name, held:held, needed:held>=cap, released:rec[a.tag]||null };
+    }).filter(function(r){ return r.needed; });
+}
+
+/* Tenure spans for one city: recorded history, then scheduled rotation. */
+function tenureSpans(city){
+  var out=[];
+  if(!city.rotates){
+    var cur=city.holder||"", from="from the opening of this register";
+    (REGISTER.transfers||[]).filter(function(x){ return x.city===city.id; })
+      .sort(function(a,b){ return a.date<b.date?-1:1; })
+      .forEach(function(x){
+        out.push({ holder:cur, from:from, to:fmtDate(d(x.date)), kind:"recorded", why:x.reason||"" });
+        cur=x.to||""; from=fmtDate(d(x.date));
+      });
+    Object.keys(REGISTER.releases||{}).sort(function(a,b){ return +a-+b; }).forEach(function(k){
+      var r=REGISTER.releases[k];
+      Object.keys(r).forEach(function(tag){
+        if(r[tag]===city.id && cur===tag){
+          out.push({ holder:cur, from:from, to:fmtDate(termStart(+k)), kind:"recorded", why:"released to take up term "+(+k+1) });
+          cur=""; from=fmtDate(termStart(+k));
+        }
+      });
+    });
+    out.push({ holder:cur, from:from, to:null, kind:"recorded", why:"" });
+    return out;
+  }
+
+  out.push({ holder:city.holder||"", from:"from the opening of this register",
+             to:fmtDate(termStart(0)), kind:"recorded", why:"before the rotation began" });
+  var last=null, cur=currentTerm(), end=Math.max(cur,0)+poolSize()*2;
+  for(var t=0;t<=end;t++){
+    var m=assignmentsForTerm(t), tag="";
+    Object.keys(m).forEach(function(k){ if(m[k]===city.id) tag=k; });
+    if(last && last.tag===tag){ last.until=t; continue; }
+    if(last) out.push(spanOf(last, cur));
+    last={ tag:tag, from:t, until:t };
+  }
+  if(last) out.push(spanOf(last, cur));
+  return out;
+}
+function spanOf(sp, cur){
+  var a=allianceByTag(sp.tag);
+  return { holder: a?a.name:(sp.tag||""),
+           from: fmtDate(termStart(sp.from)), to: fmtDate(termEnd(sp.until)),
+           kind: sp.until<cur ? "past" : (sp.from<=cur && cur<=sp.until ? "current" : "scheduled"),
+           why: sp.until!==sp.from ? "terms "+(sp.from+1)+"\u2013"+(sp.until+1) : "term "+(sp.from+1) };
+}
+
+function fingerprint(){
+  var canon=JSON.stringify([REGISTER.schema,REGISTER.cycleStart,REGISTER.termDays,REGISTER.published,
+    REGISTER.pool.map(function(a){return [a.tag,a.name,a.score];}),
+    REGISTER.cities.map(function(c){return [c.id,c.name,c.level,c.pickRank||0,c.holder||"",!!c.rotates];}),
+    REGISTER.picks,REGISTER.skips,REGISTER.transfers||[],REGISTER.releases||{},REGISTER.cityCap||0,(REGISTER.log||[]).length]);
+  var h=5381; for(var i=0;i<canon.length;i++){ h=((h*33)^canon.charCodeAt(i))>>>0; }
+  var hex=("00000000"+h.toString(16)).slice(-8).toUpperCase();
+  return hex.slice(0,4)+" "+hex.slice(4);
+}
+
+/* ========================= rendering ========================= */
+var $=function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
+
+var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
+var active="now", viewCycle=null, cityFilter="", histFilter="";
+
+function renderTabs(){
+  $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
+  Array.prototype.forEach.call($("tabs").children,function(b){ b.onclick=function(){ active=b.dataset.tab; renderTabs(); window.scrollTo(0,0); }; });
+  TABS.forEach(function(t){ $("tab-"+t[0]).hidden=(active!==t[0]); });
+}
+
+function renderQueries(){
+  var q=REGISTER.openQuestions||[];
+  if(!q.length){ $("queries").hidden=true; return; }
+  $("queries").hidden=false;
+  $("queries").innerHTML="<h4>Open — decide before this register is relied on</h4><ul>"+
+    q.map(function(x){ return "<li>"+esc(x)+"</li>"; }).join("")+"</ul>";
+}
+
+function renderNow(){
+  var t=currentTerm();
+  if(t<0){
+    $("now-term").innerHTML="The rotation has not started. Term 1 begins <b>"+fmtDate(termStart(0))+"</b>. Cities below show their holders as recorded.";
+    $("now-cards").innerHTML=rotCities().map(function(c){
+      return '<div class="hold"><div class="lvl">Level '+esc(c.level)+' · not yet rotating</div><div class="city">'+esc(c.name)+'</div>'+
+        '<div class="holder">'+esc(c.holder||"—")+'</div>'+
+        (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
+    }).join("");
+  } else {
+    var end=termEnd(t), left=Math.round((end-todayMs())/86400000)+1;
+    $("now-term").innerHTML="Term "+(t+1)+" · "+fmtDate(termStart(t))+" to "+fmtDate(end)+" · <b class='now'>"+left+(left===1?" day":" days")+" remaining</b>";
+    var map=assignmentsForTerm(t);
+    $("now-cards").innerHTML=holdersForTerm(t).map(function(a){
+      var c=cityById(map[a.tag])||{};
+      return '<div class="hold"><div class="lvl">Level '+esc(c.level||"")+' · held now</div><div class="city">'+esc(c.name||"—")+'</div>'+
+        '<div class="holder">'+esc(a.name)+'</div><div class="meta">'+esc(c.coords||"coordinates not recorded")+'<br>until '+fmtDate(end)+'</div>'+
+        (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
+    }).join("");
+  }
+
+  $("crown-cards").innerHTML=crownCities().map(function(c){
+    return '<div class="hold crown"><div class="lvl">Level '+esc(c.level)+' · outside the rotation</div><div class="city">'+esc(c.name)+'</div>'+
+      '<div class="holder">'+esc(c.holder||"—")+'</div><div class="meta">held with the crown, for the duration of the reign</div>'+
+      (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
+  }).join("") || "<p class='muted'>None recorded.</p>";
+
+  var nt=Math.max(t+1,0);
+  var prevMap=assignmentsForTerm(nt-1), nextMap=assignmentsForTerm(nt);
+  var prevH=nt-1>=0?holdersForTerm(nt-1):[], nextH=holdersForTerm(nt);
+  var prevTags=prevH.map(function(a){return a.tag;}), nextTags=nextH.map(function(a){return a.tag;});
+  var leaving=prevH.filter(function(a){ return nextTags.indexOf(a.tag)<0; });
+  var arriving=nextH.filter(function(a){ return prevTags.indexOf(a.tag)<0; });
+  var rows=arriving.map(function(a){
+    var cid=nextMap[a.tag], c=cityById(cid)||{};
+    var from=leaving.filter(function(l){ return prevMap[l.tag]===cid; })[0];
+    var fromName = from ? from.name : (nt===0 ? (c.holder||"—") : "—");
+    return "<tr><td><b>"+esc(c.name||"—")+"</b></td><td>"+esc(fromName)+"</td><td>"+esc(a.name)+"</td></tr>";
+  }).join("");
+  $("next-handover").innerHTML="<p style='margin:0 0 10px'><b>"+fmtDate(termStart(nt))+"</b> — term "+(nt+1)+" begins. "+
+    arriving.length+(arriving.length===1?" city changes":" cities change")+" hands."+(isProjected(nt)?" <span class='pill'>projected</span>":"")+"</p>"+
+    "<div class='tablescroll'><table class='reg'><thead><tr><th>City</th><th>Leaves</th><th>Goes to</th></tr></thead><tbody>"+
+    (rows||"<tr><td colspan='3' class='muted'>Nothing changes.</td></tr>")+"</tbody></table></div>"+
+    "<p style='margin:12px 0 0;font-size:13px' class='muted'>Continuing holders keep the city they already have. The outgoing alliance does not defend; the incoming alliance captures during the scheduled window.</p>";
+
+  var cap=REGISTER.cityCap||0, reqs=releasesFor(nt);
+  if(!cap){
+    $("release-panel").innerHTML="<p style='margin:0' class='muted'>No city cap set. If the game limits an alliance's territories, set the cap on the Edit tab — the register will then work out who has to drop a city before each handover.</p>";
+  } else if(!reqs.length){
+    $("release-panel").innerHTML="<p style='margin:0'>Nobody. Every alliance taking up term "+(nt+1)+" is below the cap of "+cap+".</p>";
+  } else {
+    $("release-panel").innerHTML="<p style='margin:0 0 10px'>Cap is "+cap+". These alliances are at it and must release a city of <b>their own choosing</b> before taking up term "+(nt+1)+".</p>"+
+      "<div class='tablescroll'><table class='reg'><thead><tr><th>Alliance</th><th class='num'>Counts toward cap</th><th>Releasing</th></tr></thead><tbody>"+
+      reqs.map(function(r){
+        var c=r.released?cityById(r.released):null;
+        return "<tr><td><b>"+esc(r.name)+"</b></td><td class='num'>"+r.held+" / "+cap+"</td>"+
+          "<td>"+(c?"<b>"+esc(c.name)+"</b> <span class='tag'>L"+c.level+"</span>"
+                   :"<span class='now'>not yet named</span>")+"</td></tr>";
+      }).join("")+"</tbody></table></div>"+
+      "<p style='margin:12px 0 0;font-size:13px' class='muted'>A released city becomes unclaimed and is reallocated under the standing rules. An alliance unwilling to release may decline the term without penalty; the rotation advances past it.</p>";
+  }
+}
+
+function renderCycle(){
+  var n=poolSize(), s=Math.min(slots(),n), cur=currentTerm();
+  var curCycle=Math.floor(Math.max(cur,0)/n);
+  if(viewCycle===null) viewCycle=Math.max(curCycle,0);
+  var t0=viewCycle*n;
+  $("cycle-lede").innerHTML=n+" alliances, "+s+" rotating "+(s===1?"city":"cities")+", one term of "+REGISTER.termDays+
+    " days each. Red is the term running now.";
+
+  var head="<thead><tr><th class='rowhead'>Cycle "+(viewCycle+1)+"</th>";
+  for(var i=0;i<n;i++){ var t=t0+i;
+    head+="<th class='"+(t===cur?"is-now":"")+"'>T"+(t+1)+"<br><span style='font-weight:400'>"+fmtShort(termStart(t))+"</span></th>"; }
+  head+="</tr></thead>";
+  var body="<tbody>"+REGISTER.pool.map(function(a){
+    var cells="";
+    for(var i=0;i<n;i++){ var t=t0+i, m=assignmentsForTerm(t), cid=m[a.tag];
+      var cls=cid?((t===cur?"current":(t<cur?"past":"future"))):"out";
+      var c=cid?cityById(cid):null;
+      cells+="<td><span class='cell "+cls+"'>"+esc(c?shortLabel(c.name):"—")+"</span></td>";
+    }
+    return "<tr><th class='rowhead'>"+esc(a.name)+"</th>"+cells+"</tr>";
+  }).join("")+"</tbody>";
+  $("lattice").innerHTML=head+body;
+
+  var g=gcd(s,n);
+  $("derivation").innerHTML="<b>How this is derived.</b> The schedule is not stored. For term <span class='mono'>t</span>, the holders are pool positions "+
+    "<span class='mono'>("+s+"t)</span> through <span class='mono'>("+s+"t+"+(s-1)+")</span>, counted round the pool of "+n+". "+
+    (g===1?"Because "+s+" and "+n+" share no factor, every alliance holds a city exactly <b>"+s+" terms in "+n+"</b>, and the cycle closes with no adjustment. Nobody arranges that and nobody can adjust it — it follows from the pool order and the cycle start date, both locked for the cycle."
+          :"Every alliance holds a city "+s+" terms in "+n+".");
+  if(g>1){
+    $("gcd-warn").hidden=false;
+    $("gcd-warn").innerHTML="<b>Check this pairing.</b> "+s+" cities and "+n+" alliances share a common factor of "+g+
+      ", so the pool splits into "+g+" fixed groups that never mix — the same alliances always hold together, and the same ones always sit out together. Time is still shared evenly. Add or remove one alliance to break the groups up.";
+  } else $("gcd-warn").hidden=true;
+
+  var trows="";
+  for(var j=0;j<n;j++){ var t=t0+j, m=assignmentsForTerm(t), hs=holdersForTerm(t);
+    trows+="<tr><td><b>Term "+(t+1)+"</b>"+(t===cur?" <span class='pill rub'>now</span>":"")+(isProjected(t)?" <span class='pill'>projected</span>":"")+
+      "<br><span class='tag'>"+fmtShort(termStart(t))+" – "+fmtShort(termEnd(t))+"</span></td><td>"+
+      hs.map(function(a){ var c=cityById(m[a.tag]); return esc(a.name)+" <span class='muted'>— "+esc(c?c.name:"—")+"</span>"; }).join("<br>")+
+      "</td><td class='muted'>"+REGISTER.pool.filter(function(a){ return !m[a.tag]; }).map(function(a){ return esc(a.name); }).join("<br>")+"</td></tr>";
+  }
+  $("terms-table").innerHTML="<thead><tr><th>Term</th><th>Holding</th><th>Sitting out</th></tr></thead><tbody>"+trows+"</tbody>";
+}
+
+function renderCities(){
+  var hm=holderMapNow(), f=cityFilter.toLowerCase();
+  var list=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
+  if(f) list=list.filter(function(c){ return (c.name+" "+(hm[c.id]||"")+" "+c.type).toLowerCase().indexOf(f)>=0; });
+  $("cities-lede").innerHTML="Every city held by an alliance of this server, managed as a server asset. "+
+    REGISTER.cities.length+" recorded"+(f?" · showing "+list.length:"")+". Buffs and coordinates are filled in as they are confirmed in game.";
+  $("cities-table").innerHTML="<thead><tr><th class='num'>Lvl</th><th>City</th><th>Type</th><th>Holder</th><th>Buff</th></tr></thead><tbody>"+
+    (list.length?list.map(function(c){
+      return "<tr><td class='num'>"+esc(c.level)+"</td><td><b>"+esc(c.name)+"</b>"+
+        (c.rotates?" <span class='pill rub'>rotates</span>":"")+(c.crown?" <span class='pill'>crown</span>":"")+"</td>"+
+        "<td class='muted'>"+esc(c.type||"")+"</td><td>"+esc(hm[c.id]||"— unclaimed —")+"</td>"+
+        "<td class='muted' style='font-size:13px'>"+esc(c.buff||"—")+"</td></tr>";
+    }).join(""):"<tr><td colspan='5' class='muted'>Nothing matches that.</td></tr>")+"</tbody>";
+}
+
+function renderHistory(){
+  var f=histFilter.toLowerCase();
+  var list=REGISTER.cities.filter(function(c){
+    if(!f) return c.rotates || c.crown || (REGISTER.transfers||[]).some(function(x){ return x.city===c.id; });
+    return (c.name+" "+(c.holder||"")+" "+(c.type||"")).toLowerCase().indexOf(f)>=0;
+  }).sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
+
+  $("hist-lede").innerHTML="Tenure for every city, oldest first. <b>Recorded</b> spans happened. "+
+    "<b>Scheduled</b> spans follow from the rotation and have not happened yet. "+
+    (f?"Showing "+list.length+" matching.":"Showing the rotating cities, the crown city, and anything with a recorded transfer — type above to see the rest.");
+
+  $("hist-list").innerHTML = list.length ? list.map(function(c){
+    var spans=tenureSpans(c);
+    return "<div class='card' style='margin-bottom:12px'>"+
+      "<div style='display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px'>"+
+      "<b style='font-family:var(--display);font-size:17px'>"+esc(c.name)+"</b>"+
+      "<span class='tag'>Level "+esc(c.level)+" · "+esc(c.type||"")+"</span></div>"+
+      "<div class='tablescroll'><table class='reg'><tbody>"+
+      spans.map(function(sp){
+        var pill = sp.kind==="current" ? "<span class='pill rub'>now</span>"
+                 : sp.kind==="scheduled" ? "<span class='pill'>scheduled</span>"
+                 : sp.kind==="past" ? "<span class='pill'>past</span>" : "<span class='pill'>recorded</span>";
+        return "<tr><td style='width:44%'><b>"+esc(sp.holder||"— unclaimed —")+"</b></td>"+
+          "<td class='mono' style='font-size:13px'>"+esc(sp.from)+" → "+esc(sp.to||"present")+"</td>"+
+          "<td style='text-align:right'>"+pill+(sp.why?"<br><span class='tag'>"+esc(sp.why)+"</span>":"")+"</td></tr>";
+      }).join("")+"</tbody></table></div></div>";
+  }).join("") : "<p class='muted'>Nothing matches that.</p>";
+}
+
+function renderAlliances(){
+  var hm=holderMapNow(), by={};
+  REGISTER.cities.forEach(function(c){
+    var h=hm[c.id]; if(!h) return;
+    by[h]=by[h]||{n:0,lv:{},top:0};
+    by[h].n++; by[h].lv[c.level]=(by[h].lv[c.level]||0)+1; by[h].top=Math.max(by[h].top,c.level);
+  });
+  var rows=Object.keys(by).sort(function(a,b){ return by[b].n-by[a].n || by[b].top-by[a].top || a.localeCompare(b); });
+  var cap=REGISTER.cityCap||0;
+  $("alliances-table").innerHTML="<thead><tr><th>Alliance</th><th class='num'>Cities</th><th class='num'>Highest</th>"+
+    "<th class='num'>L7</th><th class='num'>L6</th><th class='num'>L5</th><th class='num'>L4</th><th class='num'>L3</th><th class='num'>L2</th><th class='num'>L1</th>"+
+    "<th class='num'>In pool</th></tr></thead><tbody>"+
+    rows.map(function(t){
+      var r=by[t], atCap = cap && r.n>=cap;
+      return "<tr><td><b>"+esc(t)+"</b>"+(atCap?" <span class='pill rub'>at cap</span>":"")+"</td>"+
+        "<td class='num'>"+r.n+"</td><td class='num'>"+r.top+"</td>"+
+        [7,6,5,4,3,2,1].map(function(l){ return "<td class='num'>"+(r.lv[l]||"·")+"</td>"; }).join("")+
+        "<td class='num'>"+(allianceByTag(t)?"yes":"·")+"</td></tr>";
+    }).join("")+"</tbody>";
+  var blocked = cap ? Object.keys(by).filter(function(t){ return allianceByTag(t) && by[t].n>=cap; }) : [];
+  $("cap-note").innerHTML = cap
+    ? "<b>City cap: "+cap+".</b> An alliance at the cap releases one of its own cities, of its own choosing, before taking up a rotation term. Alliances at the cap are marked."
+      + (blocked.length ? " In the pool and at the cap right now: <b>"+blocked.map(esc).join(", ")+"</b> \u2014 each needs a release scheduled alongside its handover." : "")
+    : "<b>City cap: not set.</b> Eleven alliances hold exactly six cities and none holds more, apart from the crown holder. If the game caps an alliance at six, an alliance at the cap cannot accept a rotating city without releasing one — set <span class='mono'>cityCap</span> in the register once it is confirmed.";
+}
+
+function renderPool(){
+  var n=poolSize(), s=Math.min(slots(),n);
+  $("pool-lede").innerHTML="The alliances in the rotation. Scores cover <b>"+esc(REGISTER.scoreWindow||"—")+
+    "</b> and are calculated per active member, so a well-run small alliance can outrank a coasting large one.";
+  var ranked=REGISTER.pool.map(function(a,i){ return {a:a,order:i}; }).sort(function(x,y){ return (y.a.score||0)-(x.a.score||0); });
+  $("pool-table").innerHTML="<thead><tr><th class='num'>Rank</th><th>Alliance</th><th class='num'>Score</th><th class='num'>Members</th><th class='num'>Rotation position</th></tr></thead><tbody>"+
+    ranked.map(function(r,i){ return "<tr><td class='num'>"+(i+1)+"</td><td><b>"+esc(r.a.name)+"</b></td>"+
+      "<td class='num'>"+((r.a.score||0).toFixed(1))+"</td><td class='num'>"+esc(r.a.members||"—")+"</td><td class='num'>"+(r.order+1)+"</td></tr>"; }).join("")+"</tbody>";
+  $("pool-note").innerHTML="<b>Rank is not rotation position.</b> Rank decides who picks first when cities come free. Rotation position decides when a turn falls, and is locked for the cycle. "+
+    "A challenger must beat the last pool place by <b>"+esc(REGISTER.relegationMargin)+" points</b> to take it; inside that margin the incumbent stays, so the pool does not churn on noise. "+
+    "With "+n+" alliances and "+s+" cities, each holds "+s+" terms in "+n+" — "+Math.round(100*s/n)+"% of the time.";
+}
+
+function renderLog(){
+  var e=(REGISTER.log||[]).slice().sort(function(a,b){ return a.date<b.date?1:-1; });
+  $("log-list").innerHTML=e.length?e.map(function(x){
+    return "<div class='log-entry'><div class='log-date'>"+esc(x.date)+"</div><div><span class='log-kind'>"+esc(x.kind||"Note")+
+      (x.by?" · "+esc(x.by):"")+"</span>"+esc(x.text)+"</div></div>";
+  }).join(""):"<p class='muted' style='margin:0'>Nothing recorded yet.</p>";
+}
+
+function renderEdit(){
+  $("e-start").value=REGISTER.cycleStart; $("e-term").value=REGISTER.termDays;
+  $("e-pub").value=REGISTER.published; $("e-by").value=REGISTER.publishedBy||"";
+  $("e-margin").value=REGISTER.relegationMargin; $("e-window").value=REGISTER.scoreWindow||"";
+  $("e-cap").value=REGISTER.cityCap||0;
+  $("e-pool").innerHTML=REGISTER.pool.map(function(a,i){
+    return "<div class='rowedit pool'>"+
+      "<div class='field'><label>Position "+(i+1)+"</label><input data-p='name' data-i='"+i+"' value='"+esc(a.name)+"'></div>"+
+      "<div class='field'><label>Tag</label><input data-p='tag' data-i='"+i+"' class='mono' value='"+esc(a.tag)+"'></div>"+
+      "<div class='field'><label>Score</label><input data-p='score' data-i='"+i+"' class='mono' type='number' step='0.1' value='"+esc(a.score)+"'></div>"+
+      "<div class='field'><label>Members</label><input data-p='members' data-i='"+i+"' class='mono' type='number' value='"+esc(a.members||0)+"'></div>"+
+      "<div class='btnrow'><button class='btn ghost small' data-up='"+i+"'>↑</button><button class='btn ghost small' data-down='"+i+"'>↓</button><button class='btn ghost small' data-delp='"+i+"'>Remove</button></div></div>";
+  }).join("");
+  var high=REGISTER.cities.filter(function(c){ return c.level>=5; }).sort(function(a,b){ return b.level-a.level; });
+  $("e-rot").innerHTML=high.map(function(c){
+    var i=REGISTER.cities.indexOf(c);
+    return "<label style='display:flex;gap:10px;align-items:center;text-transform:none;letter-spacing:0;font-weight:400;font-size:15px;padding:7px 0;border-bottom:1px solid var(--rule)'>"+
+      "<input type='checkbox' data-rot='"+i+"' "+(c.rotates?"checked":"")+(c.crown?" disabled":"")+" style='width:18px;height:18px;min-height:0;flex:none'>"+
+      "<span>L"+c.level+" · <b>"+esc(c.name)+"</b> <span class='tag'>"+esc(c.holder||"")+"</span>"+(c.crown?" <span class='pill'>crown — outside the rotation</span>":"")+"</span></label>";
+  }).join("");
+  var opts=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
+  $("t-city").innerHTML=opts.map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+"</option>"; }).join("");
+  if(!$("t-date").value) $("t-date").value=iso(todayMs());
+
+  var cur=Math.max(currentTerm(),0), terms=[];
+  for(var k=cur;k<cur+poolSize()*2;k++) terms.push(k);
+  $("r-term").innerHTML=terms.map(function(k){
+    var reqs=releasesFor(k);
+    return "<option value='"+k+"'>Term "+(k+1)+" — "+fmtShort(termStart(k))+
+      (reqs.length?" · "+reqs.map(function(r){ return r.name; }).join(", ")+" at cap":" · nobody at cap")+"</option>";
+  }).join("");
+  $("r-city").innerHTML=opts.filter(function(c){ return !c.rotates && !c.crown; })
+    .map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+" — "+esc(c.holder||"unclaimed")+"</option>"; }).join("");
+  var rl=REGISTER.releases||{}, rk=Object.keys(rl).sort(function(a,b){ return +a-+b; });
+  $("release-list").innerHTML = rk.length ? "<table class='reg'><tbody>"+rk.map(function(k){
+    return Object.keys(rl[k]).map(function(tag){
+      var c=cityById(rl[k][tag]);
+      return "<tr><td>Term "+(+k+1)+"</td><td><b>"+esc(tag)+"</b></td><td>"+esc(c?c.name:rl[k][tag])+
+        "</td><td style='text-align:right'><button class='btn ghost small' data-delr='"+k+"|"+tag+"'>Remove</button></td></tr>";
+    }).join("");
+  }).join("")+"</tbody></table>" : "<p class='muted' style='margin:0;font-size:13px'>No releases recorded.</p>";
+
+  if(!$("l-date").value) $("l-date").value=iso(todayMs());
+  $("export").value=JSON.stringify(REGISTER,null,2);
+}
+
+function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
+  $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
+  $("pubby").textContent=REGISTER.publishedBy?"by "+REGISTER.publishedBy:"";
+  $("foot-rules").textContent=REGISTER.rulesUrl||"—";
+  renderNow(); renderCycle(); renderCities(); renderHistory(); renderAlliances(); renderPool(); renderLog(); renderEdit();
+  if(EDITOR) applyRoleLocks(EDITOR.role); }
+function softRefresh(){ _cache={}; _state={}; viewCycle=null;
+  $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
+  renderQueries(); renderNow(); renderCycle(); renderCities(); renderHistory(); renderAlliances(); renderPool(); renderLog();
+  $("export").value=JSON.stringify(REGISTER,null,2); }
+
+document.addEventListener("input",function(e){
+  var el=e.target,i;
+  if(el.id==="city-filter"){ cityFilter=el.value; renderCities(); return; }
+  if(el.id==="hist-filter"){ histFilter=el.value; renderHistory(); return; }
+  if(el.dataset&&el.dataset.p!==undefined){ i=+el.dataset.i; var v=el.value;
+    if(el.dataset.p==="score"||el.dataset.p==="members") v=parseFloat(v)||0;
+    REGISTER.pool[i][el.dataset.p]=v; softRefresh(); }
+  else if(["e-start","e-term","e-pub","e-by","e-margin","e-window","e-cap"].indexOf(el.id)>=0){
+    REGISTER.cycleStart=$("e-start").value||REGISTER.cycleStart;
+    REGISTER.termDays=Math.max(1,parseInt($("e-term").value,10)||7);
+    REGISTER.published=$("e-pub").value||REGISTER.published;
+    REGISTER.publishedBy=$("e-by").value;
+    REGISTER.relegationMargin=parseFloat($("e-margin").value)||0;
+    REGISTER.scoreWindow=$("e-window").value;
+    REGISTER.cityCap=Math.max(0,parseInt($("e-cap").value,10)||0); softRefresh(); }
+});
+document.addEventListener("change",function(e){
+  var el=e.target;
+  if(el.dataset&&el.dataset.rot!==undefined){
+    var c=REGISTER.cities[+el.dataset.rot];
+    c.rotates=el.checked;
+    if(c.rotates && !c.pickRank) c.pickRank=rotCities().length;
+    renderAll();
+  }
+});
+document.addEventListener("click",function(e){
+  var b=e.target.closest?e.target.closest("button"):null; if(!b) return; var ds=b.dataset,i,x;
+  if(ds.up!==undefined){ i=+ds.up; if(i>0){ x=REGISTER.pool.splice(i,1)[0]; REGISTER.pool.splice(i-1,0,x); renderAll(); } }
+  else if(ds.down!==undefined){ i=+ds.down; if(i<REGISTER.pool.length-1){ x=REGISTER.pool.splice(i,1)[0]; REGISTER.pool.splice(i+1,0,x); renderAll(); } }
+  else if(ds.delp!==undefined){ REGISTER.pool.splice(+ds.delp,1); renderAll(); }
+  else if(ds.delr!==undefined){ var pr=ds.delr.split("|");
+    if(REGISTER.releases && REGISTER.releases[pr[0]]){ delete REGISTER.releases[pr[0]][pr[1]];
+      if(!Object.keys(REGISTER.releases[pr[0]]).length) delete REGISTER.releases[pr[0]]; }
+    renderAll(); }
+});
+$("add-transfer").onclick=function(){
+  var cid=$("t-city").value; if(!cid) return;
+  REGISTER.transfers=REGISTER.transfers||[];
+  REGISTER.transfers.push({ date:$("t-date").value||iso(todayMs()), city:cid,
+    to:$("t-to").value.trim(), reason:$("t-why").value.trim() });
+  var c=cityById(cid);
+  REGISTER.log.push({ date:$("t-date").value||iso(todayMs()), kind:"Handover",
+    text:(c?c.name:cid)+" → "+($("t-to").value.trim()||"unclaimed")+($("t-why").value.trim()?" ("+$("t-why").value.trim()+")":"") });
+  $("t-to").value=""; $("t-why").value=""; renderAll();
+};
+$("add-release").onclick=function(){
+  var k=$("r-term").value, cid=$("r-city").value, c=cityById(cid);
+  if(!c) return;
+  var tag=c.holder||"";
+  var st=stateAtTerm(+k-1); Object.keys(st).forEach(function(id){ if(id===cid) tag=st[id]; });
+  if(!tag){ alert("That city has no holder, so there is nothing to release."); return; }
+  REGISTER.releases=REGISTER.releases||{};
+  REGISTER.releases[k]=REGISTER.releases[k]||{};
+  REGISTER.releases[k][tag]=cid;
+  REGISTER.log.push({ date:iso(termStart(+k)), kind:"Handover",
+    text:tag+" releases "+c.name+" to take up term "+(+k+1)+"." });
+  renderAll();
+};
+$("add-pool").onclick=function(){ REGISTER.pool.push({name:"[new alliance]",tag:"NEW"+REGISTER.pool.length,score:0,members:0}); renderAll(); };
+$("add-log").onclick=function(){ var t=$("l-text").value.trim(); if(!t){ $("l-text").focus(); return; }
+  REGISTER.log.push({date:$("l-date").value||iso(todayMs()),kind:$("l-kind").value,text:t}); $("l-text").value=""; renderAll(); };
+$("copy").onclick=function(){ var ta=$("export"); ta.select(); ta.setSelectionRange(0,999999);
+  try{ document.execCommand("copy"); this.textContent="Copied"; }catch(err){ this.textContent="Select the text and copy it"; }
+  var btn=this; setTimeout(function(){ btn.textContent="Copy register"; },2200); };
+$("import-toggle").onclick=function(){ $("import-box").hidden=!$("import-box").hidden; };
+$("manual-toggle").onclick=function(){ $("manual-box").hidden=!$("manual-box").hidden; };
+
+/* ---------- sign-in and publishing ----------
+   The token is a password. It is kept in this browser only, and it is the
+   server that decides whose token it is — this page never asserts an identity,
+   it only carries the token and shows back what the server said. */
+var EDITOR=null;
+function tokenStore(v){
+  try{ if(v===null) localStorage.removeItem("regcity.token");
+       else if(v!==undefined) localStorage.setItem("regcity.token",v);
+       else return localStorage.getItem("regcity.token")||""; }
+  catch(e){ return _memTok||""; }
+  if(v!==undefined) _memTok=v||"";
+  return _memTok;
+}
+var _memTok="";
+
+function setSignedIn(who){
+  EDITOR=who;
+  $("signed-out").hidden=!!who; $("signed-in").hidden=!who;
+  $("publish").disabled=!who;
+  if(who){
+    $("who-name").textContent=who.name;
+    $("who-ally").textContent=who.alliance||"";
+    $("who-role").textContent=who.role==="keeper"?"keeper":"officer";
+    $("override-wrap").hidden = who.role!=="keeper";
+    $("role-note").textContent = who.role==="keeper"
+      ? "You can change anything, including the rotation itself. The cycle lock still applies — overriding it is recorded."
+      : "You can record releases and transfers for "+(who.alliance||"your alliance")+", fill in buffs and coordinates, and add notes. The pool, the schedule and the scores are not yours to change, and the write path will refuse them.";
+    applyRoleLocks(who.role);
+  } else applyRoleLocks(null);
+}
+
+async function whoami(token, quiet){
+  var msg=$("signin-msg");
+  try{
+    var r=await fetch("/api/whoami",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({token:token})});
+    var j=await r.json();
+    if(j.ok){ setSignedIn({name:j.name,alliance:j.alliance,role:j.role,token:token});
+      if(j.repo) REPO=j.repo; tokenStore(token); msg.textContent=""; loadChanges(true); return true; }
+    if(!quiet){ msg.className="now"; msg.textContent=j.error||"That token was not accepted."; }
+  }catch(e){
+    if(!quiet){ msg.className="now"; msg.textContent="Could not reach the write path. Publish by hand instead — the button below gives you the block."; }
+  }
+  setSignedIn(null); return false;
+}
+
+/* Grey out what this token cannot publish, so nobody spends ten minutes on an
+   edit that will be refused. The gate is what actually enforces this — the
+   greying out is a courtesy, not a control. */
+function applyRoleLocks(role){
+  var locked = role && role!=="keeper";
+  ["e-start","e-term","e-margin","e-window","e-cap","add-pool"].forEach(function(id){
+    var el=$(id); if(el) el.disabled=!!locked;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-p],[data-up],[data-down],[data-delp],[data-rot],[data-delc]"),
+    function(el){ el.disabled=!!locked; });
+  var n=$("lock-note");
+  if(n) n.hidden=!locked;
+}
+
+$("signin").onclick=function(){ var t=$("tok").value.trim(); if(t) whoami(t,false); };
+$("signout").onclick=function(){ tokenStore(null); $("tok").value=""; setSignedIn(null); };
+
+$("publish").onclick=async function(){
+  var msg=$("pub-msg"), note=$("pub-note").value.trim();
+  if(!EDITOR) return;
+  if(!note){ msg.className="now"; msg.textContent="Say what you changed first."; $("pub-note").focus(); return; }
+  var btn=this; btn.disabled=true; btn.textContent="Publishing…";
+  msg.className=""; msg.textContent="";
+  try{
+    var r=await fetch("/api/publish",{method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({token:EDITOR.token, register:REGISTER, note:note, basedOn:PUBLISHED_FP,
+        override: !!($("override")&&$("override").checked)})});
+    var j=await r.json();
+    if(j.ok){
+      msg.className=""; msg.innerHTML="Published as <b>"+esc(j.by)+"</b>. Register "+esc(j.previous)+" → <b>"+esc(j.fingerprint)+"</b>. "+
+        esc(j.note||"")+(j.commit?" <a href='"+esc(j.commit)+"' target='_blank' rel='noopener'>See the commit</a>":"");
+      $("pub-note").value="";
+      if($("override")) $("override").checked=false;
+      PUBLISHED_FP=j.fingerprint;
+      loadChanges(true);
+    } else {
+      msg.className="now"; msg.textContent=j.error||"That did not publish.";
+    }
+  }catch(e){
+    msg.className="now"; msg.textContent="Could not reach the write path. Nothing was published — use “Publish by hand instead”.";
+  }
+  btn.disabled=false; btn.textContent="Publish to the register";
+};
+
+/* The fingerprint this page was loaded with. Sent with a publish so the server
+   can refuse a change built on a version somebody else has already replaced. */
+var REPO=REGISTER.repo||"", _changesLoaded=false;
+async function loadChanges(force){
+  if(_changesLoaded && !force) return;
+  var box=$("changes-list");
+  if(!REPO){ box.innerHTML="<p class='muted'>Set <span class='mono'>repo</span> in the register to <span class='mono'>owner/name</span>, or sign in, and the published history appears here.</p>"; return; }
+  _changesLoaded=true;
+  try{
+    var r=await fetch("https://api.github.com/repos/"+REPO+"/commits?path=index.html&per_page=40");
+    if(!r.ok) throw new Error(r.status===403?"GitHub is rate limiting this address — try again shortly":"GitHub returned "+r.status);
+    var list=await r.json();
+    box.innerHTML="<div class='card'>"+list.map(function(c){
+      var who=(c.commit&&c.commit.author&&c.commit.author.name)||"unknown";
+      var when=(c.commit&&c.commit.author&&c.commit.author.date)||"";
+      var msg=((c.commit&&c.commit.message)||"").split("\n");
+      return "<div class='log-entry'><div class='log-date'>"+esc(when.slice(0,10))+"<br><span class='muted'>"+esc(when.slice(11,16))+"</span></div>"+
+        "<div><span class='log-kind'>"+esc(who)+"</span>"+esc(msg[0])+
+        (msg.length>2?"<br><span class='tag'>"+esc(msg.slice(2).join(" · "))+"</span>":"")+
+        " <a href='"+esc(c.html_url)+"' target='_blank' rel='noopener' style='color:var(--indigo)'>diff</a></div></div>";
+    }).join("")+"</div>";
+  }catch(e){
+    _changesLoaded=false;
+    box.innerHTML="<p class='muted'>Could not load the published history: "+esc(e.message)+". The repository page has the full record.</p>";
+  }
+}
+
+var PUBLISHED_FP=fingerprint();
+(function(){ var t=tokenStore(); if(t){ $("tok").value=t; whoami(t,true); } })();
+$("import-go").onclick=function(){ var m=$("import-msg");
+  try{ var p=JSON.parse($("import-text").value); if(!p.pool||!p.cities) throw new Error("no pool or cities in that");
+    REGISTER=p; viewCycle=null; renderAll(); m.className=""; m.textContent="Loaded. Fingerprint is now "+fingerprint()+"."; }
+  catch(err){ m.className="now"; m.textContent="That did not parse: "+err.message+". The block starts with { and ends with }."; } };
+$("cyc-prev").onclick=function(){ viewCycle=Math.max(0,(viewCycle||0)-1); renderCycle(); };
+$("cyc-next").onclick=function(){ viewCycle=(viewCycle||0)+1; renderCycle(); };
+$("cyc-now").onclick=function(){ viewCycle=Math.max(0,Math.floor(Math.max(currentTerm(),0)/poolSize())); renderCycle(); };
+
+renderAll();
+</script>
+</body>
+</html>
