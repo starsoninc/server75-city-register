@@ -20,7 +20,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 72px}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 110px}
 
 .mast{border-bottom:2px solid var(--ink);padding-bottom:14px}
 .mast-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;justify-content:space-between}
@@ -34,6 +34,8 @@ nav{display:flex;gap:2px;overflow-x:auto;margin:18px 0 22px;border-bottom:1px so
 nav button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-2);padding:9px 14px;min-height:44px;cursor:pointer;white-space:nowrap}
 nav button:hover{color:var(--ink)}
 nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+#subnav button{font-size:13px;padding:7px 12px}
+#subnav button[aria-selected="true"]{border-bottom-color:var(--rubric);color:var(--ink)}
 nav button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
 
 h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em;margin:0 0 4px}
@@ -248,28 +250,19 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   </div>
 
 
-  <h3>Cycle settings</h3>
-  <div class="grid grid-2">
-    <div class="field"><label for="e-start">Cycle start</label><input type="date" id="e-start" class="mono"></div>
-    <div class="field"><label for="e-term">Term length (days)</label><input type="number" id="e-term" class="mono" min="1" max="28"></div>
-    <div class="field"><label for="e-pub">Published date</label><input type="date" id="e-pub" class="mono"></div>
-    <div class="field"><label for="e-by">Published by</label><input type="text" id="e-by"></div>
-    <div class="field"><label for="e-margin">Relegation margin (points)</label><input type="number" id="e-margin" class="mono" step="0.1"></div>
-    <div class="field"><label for="e-window">Score window</label><input type="text" id="e-window"></div>
-    <div class="field"><label for="e-cap">City cap per alliance (0 = none / unconfirmed)</label><input type="number" id="e-cap" class="mono" min="0" max="20"></div>
+  <nav id="subnav" role="tablist" style="margin:18px 0 20px;border-bottom:1px solid var(--rule)"></nav>
+
+  <div id="sub-cities">
+  <h3>City buffs and coordinates</h3>
+  <p class="lede">What a city gives whoever holds it, and where it sits. Any signed-in editor can fill these in — they are facts about the map, not decisions about the rotation. Until the Level 6 buffs are recorded, pick order decides nothing, because nobody can tell which fortress is worth choosing first.</p>
+  <div class="field" style="max-width:340px"><label for="cd-filter">Find a city</label>
+    <input id="cd-filter" placeholder="name, type or holder"></div>
+  <div id="e-details"></div>
+  <p id="cd-more" class="lede" style="margin-top:8px"></p>
+
   </div>
 
-  <p id="lock-note" hidden class="warn">Greyed-out fields need a keeper token. Your token records what happened to your own alliance; it does not set the terms of the rotation.</p>
-
-  <h3>Rotation pool — order sets the schedule</h3>
-  <p class="lede">Order is the rotation order and is locked for the cycle. Score sets pick order when cities come free.</p>
-  <div id="e-pool"></div>
-  <div class="btnrow"><button class="btn ghost small" id="add-pool">Add alliance</button></div>
-
-  <h3>Which cities rotate</h3>
-  <p class="lede">Tick a city to put it into the rotation. Untick to give it a standing holder instead. Adding the four Blessing Temples here turns the Level 6 rotation into a full top-tier ladder.</p>
-  <div id="e-rot"></div>
-
+  <div id="sub-record" hidden>
   <h3>Record a change of holder</h3>
   <p class="lede">For cities outside the rotation — a standing allocation, a released city picked up, a correction. Rotating cities follow the schedule and do not need an entry.</p>
   <div class="grid grid-2">
@@ -298,6 +291,34 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <div class="field"><label for="l-text">What was decided, and why</label><textarea id="l-text" rows="3" placeholder="Plain sentences. This is the part people read in two months."></textarea></div>
   <div class="btnrow"><button class="btn" id="add-log">Add to record</button></div>
 
+  </div>
+
+  <div id="sub-rotation" hidden>
+  <h3>Cycle settings</h3>
+  <div class="grid grid-2">
+    <div class="field"><label for="e-start">Cycle start</label><input type="date" id="e-start" class="mono"></div>
+    <div class="field"><label for="e-term">Term length (days)</label><input type="number" id="e-term" class="mono" min="1" max="28"></div>
+    <div class="field"><label for="e-pub">Published date</label><input type="date" id="e-pub" class="mono"></div>
+    <div class="field"><label for="e-by">Published by</label><input type="text" id="e-by"></div>
+    <div class="field"><label for="e-margin">Relegation margin (points)</label><input type="number" id="e-margin" class="mono" step="0.1"></div>
+    <div class="field"><label for="e-window">Score window</label><input type="text" id="e-window"></div>
+    <div class="field"><label for="e-cap">City cap per alliance (0 = none / unconfirmed)</label><input type="number" id="e-cap" class="mono" min="0" max="20"></div>
+  </div>
+
+  <p id="lock-note" hidden class="warn">Greyed-out fields need a keeper token. Your token records what happened to your own alliance; it does not set the terms of the rotation.</p>
+
+  <h3>Rotation pool — order sets the schedule</h3>
+  <p class="lede">Order is the rotation order and is locked for the cycle. Score sets pick order when cities come free.</p>
+  <div id="e-pool"></div>
+  <div class="btnrow"><button class="btn ghost small" id="add-pool">Add alliance</button></div>
+
+  <h3>Which cities rotate</h3>
+  <p class="lede">Tick a city to put it into the rotation. Untick to give it a standing holder instead. Adding the four Blessing Temples here turns the Level 6 rotation into a full top-tier ladder.</p>
+  <div id="e-rot"></div>
+
+  </div>
+
+  <div id="sub-publish" hidden>
   <h3>Publish</h3>
   <div class="field"><label for="pub-note">What changed</label>
     <input id="pub-note" placeholder="e.g. RAE releases Sailport for term 2">
@@ -321,7 +342,14 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
     <div class="btnrow"><button class="btn" id="import-go">Load it</button></div>
     <p id="import-msg" style="font-size:14px;margin-top:8px"></p>
   </div>
+  </div>
+
 </section>
+
+<div id="dirtybar" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:var(--panel-2);padding:10px 16px;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:14px">
+  <span id="dirtytext">You have changes that are not published yet.</span>
+  <button class="btn" id="gotopublish" style="background:var(--panel-2);color:var(--ink);border-color:var(--panel-2);min-height:36px;padding:6px 14px">Go to Publish</button>
+</div>
 
 <footer>Server 75 city register · rules at <span id="foot-rules">—</span> · this page computes the rotation from the block below and holds no other state</footer>
 </div>
@@ -1471,13 +1499,45 @@ var $=function(id){
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
+var SUBS=[["cities","Cities & buffs",false],["record","Handovers & record",false],
+          ["rotation","Rotation & pool",true],["publish","Publish",false]];
+var subActive="cities";
+
+function renderSubnav(){
+  var keeper = EDITOR && EDITOR.role==="keeper";
+  var shown=SUBS.filter(function(x){ return !x[2] || keeper; });
+  if(!shown.some(function(x){ return x[0]===subActive; })) subActive=shown[0][0];
+  $("subnav").innerHTML=shown.map(function(x){
+    var dirty = x[0]==="publish" && typeof PUBLISHED_FP!=="undefined" && fingerprint()!==PUBLISHED_FP;
+    return '<button role="tab" data-sub="'+x[0]+'" aria-selected="'+(subActive===x[0])+'">'+esc(x[1])+
+      (dirty?" <span class='pill rub'>unpublished</span>":"")+'</button>';
+  }).join("");
+  Array.prototype.forEach.call($("subnav").children,function(b){
+    b.onclick=function(){ subActive=b.dataset.sub; renderSubnav(); };
+  });
+  SUBS.forEach(function(x){ var el=$("sub-"+x[0]); if(el&&el.hidden!==undefined) el.hidden=(subActive!==x[0]); });
+  var lock=$("lock-note"); if(lock) lock.hidden = !!keeper || !EDITOR;
+}
+
+/* A quiet nag rather than a loud one: only appears once something has actually
+   changed, and only on the Edit tab. Editing and forgetting to publish is the
+   easiest mistake to make here and the hardest to notice. */
+function updateDirty(){
+  var bar=$("dirtybar"); if(!bar||bar.hidden===undefined) return;
+  var dirty = typeof PUBLISHED_FP!=="undefined" && fingerprint()!==PUBLISHED_FP;
+  bar.hidden = !(dirty && active==="edit");
+  if(dirty && subActive!=="publish") renderSubnav();
+}
+
 var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
-var active="now", viewCycle=null, cityFilter="", histFilter="", SELWEEK=null;
+var active="now", viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
   Array.prototype.forEach.call($("tabs").children,function(b){ b.onclick=function(){ active=b.dataset.tab; renderTabs(); window.scrollTo(0,0); }; });
   TABS.forEach(function(t){ $("tab-"+t[0]).hidden=(active!==t[0]); });
+  if(active==="edit") renderSubnav();
+  updateDirty();
 }
 
 function renderQueries(){
@@ -1884,8 +1944,41 @@ function renderEdit(){
     }).join("");
   }).join("")+"</tbody></table>" : "<p class='muted' style='margin:0;font-size:13px'>No releases recorded.</p>";
 
+  renderCityDetails();
+  renderSubnav();
+
   if(!$("l-date").value) $("l-date").value=iso(todayMs());
   $("export").value=JSON.stringify(REGISTER,null,2);
+}
+
+/* The buff and coordinate editor. Shows the high-level cities by default —
+   those are the ones that decide anything — with a filter to reach the rest,
+   because 87 sets of inputs on screen at once is not an editor, it is a wall. */
+function renderCityDetails(){
+  var f=(cdFilter||"").toLowerCase(), hm=holderMapNow();
+  var list=REGISTER.cities.map(function(c,i){ return {c:c,i:i}; }).filter(function(x){
+    var c=x.c;
+    if(f) return (c.name+" "+(c.type||"")+" "+(hm[c.id]||"")).toLowerCase().indexOf(f)>=0;
+    return c.level>=5;
+  }).sort(function(a,b){ return (b.c.level-a.c.level)||a.c.name.localeCompare(b.c.name); });
+
+  $("e-details").innerHTML=list.slice(0,40).map(function(x){
+    var c=x.c;
+    return "<div class='rowedit'>"+
+      "<div style='display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap'>"+
+      "<b>"+esc(c.name)+"</b><span class='tag'>L"+esc(c.level)+" · "+esc(c.type||"")+" · "+esc(hm[c.id]||"unclaimed")+
+      (c.rotates?" · rotates":"")+(c.crown?" · crown":"")+"</span></div>"+
+      "<div class='field'><label>Buff</label><input data-cd='buff' data-i='"+x.i+"' value='"+esc(c.buff||"")+
+        "' placeholder='what it gives the alliance holding it'></div>"+
+      "<div class='field'><label>Coordinates</label><input data-cd='coords' data-i='"+x.i+"' class='mono' value='"+
+        esc(c.coords||"")+"' placeholder='X:000 Y:000'></div></div>";
+  }).join("") || "<p class='muted'>Nothing matches that.</p>";
+
+  var missing=REGISTER.cities.filter(function(c){ return c.rotates && !c.buff; }).length;
+  $("cd-more").innerHTML=(f? "Showing "+Math.min(list.length,40)+" of "+list.length+" matching."
+      : "Showing the Level 5 and above cities. Search to reach the other "+
+        REGISTER.cities.filter(function(c){ return c.level<5; }).length+".")+
+    (missing? " <b class='now'>"+missing+" of the rotating cities still have no buff recorded.</b>":"");
 }
 
 function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
@@ -1897,12 +1990,21 @@ function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
 function softRefresh(){ _cache={}; _state={}; viewCycle=null;
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
   renderQueries(); renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderLog();
-  $("export").value=JSON.stringify(REGISTER,null,2); }
+  $("export").value=JSON.stringify(REGISTER,null,2);
+  updateDirty(); }
 
 document.addEventListener("input",function(e){
   var el=e.target,i;
   if(el.id==="city-filter"){ cityFilter=el.value; renderCities(); return; }
   if(el.id==="hist-filter"){ histFilter=el.value; renderHistory(); return; }
+  if(el.id==="cd-filter"){ cdFilter=el.value; renderCityDetails(); return; }
+  if(el.dataset&&el.dataset.cd!==undefined){
+    REGISTER.cities[+el.dataset.i][el.dataset.cd]=el.value;
+    $("fp").textContent=fingerprint();
+    $("export").value=JSON.stringify(REGISTER,null,2);
+    updateDirty();
+    return;
+  }
   if(el.dataset&&el.dataset.cb!==undefined){
     REGISTER.contributions=REGISTER.contributions||{window:5,minWeeks:3,weeks:{}};
     REGISTER.contributions.weeks=REGISTER.contributions.weeks||{};
@@ -1976,6 +2078,7 @@ $("copy").onclick=function(){ var ta=$("export"); ta.select(); ta.setSelectionRa
   try{ document.execCommand("copy"); this.textContent="Copied"; }catch(err){ this.textContent="Select the text and copy it"; }
   var btn=this; setTimeout(function(){ btn.textContent="Copy register"; },2200); };
 $("import-toggle").onclick=function(){ $("import-box").hidden=!$("import-box").hidden; };
+$("gotopublish").onclick=function(){ subActive="publish"; renderSubnav(); window.scrollTo(0,0); };
 $("manual-toggle").onclick=function(){ $("manual-box").hidden=!$("manual-box").hidden; };
 
 /* ---------- sign-in and publishing ----------
@@ -2007,6 +2110,7 @@ function setSignedIn(who){
       : "You can record releases and transfers for "+(who.alliance||"your alliance")+", fill in buffs and coordinates, and add notes. The pool, the schedule and the scores are not yours to change, and the write path will refuse them.";
     applyRoleLocks(who.role);
   } else applyRoleLocks(null);
+  if(active==="edit") renderSubnav();
 }
 
 async function whoami(token, quiet){
@@ -2033,6 +2137,9 @@ function applyRoleLocks(role){
   });
   Array.prototype.forEach.call(document.querySelectorAll("[data-p],[data-up],[data-down],[data-delp],[data-rot],[data-delc]"),
     function(el){ el.disabled=!!locked; });
+  /* Buffs and coordinates stay open to officers — they are observations about
+     the map, not terms of the rotation. */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cd]"), function(el){ el.disabled=false; });
   var n=$("lock-note");
   if(n) n.hidden=!locked;
 }
@@ -2057,6 +2164,7 @@ $("publish").onclick=async function(){
       $("pub-note").value="";
       if($("override")) $("override").checked=false;
       PUBLISHED_FP=j.fingerprint;
+      updateDirty(); renderSubnav();
       loadChanges(true);
     } else {
       msg.className="now"; msg.textContent=j.error||"That did not publish.";
