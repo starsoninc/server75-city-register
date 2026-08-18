@@ -103,7 +103,8 @@ function fingerprint(R) {
     R.schema, R.cycleStart, R.termDays, R.published,
     (R.pool || []).map(a => [a.tag, a.name, a.score]),
     (R.cities || []).map(c => [c.id, c.name, c.level, c.pickRank || 0, c.holder || "", !!c.rotates]),
-    R.picks, R.skips, R.transfers || [], R.releases || {}, R.cityCap || 0, (R.log || []).length
+    R.picks, R.skips, R.transfers || [], R.releases || {}, R.cityCap || 0,
+    R.contributions || {}, (R.rules || {}).text || "", (R.log || []).length
   ]);
   let h = 5381;
   for (let i = 0; i < canon.length; i++) h = ((h * 33) ^ canon.charCodeAt(i)) >>> 0;
@@ -174,7 +175,7 @@ function eq(a, b) { return JSON.stringify(a === undefined ? null : a) === JSON.s
    records what happened to their own alliance; they do not set the rules that
    decide what happens next. */
 const KEEPER_ONLY = ["schema", "cycleStart", "termDays", "relegationMargin", "cityCap",
-                     "scoreWindow", "rulesUrl", "openQuestions", "picks", "skips"];
+                     "scoreWindow", "rulesUrl", "openQuestions", "picks", "skips", "rules"];
 
 /* Fields frozen once a cycle is running, for everyone. Section 6 of the rules:
    a cycle finishes under the rules it started with. Enforced here rather than
