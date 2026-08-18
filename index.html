@@ -107,6 +107,18 @@ textarea{resize:vertical;line-height:1.5}
 @media(min-width:640px){.rowedit.pool{grid-template-columns:1.4fr .7fr .7fr .7fr auto}}
 .rowedit .field{margin:0}
 .warn{border-left:2px solid var(--rubric);padding-left:14px;font-size:14px;color:var(--ink-2);margin:16px 0}
+.rulesdoc{max-width:74ch}
+.rulesdoc h1{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:-.01em;margin:28px 0 10px;line-height:1.15}
+.rulesdoc h2{font-family:var(--display);font-size:21px;font-weight:700;margin:30px 0 8px;padding-top:14px;border-top:1px solid var(--rule)}
+.rulesdoc h3{font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);margin:20px 0 6px}
+.rulesdoc p{margin:0 0 12px}
+.rulesdoc ul,.rulesdoc ol{margin:0 0 14px;padding-left:22px}
+.rulesdoc li{margin-bottom:5px}
+.rulesdoc hr{border:0;border-top:1px solid var(--rule);margin:26px 0}
+.rulesdoc em{color:var(--ink-2)}
+.rulesdoc code{font-family:var(--mono);font-size:.92em;background:var(--panel-2);padding:1px 5px;border-radius:2px}
+.rulesdoc a{color:var(--indigo)}
+.rulesdoc .ph{background:var(--panel-2);border-bottom:1px dashed var(--rule-strong);padding:0 3px}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);font-family:var(--mono)}
 @media(prefers-reduced-motion:no-preference){section{animation:fade .18s ease-out}@keyframes fade{from{opacity:0}to{opacity:1}}}
 </style>
@@ -218,6 +230,15 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <p class="derivation" id="pool-note"></p>
 </section>
 
+<section id="tab-rules" hidden>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
+    <h2 id="rules-title">Rules</h2>
+    <span class="tag" id="rules-meta"></span>
+  </div>
+  <p class="lede">The rules these allocations follow. They live in the register, so a change to them is published, dated and attributed exactly like a change to a city.</p>
+  <div id="rules-body" class="rulesdoc"></div>
+</section>
+
 <section id="tab-log" hidden>
   <h2>Record</h2>
   <p class="lede">Every skip, penalty, pool change and correction, with the date it was decided. Entries are added, never edited away.</p>
@@ -318,6 +339,19 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
   </div>
 
+  <div id="sub-rules" hidden>
+  <h3>Rules text</h3>
+  <p class="lede">Markdown. Headings, lists, <b>bold</b>, <i>italics</i> and links render on the Rules tab. Changing the rules is published, dated and attributed like any other change — which is the point of keeping them here rather than in a pinned message that nobody can date.</p>
+  <div class="grid grid-2">
+    <div class="field"><label for="r-title">Title</label><input id="r-title"></div>
+    <div class="field"><label for="r-version">Version</label><input id="r-version" class="mono" placeholder="2.0"></div>
+    <div class="field"><label for="r-inforce">In force from</label><input type="date" id="r-inforce" class="mono"></div>
+  </div>
+  <div class="field"><label for="r-text">The rules</label>
+    <textarea id="r-text" class="mono" rows="22" placeholder="Paste the rules document here."></textarea></div>
+  <p style="font-size:13px" class="muted">Square-bracket placeholders like [DATE] are highlighted on the Rules tab so an unfinished rule looks unfinished.</p>
+  </div>
+
   <div id="sub-publish" hidden>
   <h3>Publish</h3>
   <div class="field"><label for="pub-note">What changed</label>
@@ -366,9 +400,9 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 var REGISTER = {
   "schema": 3,
   "server": 75,
-  "published": "2026-08-18",
-  "publishedBy": "DamnKaspa (REGN)",
-  "rulesUrl": "[RULES URL]",
+  "published": "2026-08-16",
+  "publishedBy": "",
+  "rulesUrl": "https://server75-cities.netlify.app/ (Rules tab)",
   "repo": "starsoninc/server75-city-register",
   "cycleStart": "2026-08-21",
   "termDays": 7,
@@ -441,7 +475,7 @@ var REGISTER = {
       "name": "Nightfall Forest",
       "level": 6,
       "type": "Noble Fortress",
-      "holder": "ZfP",
+      "holder": "ŘĘĞŇ",
       "buff": "",
       "coords": "",
       "rotates": true,
@@ -1318,20 +1352,6 @@ var REGISTER = {
       "date": "2026-08-16",
       "kind": "Note",
       "text": "Rotation pool seeded with the three current Level 6 holders and the two remaining Level 5 holders. A proposal only, until contribution scores are published."
-    },
-    {
-      "date": "2026-08-18",
-      "kind": "Correction",
-      "text": "Nightfall Forest: holder recorded as ZfP, was ŘĘĞŇ.",
-      "by": "DamnKaspa (REGN)",
-      "at": "2026-08-18T09:35:07.920Z"
-    },
-    {
-      "date": "2026-08-18",
-      "kind": "Published",
-      "text": "REGN gave up level 6 for ZfP prior to rotation - Andromeda",
-      "by": "DamnKaspa (REGN)",
-      "at": "2026-08-18T09:35:07.920Z"
     }
   ],
   "contributions": {
@@ -1340,7 +1360,13 @@ var REGISTER = {
     "minWeeks": 3,
     "weeks": {}
   },
-  "previousFingerprint": "9D47 8AE1"
+  "rules": {
+    "title": "Server 75 — Conduct and Territory Rules",
+    "version": "2.0",
+    "inForce": "",
+    "text": "# Server 75 — Conduct and Territory Rules\n\n**Version 2.0 · In force from [DATE] · Published by [SERVER LEADERSHIP]**\n\nThese rules apply to every alliance and every player on Server 75, including the\nreigning King and the King's alliance. Where a rule gives leadership a power, it\nalso states the limit on that power.\n\nThe register — the live record of who holds which city and what changes next —\nis at **https://server75-cities.netlify.app/** and is readable by every alliance\nwithout a login.\n\n---\n\n## 1. Definitions\n\n**Server leadership** — the reigning King and [the appointed council / the R5s of\nthe pool alliances]. Named publicly in [#server-announcements].\n\n**Alliance leadership** — an alliance's R5, and any R4 it names as a\nrepresentative.\n\n**The register** — the public record at the address above. Every city, its\nlevel, holder, buff and term dates. Every change carries the name of whoever made\nit.\n\n**Term** — one rotation period. **One week**, aligned to the KvK cycle.\n\n**Cycle** — five consecutive terms, after which the rotation repeats and the pool\nis reviewed.\n\n**Capture window** — a scheduled City Siege event, listed on the server calendar\nwith the specific cities changing hands in it.\n\n**Royal City Scramble** — the Friday event at which the Royal City changes hands.\n\n**Contribution score** — an alliance's KvK and AvA figures over the preceding five\nweeks, calculated as set out in section 4.5.\n\n**The four rotating cities** — the Royal City and the three Noble Fortresses:\nLionheart Fortress, Nightfall Forest, Sky Fortress.\n\n---\n\n## 2. KvK Conduct\n\n### 2.1 Participation\n\nKvK runs weekly against a new opposing server each bracket. Every alliance is\nwelcome and encouraged to take part.\n\nParticipation is voluntary. No player or alliance will be penalised by server\nleadership for sitting out an event.\n\n### 2.2 Terms for each bracket\n\nBecause the opponent changes weekly, diplomatic terms are negotiated fresh each\ntime. The reigning King posts the agreed terms before the event opens. Terms may\ncover:\n\n- whether base attacks are permitted\n- positioning or territory arrangements\n- non-aggression periods\n- any other event-specific condition\n\nTerms bind this server only once posted. To count as posted they must be:\n\n- sent by kingdom mail **and** mirrored in [#server-announcements] before the\n  event opens;\n- written as specific, checkable statements — \"no base attacks for the first\n  24 hours\" rather than \"be reasonable\";\n- left unchanged for the duration of the event, unless the opposing server breaks\n  them first. If terms change mid-event, the King posts what changed and when the\n  change takes effect.\n\n**If no terms are posted before an event opens, no terms apply.** Normal in-game\nconduct governs, and no player can be held to an agreement they were never shown.\n\n### 2.3 Acting against posted terms\n\nA player who acts against posted terms accepts the consequences. The opposing\nserver may retaliate, and neither their alliance nor the wider server is obliged\nto defend them or replace their losses. Assistance may be offered voluntarily.\n\nThis applies identically to every player, regardless of alliance, rank or title.\n\nWhere a breach is deliberate, repeated, and draws retaliation onto players who\nfollowed the terms, it becomes a server matter and is handled under section 6.\n\n---\n\n## 3. Attacks Within the Server\n\nAttacks, rallies and scouting against any base belonging to a player on this\nserver are prohibited. Attacks on cities held by this server's alliances are\nprohibited.\n\nThree exceptions, and only these three:\n\n- **Scheduled capture windows** — captures listed on the server calendar, against\n  the named city, at the published time. Taking a city outside its published\n  window is a breach even if a window is open for a different city.\n- **The Royal City Scramble** — under section 4.8.\n- **Event mechanics** — KvK, AvA, Arena, and any event where the game itself\n  places players of this server in opposition.\n\n---\n\n## 4. Territory Control\n\n### 4.1 Cities are managed server-wide\n\nEvery city held by an alliance of this server is managed as a server asset, not\nas alliance property. Level, coordinates, buff, holder and term dates are all\nrecorded in the register and visible to every alliance.\n\nAlliances do not capture, contest or abandon cities outside the published\nallocation.\n\n### 4.2 The rotating cities\n\nFour cities rotate: the **Royal City** and the three **Noble Fortresses**. They\nare held in turn by a pool of five alliances.\n\n### 4.3 Levels 1 to 5\n\nStanding allocations, sized to alliance membership, reviewed at the start of each\n[month] and recorded in the register.\n\nAn alliance not currently in the rotation pool has first refusal on any Level 5\nBlessing Temple that becomes available.\n\n### 4.4 The pool\n\nThe five alliances with the highest contribution score form the pool.\n\nThe pool is reviewed **once per cycle**, not per term. To take a pool place, a\nchallenging alliance must exceed the fifth-placed alliance by **5 points**;\ninside that margin the incumbent keeps its place, so the pool does not churn on\nstatistical noise.\n\nSeventeen alliances hold cities on this server, so twelve sit outside the pool at\nany time. Section 4.12 sets out what they get instead.\n\n### 4.5 How contribution is measured\n\nTwo figures only: an alliance's **KvK total** and **AvA total**, entered weekly.\n\nWithin each week, an alliance's KvK total is scaled against the highest KvK total\nposted that week to give a figure out of 100, and the same is done for AvA. The\ntwo are averaged to give that week's score.\n\nAn alliance's contribution score is the **mean of its weekly scores over the\npreceding five weeks**.\n\n- Weeks are scored separately so that one large event cannot drown out a quiet\n  one, and a week an alliance missed does not count against it.\n- An alliance reporting **fewer than three of the five weeks** is not ranked at\n  all. It is not scored zero — too little information is a reason to say so, not a\n  reason to guess.\n- No other figure feeds in. Any alliance leader can recompute the whole ranking\n  from the numbers published in the register.\n\nEach alliance enters its own figures. No alliance can enter or alter another's.\n\n### 4.6 The rotation\n\nTerms run one week, aligned to the KvK cycle. The five pool alliances rotate\nthrough the four cities on a fixed published sequence.\n\n**Each alliance holds a city for four terms in every five, and sits out exactly\none term per cycle.** Exactly one alliance changes place each term, so exactly one\nfortress changes hands.\n\nThe sequence is derived from the pool order and the cycle start date. It is\npublished for the full cycle in advance and **does not change during a cycle for\nany reason** — not for a change in scores, not for a dispute, not at the request\nof any alliance including the King's.\n\n### 4.7 Which city\n\n**The three Noble Fortresses.** An alliance continuing from the previous term\nkeeps the fortress it already holds. The fortress left behind by the departing\nalliance goes to the incoming one, and where a choice exists the\nhigher-scoring alliance chooses first.\n\n**The Royal City.** Each term it goes to whichever of that term's four holders has\ngone longest without it. No alliance holds it two terms running.\n\nThis gives every pool alliance an equal share of the Royal City, in single weeks\nrather than long spells. It is the one asset allocated purely by waiting time and\nnever by score — it circulates rather than being won, and that is deliberate.\nContribution scores decide which fortress an incoming alliance takes, and the\npool it must be in to take one at all.\n\n### 4.8 Handovers\n\n**Fortresses** change hands only at scheduled capture windows. Both the outgoing\nand incoming alliance are named on the calendar before the window opens. The\noutgoing alliance does not defend; the incoming alliance captures.\n\n**The Royal City** changes hands at the Friday Royal City Scramble. The alliance\ndesignated in the register takes it, and **every other alliance stands down**.\nContesting the scramble against the designated holder is a breach of section 3.\n\nBoth parties to a handover are expected to have members present. An alliance that\nfails to appear for its own handover twice in one cycle is skipped at the next\nrotation.\n\nA city with nobody present to take it stays where it is until the next\nopportunity.\n\n### 4.9 The city cap and releases\n\nAn alliance may hold at most **six cities**. The Royal City sits outside this\nlimit and does not count toward it.\n\nAn alliance already at the cap releases one of its own cities before taking up a\nfortress.\n\n- **The alliance chooses which city it releases.** Server leadership does not\n  choose for it. Deciding which cities an alliance loses is a far greater power\n  than allocating the rotating four, and it belongs to nobody here.\n- The release is announced with the handover schedule and recorded in the register\n  at the same time.\n- A released city becomes unclaimed and is reallocated under section 4.3.\n- An alliance unwilling to release may **decline its term**. The rotation advances\n  past it and it takes its next turn in the ordinary way. Declining carries no\n  penalty.\n\nBecause the Royal City is outside the cap, a term in which an alliance holds it\nrequires no release at all.\n\n### 4.10 Captures outside the allocation\n\nAny alliance capturing a city not allocated to it for that term returns the city\nat the next opportunity, and:\n\n- if in the pool — forfeits its next two terms;\n- if outside the pool — is barred from the pool for one full cycle.\n\nThis applies regardless of the reason given, including a claim that the allocated\nalliance was absent, late or unprepared.\n\nThis penalty is deliberately heavy. Attacks within the server are prohibited and\ncities cannot be lost to another server, so an out-of-allocation capture is the\nonly way a city can move against the register. It is the single point at which the\nwhole system can be tested, and the penalty is set so that testing it is never\nworth the buff.\n\n### 4.11 The crown carries no territory\n\nThe reigning King's alliance holds no city by virtue of the crown. The Royal City\nrotates on the same terms as the fortresses, and the King's alliance takes its\nturn in the queue like every other pool alliance.\n\nPool membership, rotation position, pick order, the cap and every penalty in this\nsection apply to the King's alliance identically. No alliance holds a standing\nclaim to any city.\n\n### 4.12 Alliances outside the pool\n\nAn alliance not in the rotation pool has:\n\n- first refusal on any Level 5 Blessing Temple that becomes available;\n- priority in [caravan VIP rotation];\n- the right to its own score breakdown on request, answered within [72 hours].\n\n### 4.13 Publication\n\nThe register, the current scores and the published schedule are readable by every\nalliance without a login.\n\nEvery change to the register carries the name of the person who made it, the time\nthey made it, and a record of exactly what changed. Any alliance can read that\nhistory without asking anyone's permission.\n\n**What this does and does not guarantee.** It guarantees that every change is\nvisible to every alliance the moment it lands. It does not make forgery\nimpossible: whoever administers the register's hosting could publish a change\nunder someone else's name. What prevents that being useful is that a forged entry\nmust survive being read, in public, by the person it was attributed to. This is\nstated plainly rather than implied, because a guarantee people understand is worth\nmore than one they later find was overstated.\n\n---\n\n## 5. Disputes Between Alliances\n\n### 5.1 First resort — the alliances involved\n\nConflicts between alliances on this server are for those alliances' leadership to\nsettle directly. Server leadership does not mediate routine disputes — not because\nany alliance is exempt from responsibility, but because the parties are better\nplaced to resolve it, and rulings on ordinary friction set precedent that outlasts\nthe argument.\n\n### 5.2 Uninvolved alliances\n\nAlliances not party to a dispute are asked to stay out unless invited in by one of\nthe parties.\n\nThis is a norm, not an enforceable rule. Nobody is sanctioned for an opinion. It\nexists because outside escalation is the most common way a two-alliance problem\nbecomes a server one.\n\n### 5.3 When server leadership becomes involved\n\nServer leadership will act when a dispute meets at least one of these tests:\n\n- it affects the server's KvK or AvA performance, or disrupts a scheduled event;\n- it involves conduct prohibited by these rules;\n- both parties jointly request mediation;\n- it targets players outside the dispute.\n\nA dispute meeting none of these is left to the alliances involved. Any alliance\nmay ask leadership to assess whether a test is met. When leadership acts, it\nstates which test applied.\n\n### 5.4 Conflict of interest\n\nWhere a dispute involves the King's alliance — including any dispute over city\nallocation, pool membership or scores — the King does not decide the outcome.\n\nThe matter is decided by [named neutral party / a panel of R4+ drawn from two\nalliances not party to the dispute], and the decision is posted publicly with its\nreasoning.\n\n---\n\n## 6. Enforcement\n\nServer leadership's powers are limited. Stating them plainly is better than\nimplying more.\n\nAvailable responses, in escalating order:\n\n1. Private notice to alliance leadership\n2. Public notice in [#server-announcements]\n3. Exclusion from server-coordinated activity — rally coordination, capture\n   windows, caravan VIP rotation\n4. Loss of pool eligibility for one cycle\n5. Loss of title privileges\n\nAny action at level 2 or above is posted with the rule breached and the conduct\nthat breached it. The affected alliance may respond publicly and may request\nreview by [neutral party] once. A review is answered within [72 hours].\n\nNo penalty is applied retroactively for conduct these rules did not prohibit at\nthe time.\n\n---\n\n## 7. Amendment\n\nThese rules may be amended by [the King with the agreement of a majority of pool\nalliance R5s].\n\nProposed amendments are posted for [72 hours] before taking effect, so that every\nalliance can read them first.\n\n**An amendment does not take effect mid-cycle for a rotation already published.**\nA cycle runs to its end under the rules it started with. This is the single\nprovision that makes the published schedule worth trusting, and it binds\nleadership more tightly than anyone else.\n\nThe register enforces this directly: the pool order, the cycle start and the term\nlength cannot be changed while a cycle is running. A keeper may override that, and\nthe override is recorded permanently in the register above the change it\npermitted. Overriding is possible, obvious and permanent — never quiet.\n\n---\n\n*Questions about these rules go to [CHANNEL].*\n*The register is at https://server75-cities.netlify.app/ — open to every alliance.*\n",
+    "updatedBy": ""
+  }
 };
 /* REGISTER:END */
 
@@ -1493,7 +1519,8 @@ function fingerprint(){
   var canon=JSON.stringify([REGISTER.schema,REGISTER.cycleStart,REGISTER.termDays,REGISTER.published,
     REGISTER.pool.map(function(a){return [a.tag,a.name,a.score];}),
     REGISTER.cities.map(function(c){return [c.id,c.name,c.level,c.pickRank||0,c.holder||"",!!c.rotates];}),
-    REGISTER.picks,REGISTER.skips,REGISTER.transfers||[],REGISTER.releases||{},REGISTER.cityCap||0,(REGISTER.log||[]).length]);
+    REGISTER.picks,REGISTER.skips,REGISTER.transfers||[],REGISTER.releases||{},REGISTER.cityCap||0,
+    REGISTER.contributions||{},(REGISTER.rules||{}).text||"",(REGISTER.log||[]).length]);
   var h=5381; for(var i=0;i<canon.length;i++){ h=((h*33)^canon.charCodeAt(i))>>>0; }
   var hex=("00000000"+h.toString(16)).slice(-8).toUpperCase();
   return hex.slice(0,4)+" "+hex.slice(4);
@@ -1515,7 +1542,7 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ retu
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
 var SUBS=[["cities","Cities & buffs",false],["record","Handovers & record",false],
-          ["rotation","Rotation & pool",true],["publish","Publish",false]];
+          ["rotation","Rotation & pool",true],["rules","Rules text",true],["publish","Publish",false]];
 var subActive="cities";
 
 function renderSubnav(){
@@ -1544,7 +1571,7 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["log","Record"],["edit","Edit and publish"]];
+var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
 var active="now", viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
@@ -1909,6 +1936,54 @@ function renderPool(){
     "With "+n+" alliances and "+s+" cities, each holds "+s+" terms in "+n+" — "+Math.round(100*s/n)+"% of the time.";
 }
 
+/* A deliberately small markdown renderer: headings, rules, lists, emphasis,
+   links, code. Everything is escaped before any formatting is applied, so the
+   rules document can never inject markup into the page. Square-bracket
+   placeholders are highlighted, because an unfilled [DATE] in a published rule
+   should look unfinished rather than authoritative. */
+function renderMarkdown(src){
+  var lines=String(src||"").replace(/\r/g,"").split("\n"), out=[], list=null, para=[];
+  function inline(t){
+    t=esc(t);
+    t=t.replace(/`([^`]+)`/g,"<code>$1</code>");
+    t=t.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>");
+    t=t.replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<em>$2</em>");
+    t=t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,"<a href='$2' target='_blank' rel='noopener'>$1</a>");
+    t=t.replace(/(https?:\/\/[^\s<]+)/g,function(m){ return m.indexOf("href")>=0?m:"<a href='"+m+"' target='_blank' rel='noopener'>"+m+"</a>"; });
+    t=t.replace(/\[([A-Z][^\]]{2,})\]/g,"<span class='ph'>[$1]</span>");
+    return t;
+  }
+  function closeList(){ if(list){ out.push("</"+list+">"); list=null; } }
+  function closePara(){ if(para.length){ out.push("<p>"+inline(para.join(" "))+"</p>"); para=[]; } }
+  lines.forEach(function(ln){
+    var m;
+    if(/^\s*$/.test(ln)){ closePara(); closeList(); return; }
+    if(/^---+\s*$/.test(ln)){ closePara(); closeList(); out.push("<hr>"); return; }
+    if((m=ln.match(/^(#{1,4})\s+(.*)$/))){ closePara(); closeList();
+      var lvl=Math.min(m[1].length,3); out.push("<h"+lvl+">"+inline(m[2])+"</h"+lvl+">"); return; }
+    if((m=ln.match(/^\s*[-*]\s+(.*)$/))){ closePara();
+      if(list!=="ul"){ closeList(); out.push("<ul>"); list="ul"; }
+      out.push("<li>"+inline(m[1])+"</li>"); return; }
+    if((m=ln.match(/^\s*\d+\.\s+(.*)$/))){ closePara();
+      if(list!=="ol"){ closeList(); out.push("<ol>"); list="ol"; }
+      out.push("<li>"+inline(m[1])+"</li>"); return; }
+    closeList(); para.push(ln.trim());
+  });
+  closePara(); closeList();
+  return out.join("\n");
+}
+
+function renderRules(){
+  var R=REGISTER.rules||{};
+  $("rules-title").textContent=R.title||"Rules";
+  $("rules-meta").textContent=(R.version?"Version "+R.version:"")+
+    (R.inForce?" · in force from "+R.inForce:"")+
+    (R.updatedBy?" · last changed by "+R.updatedBy:"");
+  $("rules-body").innerHTML=R.text
+    ? renderMarkdown(R.text)
+    : "<p class='muted'>No rules recorded yet. A keeper can paste them in under Edit and publish.</p>";
+}
+
 function renderLog(){
   var e=(REGISTER.log||[]).slice().sort(function(a,b){ return a.date<b.date?1:-1; });
   $("log-list").innerHTML=e.length?e.map(function(x){
@@ -1966,6 +2041,9 @@ function renderEdit(){
   }).join("")+"</tbody></table>" : "<p class='muted' style='margin:0;font-size:13px'>No releases recorded.</p>";
 
   renderCityDetails();
+  var R=REGISTER.rules||{};
+  $("r-title").value=R.title||""; $("r-version").value=R.version||"";
+  $("r-inforce").value=R.inForce||""; $("r-text").value=R.text||"";
   renderSubnav();
 
   if(!$("l-date").value) $("l-date").value=iso(todayMs());
@@ -2022,11 +2100,11 @@ function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
   $("pubby").textContent=REGISTER.publishedBy?"by "+REGISTER.publishedBy:"";
   $("foot-rules").textContent=REGISTER.rulesUrl||"—";
-  renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderLog(); renderEdit();
+  renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderRules(); renderLog(); renderEdit();
   if(EDITOR) applyRoleLocks(EDITOR.role); }
 function softRefresh(){ _cache={}; _state={}; viewCycle=null;
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
-  renderQueries(); renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderLog();
+  renderQueries(); renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderRules(); renderLog();
   $("export").value=JSON.stringify(REGISTER,null,2);
   updateDirty(); }
 
@@ -2035,6 +2113,18 @@ document.addEventListener("input",function(e){
   if(el.id==="city-filter"){ cityFilter=el.value; renderCities(); return; }
   if(el.id==="hist-filter"){ histFilter=el.value; renderHistory(); return; }
   if(el.id==="cd-filter"){ cdFilter=el.value; renderCityDetails(); return; }
+  if(["r-title","r-version","r-inforce","r-text"].indexOf(el.id)>=0){
+    REGISTER.rules=REGISTER.rules||{};
+    REGISTER.rules.title=$("r-title").value;
+    REGISTER.rules.version=$("r-version").value;
+    REGISTER.rules.inForce=$("r-inforce").value;
+    REGISTER.rules.text=$("r-text").value;
+    renderRules();
+    $("fp").textContent=fingerprint();
+    $("export").value=JSON.stringify(REGISTER,null,2);
+    updateDirty();
+    return;
+  }
   if(el.dataset&&el.dataset.cd!==undefined){
     REGISTER.cities[+el.dataset.i][el.dataset.cd]=el.value;
     $("fp").textContent=fingerprint();
