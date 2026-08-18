@@ -1977,7 +1977,23 @@ function renderCityDetails(){
       "<div class='field'><label>Buff</label><input data-cd='buff' data-i='"+x.i+"' value='"+esc(c.buff||"")+
         "' placeholder='what it gives the alliance holding it'></div>"+
       "<div class='field'><label>Coordinates</label><input data-cd='coords' data-i='"+x.i+"' class='mono' value='"+
-        esc(c.coords||"")+"' placeholder='X:000 Y:000'></div></div>";
+        esc(c.coords||"")+"' placeholder='X:000 Y:000'></div>"+
+      /* A rotating city's holder is decided by the schedule, so the only holder
+         worth storing is the one it started with. It shows on the History tab as
+         the span before the rotation began, and it is what the page displays
+         until the first term opens. Keeper only — it is a term of the rotation,
+         not an observation about the map. */
+      ((c.rotates||c.crown)
+        ? "<div class='field'><label>"+(c.rotates?"Holder before the rotation begins":"Holder")+"</label>"+
+          "<select data-ch='"+x.i+"'>"+
+          "<option value=''>— unclaimed —</option>"+
+          allAlliances().map(function(t){ return "<option value='"+esc(t)+"'"+(c.holder===t?" selected":"")+">"+esc(t)+"</option>"; }).join("")+
+          "</select>"+
+          (c.rotates?"<span style='font-size:13px;color:var(--ink-3)'>From "+fmtDate(termStart(0))+
+            " the schedule decides this, and what you set here only shows in the history.</span>":"")+
+          "</div>"
+        : "")+
+      "</div>";
   }).join("") || "<p class='muted'>Nothing matches that.</p>";
 
   var missing=REGISTER.cities.filter(function(c){ return c.rotates && !c.buff; }).length;
@@ -2037,6 +2053,14 @@ document.addEventListener("input",function(e){
 document.addEventListener("change",function(e){
   var el=e.target;
   if(el.id==="cw"){ SELWEEK=el.value; renderContrib(); return; }
+  if(el.dataset&&el.dataset.ch!==undefined){
+    var c=REGISTER.cities[+el.dataset.ch], was=c.holder||"";
+    c.holder=el.value;
+    REGISTER.log.push({ date:iso(todayMs()), kind:"Correction",
+      text:c.name+": holder recorded as "+(el.value||"unclaimed")+", was "+(was||"unclaimed")+"." });
+    renderAll(); active="edit"; subActive="cities"; renderTabs();
+    return;
+  }
   if(el.dataset&&el.dataset.rot!==undefined){
     var c=REGISTER.cities[+el.dataset.rot];
     c.rotates=el.checked;
@@ -2146,6 +2170,8 @@ function applyRoleLocks(role){
   /* Buffs and coordinates stay open to officers — they are observations about
      the map, not terms of the rotation. */
   Array.prototype.forEach.call(document.querySelectorAll("[data-cd]"), function(el){ el.disabled=false; });
+  /* Holder is a rotation term, not an observation, so it follows the role. */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ch]"), function(el){ el.disabled=!!locked; });
   var n=$("lock-note");
   if(n) n.hidden=!locked;
 }
