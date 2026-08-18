@@ -264,10 +264,10 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
   <div id="sub-record" hidden>
   <h3>Record a change of holder</h3>
-  <p class="lede">For cities outside the rotation — a standing allocation, a released city picked up, a correction. Rotating cities follow the schedule and do not need an entry.</p>
+  <p class="lede">For cities outside the rotation — a standing allocation, a released city being picked up, or a correction. The three rotating Level 6 cities are not listed here: they are assigned by the schedule, and the way to change who holds one is to change the pool, not to reassign the city.</p>
   <div class="grid grid-2">
     <div class="field"><label for="t-city">City</label><select id="t-city"></select></div>
-    <div class="field"><label for="t-to">New holder</label><input id="t-to" placeholder="alliance tag, or leave blank for unclaimed"></div>
+    <div class="field"><label for="t-to">New holder</label><select id="t-to"></select></div>
     <div class="field"><label for="t-date">Date it took effect</label><input type="date" id="t-date" class="mono"></div>
     <div class="field"><label for="t-why">Reason</label><input id="t-why" placeholder="e.g. standing allocation, released under the cap"></div>
   </div>
@@ -1923,7 +1923,13 @@ function renderEdit(){
       "<span>L"+c.level+" · <b>"+esc(c.name)+"</b> <span class='tag'>"+esc(c.holder||"")+"</span>"+(c.crown?" <span class='pill'>crown — outside the rotation</span>":"")+"</span></label>";
   }).join("");
   var opts=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
-  $("t-city").innerHTML=opts.map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+"</option>"; }).join("");
+  /* Chosen from the alliances that exist, never typed. A mistyped tag would
+     quietly create an eighteenth alliance that holds one city and reports no
+     contributions, and nothing downstream would notice. */
+  $("t-city").innerHTML=opts.filter(function(c){ return !c.rotates; })
+    .map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+" — "+esc(c.holder||"unclaimed")+"</option>"; }).join("");
+  $("t-to").innerHTML="<option value=''>— unclaimed —</option>"+
+    allAlliances().map(function(t){ return "<option value='"+esc(t)+"'>"+esc(t)+"</option>"; }).join("");
   if(!$("t-date").value) $("t-date").value=iso(todayMs());
 
   var cur=Math.max(currentTerm(),0), terms=[];
@@ -2056,7 +2062,7 @@ $("add-transfer").onclick=function(){
   var c=cityById(cid);
   REGISTER.log.push({ date:$("t-date").value||iso(todayMs()), kind:"Handover",
     text:(c?c.name:cid)+" → "+($("t-to").value.trim()||"unclaimed")+($("t-why").value.trim()?" ("+$("t-why").value.trim()+")":"") });
-  $("t-to").value=""; $("t-why").value=""; renderAll();
+  $("t-why").value=""; renderAll();
 };
 $("add-release").onclick=function(){
   var k=$("r-term").value, cid=$("r-city").value, c=cityById(cid);
