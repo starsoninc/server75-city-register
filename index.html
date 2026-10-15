@@ -119,6 +119,35 @@ textarea{resize:vertical;line-height:1.5}
 .rulesdoc code{font-family:var(--mono);font-size:.92em;background:var(--panel-2);padding:1px 5px;border-radius:2px}
 .rulesdoc a{color:var(--indigo)}
 .rulesdoc .ph{background:var(--panel-2);border-bottom:1px dashed var(--rule-strong);padding:0 3px}
+/* ---- KvK ---- */
+.kvk-matches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.kvk-m{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:10px 10px 9px;min-width:0}
+.kvk-m .d{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-2);text-transform:uppercase}
+.kvk-m .vs{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.15;margin:2px 0 4px}
+.kvk-m .res{font-size:13px;font-weight:600}
+.kvk-m .res.lost{color:var(--rubric)}
+.kvk-m .sh{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:4px}
+@media(max-width:560px){.kvk-matches{grid-template-columns:repeat(5,minmax(96px,1fr));overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}}
+.kvk-sm{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.kvk-cell{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:9px 10px 6px}
+.kvk-cell .hd{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.kvk-cell .tg{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kvk-cell .v{font-family:var(--mono);font-size:13px;font-weight:600}
+.kvk-cell svg{display:block;width:100%;height:auto;margin-top:6px;overflow:visible}
+.kvk-cell .ax{font-family:var(--mono);font-size:9px;fill:var(--ink-3)}
+.kvk-bar{fill:#2a78d6}
+.kvk-bar:hover,.kvk-bar:focus{fill:#1d5ea8;outline:none}
+.kvk-hit{fill:transparent;cursor:default}
+.kvk-gap{font-family:var(--mono);font-size:10px;fill:var(--ink-3)}
+.kvk-base{stroke:var(--rule-strong);stroke-width:1}
+.kvk-hb{display:grid;grid-template-columns:minmax(52px,auto) 1fr auto;gap:6px 10px;align-items:center;font-size:13px}
+.kvk-hb .t{font-weight:600;white-space:nowrap}
+.kvk-hb .track{height:10px;background:var(--panel-2);border-radius:2px;position:relative}
+.kvk-hb .fill{position:absolute;left:0;top:0;bottom:0;background:#2a78d6;border-radius:0 4px 4px 0;min-width:2px}
+.kvk-hb .n{font-family:var(--mono);font-size:12px;text-align:right;white-space:nowrap}
+#kvk-tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--panel-2);font-size:12px;line-height:1.45;padding:6px 9px;border-radius:3px;max-width:240px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+#kvk-tip b{font-weight:600}
+table.reg td.kvk-na{color:var(--ink-3)}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);font-family:var(--mono)}
 @media(prefers-reduced-motion:no-preference){section{animation:fade .18s ease-out}@keyframes fade{from{opacity:0}to{opacity:1}}}
 </style>
@@ -147,6 +176,14 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <div class="card" id="next-handover"></div>
   <h3>Releases required</h3>
   <div class="card" id="release-panel"></div>
+  <h3>KvK — the last five matches</h3>
+  <div id="kvk-front"><p class="muted" style="font-size:14px">Loading…</p></div>
+</section>
+
+<section id="tab-kvk" hidden>
+  <h2>KvK</h2>
+  <p class="lede">Two records, kept apart because they measure different things. <b>Board shares</b> come from the officers' recordings of the in-game top-100 board after each match: each alliance's share of the points #75 put on it. <b>Kills gained</b> are read from lastasylum.gg once a week, after Saturday's KvK. They show who fought, not who scored.</p>
+  <div id="kvk-tab"><p class="muted">Loading…</p></div>
 </section>
 
 <section id="tab-cycle" hidden>
@@ -1571,7 +1608,7 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","In force now"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
+var TABS=[["now","In force now"],["kvk","KvK"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
 var active="now", viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
@@ -2454,6 +2491,256 @@ function renderImport(j){
     } else $("imp-applied").textContent="Nothing was ticked.";
   };
 }
+
+/* ============================================================================
+   KvK — read from data/kvk.json, which sits next to this page. The register
+   block above does not hold it and the fingerprint does not cover it: KvK
+   figures are a record of what happened, not a term of the rotation, and the
+   weekly collector writes them without a person publishing anything.
+   Two rules carried over from the dashboard: absence is "not known", never
+   zero; and board points are compared as shares, never raw, because a short
+   city fight means fewer points for everyone.
+   ========================================================================= */
+var KVK=null, KVK_ERR=null;
+var KVK_MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function kvkDay(isoDate){ var p=String(isoDate||"").split("-"); return p.length===3 ? Number(p[2])+" "+KVK_MONTHS[Number(p[1])-1] : "—"; }
+function kvkStamp(isoTime){
+  var t=Date.parse(isoTime); if(!isFinite(t)) return "—";
+  try { return new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Berlin",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(t)); }
+  catch(e){ return new Date(t).toISOString().slice(0,16).replace("T"," "); }
+}
+function kvkBig(n){
+  if(n===null||n===undefined||!isFinite(n)) return "–";
+  var a=Math.abs(n);
+  if(a>=1e9) return (n/1e9).toFixed(a>=1e10?1:2)+"B";
+  if(a>=1e6) return (n/1e6).toFixed(a>=1e8?0:1)+"M";
+  if(a>=1e3) return Math.round(n/1e3)+"K";
+  return String(Math.round(n));
+}
+function kvkPct(v){ return v===null||v===undefined||!isFinite(v) ? "–" : (Math.round(v*10)/10).toFixed(1)+"%"; }
+
+/* The last n matches, oldest first. */
+function kvkMatches(n){
+  var m=((KVK&&KVK.matches)||[]).slice().sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+  return n ? m.slice(-n) : m;
+}
+/* One alliance tag across renames the record knows about (ĒØN is ĚØN on the site). */
+function kvkCanon(tag){
+  var al=(KVK&&KVK.aliases)||{};
+  for(var k in al){ if(al.hasOwnProperty(k) && (k===tag || (al[k]||[]).indexOf(tag)!==-1)) return k; }
+  return tag;
+}
+/* Every alliance with a share on any of these matches, ordered by its share in
+   the latest match (unknown last), then by how often it was on the board. */
+function kvkAllianceRows(ms){
+  var seen={}, rows=[];
+  ms.forEach(function(m){ Object.keys(m.alliances||{}).forEach(function(t){ if(!seen[t]){ seen[t]=1; rows.push(t); } }); });
+  var last=ms[ms.length-1];
+  function latest(t){ var a=last&&last.alliances&&last.alliances[t]; return a&&a.share!==null&&a.share!==undefined ? a.share : -1; }
+  function seenN(t){ return ms.filter(function(m){ var a=m.alliances&&m.alliances[t]; return a&&a.share!==null&&a.share!==undefined; }).length; }
+  rows.sort(function(a,b){ return latest(b)-latest(a) || seenN(b)-seenN(a) || (a<b?-1:1); });
+  return rows;
+}
+
+function kvkResult(m){
+  if(m.result==="won") return { cls:"won", word:"✓ Won", long:"won"+(m.tookCity?" — took #"+m.tookCity+"'s city":"") };
+  if(m.result==="lost") return { cls:"lost", word:"✗ Lost", long:"lost"+(m.cityTakenBy?" — #"+m.cityTakenBy+" took our city":"") };
+  return { cls:"", word:"? Not recorded", long:"result not recorded" };
+}
+
+/* ---------- the tooltip: one element, shown for any [data-tip] ---------- */
+function kvkTipInit(){
+  if(document.getElementById("kvk-tip")) return;
+  var tip=document.createElement("div"); tip.id="kvk-tip"; tip.hidden=true; tip.setAttribute("role","tooltip");
+  document.body.appendChild(tip);
+  function show(el,x,y){
+    tip.innerHTML=el.getAttribute("data-tip"); tip.hidden=false;
+    var w=tip.offsetWidth, h=tip.offsetHeight, vw=document.documentElement.clientWidth;
+    var left=Math.min(Math.max(8,x-w/2), vw-w-8), top=y-h-12;
+    if(top<8) top=y+16;
+    tip.style.left=left+"px"; tip.style.top=top+"px";
+  }
+  function hide(){ tip.hidden=true; }
+  document.addEventListener("mouseover",function(e){ var el=e.target.closest&&e.target.closest("[data-tip]"); if(el) show(el,e.clientX,e.clientY); else hide(); });
+  document.addEventListener("mousemove",function(e){ var el=e.target.closest&&e.target.closest("[data-tip]"); if(el&&!tip.hidden) show(el,e.clientX,e.clientY); });
+  document.addEventListener("focusin",function(e){ var el=e.target.closest&&e.target.closest("[data-tip]"); if(el){ var r=el.getBoundingClientRect(); show(el,r.left+r.width/2,r.top); } });
+  document.addEventListener("focusout",hide);
+  document.addEventListener("scroll",hide,true);
+}
+
+/* ---------- pieces ---------- */
+function kvkMatchStrip(ms){
+  return '<div class="kvk-matches">'+ms.map(function(m){
+    var r=kvkResult(m);
+    return '<div class="kvk-m"><div class="d">'+esc(kvkDay(m.date))+'</div>'+
+      '<div class="vs">vs #'+esc(m.opponent)+'</div>'+
+      '<div class="res '+r.cls+'">'+esc(r.word)+'</div>'+
+      '<div class="sh">'+(m.kingdomShare!==null&&m.kingdomShare!==undefined?'#75: '+kvkPct(m.kingdomShare)+' of board':'board share not on file')+'</div></div>';
+  }).join("")+'</div>';
+}
+
+/* Small multiples: one panel per alliance, its share of #75's points on each
+   match, on ONE shared scale so panels compare. One colour; the alliance is
+   named on its panel, so nothing depends on telling hues apart. */
+function kvkShareMultiples(ms, tags){
+  var max=0;
+  tags.forEach(function(t){ ms.forEach(function(m){ var a=m.alliances&&m.alliances[t]; if(a&&a.share>max) max=a.share; }); });
+  max=Math.max(5,Math.ceil(max/5)*5);
+  var W=150, H=60, top=4, bottom=14, plot=H-top-bottom, n=ms.length, gap=6, bw=(W-gap*(n-1))/n;
+  return '<div class="kvk-sm">'+tags.map(function(t){
+    var last=ms[n-1].alliances&&ms[n-1].alliances[t];
+    var lastTxt=last&&last.share!==null&&last.share!==undefined ? kvkPct(last.share) : "–";
+    var bars=ms.map(function(m,i){
+      var a=m.alliances&&m.alliances[t];
+      var x=i*(bw+gap);
+      var lbl=kvkDay(m.date);
+      var ax='<text class="ax" x="'+(x+bw/2).toFixed(1)+'" y="'+(H-2)+'" text-anchor="middle">'+esc(lbl.replace(/ .*/,""))+'</text>';
+      if(!a){
+        return '<g><rect class="kvk-hit" x="'+x.toFixed(1)+'" y="'+top+'" width="'+bw.toFixed(1)+'" height="'+plot+'" tabindex="0" data-tip="'+esc('<b>'+esc(t)+'</b>, '+esc(lbl)+' vs #'+esc(m.opponent)+'<br>Not on the top-100 board')+'"></rect>'+
+          '<text class="kvk-gap" x="'+(x+bw/2).toFixed(1)+'" y="'+(top+plot-3)+'" text-anchor="middle">–</text>'+ax+'</g>';
+      }
+      if(a.share===null||a.share===undefined){
+        return '<g><rect class="kvk-hit" x="'+x.toFixed(1)+'" y="'+top+'" width="'+bw.toFixed(1)+'" height="'+plot+'" tabindex="0" data-tip="'+esc('<b>'+esc(t)+'</b>, '+esc(lbl)+' vs #'+esc(m.opponent)+'<br>'+(a.places?a.places+(a.places===1?' place':' places')+', ':'')+'share not on file')+'"></rect>'+
+          '<text class="kvk-gap" x="'+(x+bw/2).toFixed(1)+'" y="'+(top+plot-3)+'" text-anchor="middle">?</text>'+ax+'</g>';
+      }
+      var h=Math.max(1.5,a.share/max*plot), y=top+plot-h, r=Math.min(3,bw/2,h);
+      var d="M"+x.toFixed(1)+","+(top+plot)+"V"+(y+r).toFixed(1)+"Q"+x.toFixed(1)+","+y.toFixed(1)+" "+(x+r).toFixed(1)+","+y.toFixed(1)+
+        "H"+(x+bw-r).toFixed(1)+"Q"+(x+bw).toFixed(1)+","+y.toFixed(1)+" "+(x+bw).toFixed(1)+","+(y+r).toFixed(1)+"V"+(top+plot)+"Z";
+      var tip='<b>'+esc(t)+'</b>, '+esc(lbl)+' vs #'+esc(m.opponent)+' ('+esc(kvkResult(m).word)+')<br>'+kvkPct(a.share)+' of #75’s points'+(a.places?' · '+a.places+(a.places===1?' place':' places'):'');
+      return '<g><path class="kvk-bar" d="'+d+'" tabindex="0" data-tip="'+esc(tip)+'"></path>'+ax+'</g>';
+    }).join("");
+    return '<div class="kvk-cell"><div class="hd"><span class="tg">'+esc(t)+'</span><span class="v">'+lastTxt+'</span></div>'+
+      '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(t)+': share of #75 points over the last '+n+' matches">'+
+      '<line class="kvk-base" x1="0" x2="'+W+'" y1="'+(top+plot+0.5)+'" y2="'+(top+plot+0.5)+'"></line>'+bars+'</svg></div>';
+  }).join("")+'</div>'+
+  '<p class="derivation">Each panel is one alliance’s share of the points #75 put on the top-100 board, oldest match on the left; the figure is the latest. All panels share one scale, 0 to '+max+'%. – means not on the board, ? means on the board but its share is not on file. Neither is a zero.</p>';
+}
+
+/* Kills gained in one collector week, per alliance, as horizontal bars. */
+function kvkKillBars(w, limit){
+  var rows=Object.keys(w.alliances).map(function(aid){ var a=w.alliances[aid]; return { aid:aid, tag:kvkCanon(a.tag||aid), a:a }; })
+    .filter(function(r){ return r.a.readBoth>0; })
+    .sort(function(x,y){ return y.a.kills-x.a.kills; });
+  if(limit) rows=rows.slice(0,limit);
+  var max=Math.max.apply(null,rows.map(function(r){ return r.a.kills; }).concat([1]));
+  return '<div class="kvk-hb">'+rows.map(function(r){
+    var tip='<b>'+esc(r.tag)+'</b><br>'+kvkBig(r.a.kills)+' kills gained · '+r.a.fighters+' of '+r.a.readBoth+' players read both times made kills';
+    return '<span class="t">'+esc(r.tag)+'</span><span class="track" tabindex="0" data-tip="'+esc(tip)+'"><span class="fill" style="width:'+(r.a.kills/max*100).toFixed(1)+'%"></span></span>'+
+      '<span class="n">'+kvkBig(r.a.kills)+' · '+r.a.fighters+'/'+r.a.readBoth+'</span>';
+  }).join("")+'</div>';
+}
+function kvkWeekLabel(w){
+  return w.kvk&&w.kvk.length ? "KvK of "+w.kvk.map(kvkDay).join(" and ") : "no KvK in this week";
+}
+
+/* ---------- front page ---------- */
+function renderKvkFront(){
+  var el=$("kvk-front"); if(!el||el.id!=="kvk-front") return;
+  if(KVK_ERR){ el.innerHTML='<p class="muted" style="font-size:14px">The KvK record could not be loaded ('+esc(KVK_ERR)+').</p>'; return; }
+  if(!KVK){ return; }
+  var ms=kvkMatches(5);
+  if(!ms.length){ el.innerHTML='<p class="muted" style="font-size:14px">No matches recorded yet.</p>'; return; }
+  var tags=kvkAllianceRows(ms).slice(0,6);
+  var won=ms.filter(function(m){ return m.result==="won"; }).length;
+  var html='<p class="lede" style="margin-bottom:12px">#75 won '+won+' of the last '+ms.length+'. Below: how the points #75 scored were split between its alliances, on the top-100 board.</p>'+
+    kvkMatchStrip(ms)+kvkShareMultiples(ms,tags);
+  var weeks=(KVK.weeks||[]);
+  var lastWeek=weeks[weeks.length-1];
+  html+='<h3 style="margin-top:18px">Kills gained, '+(lastWeek?esc(kvkWeekLabel(lastWeek)):'per alliance')+'</h3>';
+  if(lastWeek){
+    html+=kvkKillBars(lastWeek,8)+'<p class="derivation">Kills gained between two weekly readings of lastasylum.gg ('+esc(kvkStamp(lastWeek.from))+' to '+esc(kvkStamp(lastWeek.to))+'), counted per player and summed by the alliance they are in now. The second figure is how many members made any kills, out of those read both times. Kills show who fought, not KvK points.</p>';
+  } else {
+    html+='<p class="derivation">Read weekly from lastasylum.gg. '+(KVK.latest?'The first reading was taken '+esc(kvkStamp(KVK.latest.at))+'; kills per alliance appear after the next KvK.':'The first reading will be taken within a few hours; kills per alliance appear after the KvK that follows it.')+'</p>';
+  }
+  html+='<div class="btnrow"><button class="btn ghost small" id="kvk-open">All KvK figures →</button></div>';
+  el.innerHTML=html;
+  $("kvk-open").onclick=function(){ active="kvk"; renderTabs(); window.scrollTo(0,0); };
+}
+
+/* ---------- the KvK tab ---------- */
+function renderKvkTab(){
+  var el=$("kvk-tab"); if(!el||el.id!=="kvk-tab") return;
+  if(KVK_ERR){ el.innerHTML='<p class="warn">The KvK record could not be loaded ('+esc(KVK_ERR)+').</p>'; return; }
+  if(!KVK) return;
+  var ms=kvkMatches(5), all=kvkMatches(0);
+  var html='';
+
+  html+='<h3>The last five matches</h3>'+kvkMatchStrip(ms);
+  html+='<div class="tablescroll"><table class="reg"><thead><tr><th>Date</th><th>Opponent</th><th>Result</th><th class="num">#75 share of board</th><th class="num">#75 places</th><th>Notes</th></tr></thead><tbody>'+
+    all.slice().reverse().map(function(m){
+      return '<tr><td class="mono">'+esc(kvkDay(m.date))+'</td><td>#'+esc(m.opponent)+'</td><td style="white-space:nowrap">'+esc(kvkResult(m).long)+'</td>'+
+        '<td class="num">'+kvkPct(m.kingdomShare)+'</td><td class="num">'+(m.places?esc(m.places):'–')+'</td>'+
+        '<td style="font-size:13px;color:var(--ink-2);min-width:260px">'+(m.notes||[]).map(esc).join("<br>")+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+
+  html+='<h3>Each alliance’s share of #75’s points</h3>'+kvkShareMultiples(ms,kvkAllianceRows(ms));
+  html+='<div class="tablescroll" style="margin-top:12px"><table class="reg"><thead><tr><th>Alliance</th>'+
+    ms.map(function(m){ return '<th class="num">'+esc(kvkDay(m.date))+'<br><span class="tag">vs #'+esc(m.opponent)+'</span></th>'; }).join("")+'</tr></thead><tbody>'+
+    kvkAllianceRows(ms).map(function(t){
+      return '<tr><td><b>'+esc(t)+'</b></td>'+ms.map(function(m){
+        var a=m.alliances&&m.alliances[t];
+        if(!a) return '<td class="num kvk-na">–</td>';
+        return '<td class="num">'+(a.share===null||a.share===undefined?'<span class="kvk-na">?</span>':kvkPct(a.share))+
+          (a.places?' <span class="tag">'+a.places+'p</span>':'')+'</td>';
+      }).join("")+'</tr>';
+    }).join("")+'</tbody></table></div>'+
+    '<p class="derivation">p = places on the top-100 board. Places are on file for the last three boards only. Renames are merged: RISE and ŘĘĞŅ count as WPP, ZΞN as NEXT, INVS as AURA. Boards are cut at rank 100, so an alliance off the board may still have played.</p>';
+
+  var weeks=(KVK.weeks||[]).slice(-8);
+  html+='<h3>Kills gained per week</h3>';
+  if(!weeks.length){
+    html+='<p class="derivation">'+(KVK.latest?'The baseline reading was taken '+esc(kvkStamp(KVK.latest.at))+' ('+Object.keys(KVK.latest.alliances).length+' alliances). The first week of kills appears after the next KvK, once the Sunday reading is in.':'No reading has been taken yet. The collector takes its first one within a few hours of being deployed.')+'</p>';
+  } else {
+    var lastW=weeks[weeks.length-1];
+    html+='<p style="font-size:14px;margin-bottom:10px">Latest: <b>'+esc(kvkWeekLabel(lastW))+'</b>, '+esc(kvkStamp(lastW.from))+' to '+esc(kvkStamp(lastW.to))+'.</p>'+kvkKillBars(lastW,0);
+    var aids={}; weeks.forEach(function(w){ Object.keys(w.alliances).forEach(function(aid){ aids[aid]=kvkCanon(w.alliances[aid].tag||aid); }); });
+    var order=Object.keys(aids).sort(function(a,b){ var x=lastW.alliances[a], y=lastW.alliances[b]; return (y?y.kills:-1)-(x?x.kills:-1); });
+    html+='<div class="tablescroll" style="margin-top:12px"><table class="reg"><thead><tr><th>Alliance</th>'+
+      weeks.map(function(w){ return '<th class="num">'+esc(w.kvk&&w.kvk.length?w.kvk.map(kvkDay).join(", "):kvkStamp(w.to))+'</th>'; }).join("")+
+      '<th class="num">Members</th><th class="num">Power</th><th class="num">Power, week</th></tr></thead><tbody>'+
+      order.map(function(aid){
+        var a=lastW.alliances[aid];
+        return '<tr><td><b>'+esc(aids[aid])+'</b></td>'+weeks.map(function(w){
+          var x=w.alliances[aid];
+          if(!x||!x.readBoth) return '<td class="num kvk-na">–</td>';
+          return '<td class="num">'+kvkBig(x.kills)+' <span class="tag">'+x.fighters+'/'+x.readBoth+'</span></td>';
+        }).join("")+
+        '<td class="num">'+(a?a.members:'–')+'</td><td class="num">'+(a?kvkBig(a.power):'–')+'</td>'+
+        '<td class="num">'+(a&&a.powerBefore?(a.power>=a.powerBefore?'+':'')+kvkBig(a.power-a.powerBefore):'–')+'</td></tr>';
+      }).join("")+'</tbody></table></div>';
+    html+='<p class="derivation">Each column is the change between two weekly readings, labelled with the KvK it covers. 8/45 means 8 of the 45 members read both times made kills. A player read only once — someone who joined or left that week — is left out, so a newcomer’s career kills never count as one week’s. Power, week is the alliance total now minus a week ago, so it moves with members joining and leaving.</p>';
+  }
+
+  var c=KVK.collector||{};
+  var caps=Object.keys(KVK.captures||{}).sort().reverse().slice(0,5);
+  html+='<h3>Where the kill figures come from</h3><div class="card" style="font-size:14px">'+
+    '<p>Read from public lastasylum.gg pages by a script on this site, about 15 pages once a week, obeying the site’s robots.txt. Every reading is saved to <span class="mono">data/kvk.json</span> in the register’s repository, so it has the same public history as the register.</p>'+
+    '<p style="margin:0"><b>Last run:</b> '+(c.lastRun?esc(kvkStamp(c.lastRun.at))+' — '+esc(c.lastRun.note||(c.lastRun.ok?"ok":"failed")):'not yet')+
+    (KVK.latest?'<br><b>Latest reading:</b> '+esc(kvkStamp(KVK.latest.at))+', '+Object.keys(KVK.latest.alliances).length+' alliances'+
+      ((KVK.latest.skipped||[]).length?' ('+KVK.latest.skipped.map(function(s){ return esc(s.tag||s.aid); }).join(", ")+' could not be read)':''):'')+
+    (KVK.pending?'<br><b>In progress:</b> '+KVK.pending.queue.length+' pages left':'')+
+    (caps.length?'<br><b>Royal City captures involving #75</b> (lastasylum.gg): '+caps.map(function(s){
+      var rows=KVK.captures[s].rows||[];
+      return esc(kvkDay(s))+': '+(rows.length?rows.map(function(r){ return r.city===75?'#'+esc(r.takenBy)+' ('+esc(r.tag)+') took ours':'we took #'+esc(r.city); }).join("; "):'none listed');
+    }).join(" · "):'')+
+    '</p></div>';
+  el.innerHTML=html;
+}
+
+function renderKvk(){ renderKvkFront(); renderKvkTab(); }
+
+(function loadKvk(){
+  kvkTipInit();
+  if(typeof fetch!=="function"){ KVK_ERR="this browser cannot fetch it"; renderKvk(); return; }
+  fetch("data/kvk.json",{cache:"no-cache"}).then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json();
+  }).then(function(j){
+    if(!j||!Array.isArray(j.matches)) throw new Error("the file is not a KvK record");
+    KVK=j; renderKvk();
+  }).catch(function(e){ KVK_ERR=String(e&&e.message||e); renderKvk(); });
+})();
 
 renderAll();
 </script>
