@@ -2721,7 +2721,11 @@ function kvkOverallBoard(limit){
   if(!rows.length) return '<p class="derivation">The overall ranking starts with the first week read by collector k2 or later.</p>';
   var max=Math.max.apply(null,rows.map(function(r){ return r.points; }));
   var r1=function(v){ return (Math.round(v*10)/10).toFixed(1); };
-  var html='<div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
+  var note='<p class="derivation" style="margin:0 0 10px"><b>How the points work.</b> Each week, every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points: '+
+    '<span class="mono">50 × players fighting ÷ most players fighting that week</span> + <span class="mono">50 × kill growth ÷ highest kill growth that week</span>. '+
+    'The best alliance on each measure gets the full 50 for it. Points add up over every recorded week ('+sc.weeks.length+' so far), so an alliance that shows up every week climbs. '+
+    'Fighting rewards size and turnout, growth rewards effort relative to past kills, so a small alliance can rank high on growth. Hover or tap a row for its weekly sums.</p>';
+  var html=note+'<div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
     '<th class="num on">Points</th><th class="num"><span class="lg">from fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">from growth</span><span class="sh">Growth</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
     rows.map(function(r,i){
       var tip='<b>'+esc(r.tag)+'</b>'+r.weeks.map(function(w){
@@ -2731,10 +2735,6 @@ function kvkOverallBoard(limit){
         '<td class="num on">'+r1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
         '<td class="num">'+r1(r.fight)+'</td><td class="num">'+r1(r.growth)+'</td><td class="num">'+r.weeks.length+'</td></tr>';
     }).join("")+'</tbody></table></div>';
-  html+='<p class="derivation"><b>How the points work.</b> Each week, every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points: '+
-    '<span class="mono">50 × players fighting ÷ most players fighting that week</span> + <span class="mono">50 × kill growth ÷ highest kill growth that week</span>. '+
-    'The best alliance on each measure gets the full 50 for it. Points add up over every recorded week ('+sc.weeks.length+' so far), so an alliance that shows up every week climbs. '+
-    'Fighting rewards size and turnout, growth rewards effort relative to past kills, so a small alliance can rank high on growth. Hover or tap a row for its weekly sums.</p>';
   return html;
 }
 
