@@ -289,7 +289,8 @@
      "kills": 39997,
      "fighters": 17,
      "readBoth": 58,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 17252629
     },
     "57812": {
      "tag": "OGS7",
@@ -300,7 +301,8 @@
      "kills": 40,
      "fighters": 2,
      "readBoth": 32,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 4178562
     },
     "57861": {
      "tag": "ĚØN",
@@ -311,7 +313,8 @@
      "kills": 1871494,
      "fighters": 43,
      "readBoth": 86,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 55294375
     },
     "57888": {
      "tag": "AURA",
@@ -322,7 +325,8 @@
      "kills": 387549,
      "fighters": 27,
      "readBoth": 62,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 19047464
     },
     "58309": {
      "tag": "RAE",
@@ -333,7 +337,8 @@
      "kills": 1738019,
      "fighters": 35,
      "readBoth": 54,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 23938758
     },
     "58331": {
      "tag": "UKR",
@@ -344,7 +349,8 @@
      "kills": 628446,
      "fighters": 20,
      "readBoth": 37,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 6877707
     },
     "58587": {
      "tag": "HoG",
@@ -355,7 +361,8 @@
      "kills": 787521,
      "fighters": 54,
      "readBoth": 96,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 42807262
     },
     "58652": {
      "tag": "NOPE",
@@ -366,7 +373,8 @@
      "kills": 233109,
      "fighters": 10,
      "readBoth": 41,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 3279272
     },
     "58857": {
      "tag": "NEXT",
@@ -377,7 +385,8 @@
      "kills": 1142222,
      "fighters": 42,
      "readBoth": 78,
-     "odd": 1
+     "odd": 1,
+     "killsBefore": 81623608
     },
     "59371": {
      "tag": "RISE",
@@ -388,7 +397,8 @@
      "kills": 88635,
      "fighters": 11,
      "readBoth": 47,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 3963428
     },
     "64968": {
      "tag": "WPP",
@@ -399,7 +409,8 @@
      "kills": 3020360,
      "fighters": 65,
      "readBoth": 99,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 109538976
     },
     "72907": {
      "tag": "K13",
@@ -410,7 +421,8 @@
      "kills": 511055,
      "fighters": 35,
      "readBoth": 75,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 14488887
     },
     "74589": {
      "tag": "MooN",
@@ -421,7 +433,8 @@
      "kills": 261,
      "fighters": 2,
      "readBoth": 4,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 1901591
     },
     "75195": {
      "tag": "ZzZ",
@@ -432,7 +445,8 @@
      "kills": 0,
      "fighters": 0,
      "readBoth": 1,
-     "odd": 0
+     "odd": 0,
+     "killsBefore": 24663256
     }
    }
   }
