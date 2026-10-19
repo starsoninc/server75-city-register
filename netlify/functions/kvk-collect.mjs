@@ -40,7 +40,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k1";
+export const VERSION = "k2";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -364,7 +364,10 @@ export function chooseAlliances(list) {
 }
 
 /* A finished reading compared with the one before it: per alliance, kills
-   gained by players read both times, summed by the alliance they are in now. */
+   gained by players read both times, summed by the alliance they are in now.
+   k2: killsBefore is those same players' kill total at the first reading, so
+   kills / killsBefore is the alliance's kill growth over the week, counted on
+   exactly the players it is measured on. */
 export function weekFrom(prev, cur) {
   const kvk = kvkBetween(Date.parse(prev.at), Date.parse(cur.at));
   const alliances = {};
@@ -372,7 +375,7 @@ export function weekFrom(prev, cur) {
     const a = cur.alliances[aid];
     const was = prev.alliances[aid];
     alliances[aid] = { tag: a.tag, name: a.name, members: a.members, power: a.power,
-      powerBefore: was ? was.power : null, kills: 0, fighters: 0, readBoth: 0, odd: 0 };
+      powerBefore: was ? was.power : null, kills: 0, killsBefore: 0, fighters: 0, readBoth: 0, odd: 0 };
   });
   Object.keys(cur.players).forEach((pid) => {
     const [aid, kNow] = cur.players[pid];
@@ -384,6 +387,7 @@ export function weekFrom(prev, cur) {
     if (d < 0) { row.odd++; return; }
     row.readBoth++;
     row.kills += d;
+    row.killsBefore += before[1];
     if (d > 0) row.fighters++;
   });
   return { from: prev.at, to: cur.at, kvk, alliances };
