@@ -156,8 +156,8 @@ table.kvk-ab tbody tr:focus{outline:2px solid var(--indigo);outline-offset:-2px}
 .kvk-ab .sh{display:none}
 @media(max-width:560px){
   table.kvk-ab th,table.kvk-ab td{padding:7px 6px}
-  table.kvk-ab:not(.kvk-ov) th:nth-child(5),table.kvk-ab:not(.kvk-ov) td:nth-child(5){display:none}
-  table.kvk-ov th:nth-child(6),table.kvk-ov td:nth-child(6){display:none}
+  table.kvk-ab:not(.kvk-ov) th:nth-child(5),table.kvk-ab:not(.kvk-ov) td:nth-child(5),table.kvk-ab:not(.kvk-ov) th:nth-child(6),table.kvk-ab:not(.kvk-ov) td:nth-child(6){display:none}
+  table.kvk-ov th:nth-child(7),table.kvk-ov td:nth-child(7){display:none}
   .kvk-ab .lg{display:none}.kvk-ab .sh{display:inline}
   .kvk-mini{min-width:48px}
 }
@@ -2657,7 +2657,7 @@ function kvkAllianceBoard(w, limit, idp){
   var btn=function(m,lab){ return '<button class="btn small '+(mode===m?'':'ghost')+'" data-kvksort="'+m+'" aria-pressed="'+(mode===m)+'"'+(m==="growth"&&!hasGrowth?' disabled':'')+'>'+lab+'</button>'; };
   var html='<div class="btnrow" style="margin:0 0 8px;align-items:center"><span class="tag" style="margin-right:4px">SORT BY</span>'+btn("fighters","Most players fighting")+btn("growth","Kill growth %")+'</div>'+
     '<div class="tablescroll"><table class="reg kvk-ab"><thead><tr><th class="num">#</th><th>Alliance</th>'+
-    '<th class="num'+(mode==="fighters"?' on':'')+'"><span class="lg">Players fighting</span><span class="sh">Fighting</span></th><th class="num'+(mode==="growth"?' on':'')+'"><span class="lg">Kill growth</span><span class="sh">Growth</span></th><th class="num">Kills gained</th></tr></thead><tbody>'+
+    '<th class="num'+(mode==="fighters"?' on':'')+'"><span class="lg">Players fighting</span><span class="sh">Fighting</span></th><th class="num'+(mode==="growth"?' on':'')+'"><span class="lg">Kill growth</span><span class="sh">Growth</span></th><th class="num">Kills gained</th><th class="num">Kills per 1B might</th></tr></thead><tbody>'+
     shown.map(function(r,i){
       var v=mode==="growth"?(r.g||0):r.a.fighters;
       var bar='<span class="kvk-mini"><span style="width:'+(v/max*100).toFixed(1)+'%"></span></span>';
@@ -2666,7 +2666,7 @@ function kvkAllianceBoard(w, limit, idp){
       return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td><td><b>'+esc(r.tag)+'</b></td>'+
         '<td class="num'+(mode==="fighters"?' on':'')+'">'+r.a.fighters+' <span class="tag">of '+r.a.readBoth+'</span>'+(mode==="fighters"?bar:'')+'</td>'+
         '<td class="num'+(mode==="growth"?' on':'')+'">'+kvkGrowthTxt(r.g)+(mode==="growth"?bar:'')+'</td>'+
-        '<td class="num">'+kvkBig(r.a.kills)+'</td></tr>';
+        '<td class="num">'+kvkBig(r.a.kills)+'</td><td class="num">'+(kvkPerMight(r.a)===null?'–':kvkBig(kvkPerMight(r.a)))+'</td></tr>';
     }).join("")+'</tbody></table></div>';
   var notes=[];
   if(limit&&rows.length>limit) notes.push((rows.length-limit)+" more alliance"+(rows.length-limit===1?"":"s")+" on the KvK tab");
@@ -2688,52 +2688,61 @@ function kvkWeekLabel(w){
 }
 
 /* Overall: who helped the server most, across every recorded week.
-   Each week, each alliance with at least KVK_MIN_READ members read both times
-   earns up to 100 points:
-     50 × its players fighting ÷ the most players fighting that week
-   + 50 × its kill growth      ÷ the highest kill growth that week
-   The total is the sum over all scored weeks, so turning up every week counts.
-   A week without the start-of-week kill total (before collector k2) cannot be
-   scored on growth and is left out entirely rather than half-scored. */
-var KVK_W_FIGHT=50, KVK_W_GROWTH=50;
+   Kill counts depend on troop tier (T10 troops kill more, and killing higher
+   tiers counts for more), so raw kills and kill growth are not used. Each week,
+   each alliance with at least KVK_MIN_READ members read both times earns up to
+   100 points, a third from each of:
+     players fighting  ÷ the most players fighting that week      (headcount)
+     turnout           ÷ the best turnout that week               (share of members who fought)
+     kills per 1B might ÷ the best kills per 1B might that week   (output for its strength)
+   Might rises with troop tier too, so dividing kills by might evens tiers out
+   partly. The total is the sum over all recorded weeks. */
+var KVK_PART=100/3;
+function kvkTurnout(a){ return a.readBoth>0 ? a.fighters/a.readBoth*100 : null; }
+function kvkPerMight(a){ return a.power>0 ? a.kills/(a.power/1e9) : null; }
 function kvkScores(weeks){
   var tot={}, scored=[];
   (weeks||[]).forEach(function(w){
-    var el=Object.keys(w.alliances).map(function(aid){ return { aid:aid, a:w.alliances[aid], g:kvkGrowth(w.alliances[aid]) }; })
-      .filter(function(r){ return r.a.readBoth>=KVK_MIN_READ && r.g!==null; });
+    var el=Object.keys(w.alliances).map(function(aid){ var a=w.alliances[aid]; return { aid:aid, a:a, t:kvkTurnout(a), k:kvkPerMight(a) }; })
+      .filter(function(r){ return r.a.readBoth>=KVK_MIN_READ && r.t!==null && r.k!==null; });
     if(!el.length) return;
-    var mf=Math.max.apply(null,el.map(function(r){ return r.a.fighters; })), mg=Math.max.apply(null,el.map(function(r){ return r.g; }));
-    if(!(mf>0)||!(mg>0)) return;
+    var mf=Math.max.apply(null,el.map(function(r){ return r.a.fighters; })),
+        mt=Math.max.apply(null,el.map(function(r){ return r.t; })),
+        mk=Math.max.apply(null,el.map(function(r){ return r.k; }));
+    if(!(mf>0)||!(mt>0)||!(mk>0)) return;
     scored.push(w);
     el.forEach(function(r){
-      var pf=KVK_W_FIGHT*r.a.fighters/mf, pg=KVK_W_GROWTH*r.g/mg;
-      var t=tot[r.aid]=tot[r.aid]||{ aid:r.aid, tag:"", fight:0, growth:0, weeks:[] };
-      t.tag=kvkCanon(r.a.tag||r.aid); t.fight+=pf; t.growth+=pg;
-      t.weeks.push({ label:kvkWeekLabel(w), fighters:r.a.fighters, of:r.a.readBoth, g:r.g, pf:pf, pg:pg, mf:mf, mg:mg });
+      var pf=KVK_PART*r.a.fighters/mf, pt=KVK_PART*r.t/mt, pk=KVK_PART*r.k/mk;
+      var t=tot[r.aid]=tot[r.aid]||{ aid:r.aid, tag:"", fight:0, turnout:0, might:0, weeks:[] };
+      t.tag=kvkCanon(r.a.tag||r.aid); t.fight+=pf; t.turnout+=pt; t.might+=pk;
+      t.weeks.push({ label:kvkWeekLabel(w), f:r.a.fighters, mf:mf, t:r.t, mt:mt, k:r.k, mk:mk, pf:pf, pt:pt, pk:pk });
     });
   });
-  var rows=Object.keys(tot).map(function(k){ var t=tot[k]; t.points=t.fight+t.growth; return t; })
+  var rows=Object.keys(tot).map(function(k){ var t=tot[k]; t.points=t.fight+t.turnout+t.might; return t; })
     .sort(function(x,y){ return (y.points-x.points) || (y.weeks.length-x.weeks.length); });
   return { rows:rows, weeks:scored };
 }
 function kvkOverallBoard(limit){
   var sc=kvkScores(KVK&&KVK.weeks), rows=limit?sc.rows.slice(0,limit):sc.rows;
-  if(!rows.length) return '<p class="derivation">The overall ranking starts with the first week read by collector k2 or later.</p>';
+  if(!rows.length) return '<p class="derivation">The overall ranking starts with the first recorded week.</p>';
   var max=Math.max.apply(null,rows.map(function(r){ return r.points; }));
   var r1=function(v){ return (Math.round(v*10)/10).toFixed(1); };
-  var note='<p class="derivation" style="margin:0 0 10px"><b>How the points work.</b> Each week, every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points: '+
-    '<span class="mono">50 × players fighting ÷ most players fighting that week</span> + <span class="mono">50 × kill growth ÷ highest kill growth that week</span>. '+
-    'The best alliance on each measure gets the full 50 for it. Points add up over every recorded week ('+sc.weeks.length+' so far), so an alliance that shows up every week climbs. '+
-    'Fighting rewards size and turnout, growth rewards effort relative to past kills, so a small alliance can rank high on growth. Hover or tap a row for its weekly sums.</p>';
+  var pct=function(v){ return Math.round(v)+'%'; };
+  var note='<p class="derivation" style="margin:0 0 10px"><b>How the points work.</b> Raw kills are not used: T10 troops kill more, and killing higher tiers counts for more, so kill totals partly measure troop tier. '+
+    'Instead, each week every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points, a third from each of three measures, each compared with that week’s best alliance on it:<br>'+
+    '<span class="mono">33.3 × players fighting ÷ most players fighting</span> — how many showed up<br>'+
+    '<span class="mono">33.3 × turnout ÷ best turnout</span> — what share of the alliance fought<br>'+
+    '<span class="mono">33.3 × kills per 1B might ÷ best kills per 1B might</span> — kills for the alliance’s strength; might rises with troop tier too, so this partly evens tiers out.<br>'+
+    'Points add up over every recorded week ('+sc.weeks.length+' so far). “Fighting” means at least one kill that week; garrisons and reinforcements do not show on lastasylum.gg. Hover or tap a row for its weekly sums.</p>';
   var html=note+'<div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
-    '<th class="num on">Points</th><th class="num"><span class="lg">from fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">from growth</span><span class="sh">Growth</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
+    '<th class="num on">Points</th><th class="num"><span class="lg">Fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">Turnout</span><span class="sh">Turn.</span></th><th class="num"><span class="lg">Kills/might</span><span class="sh">K/might</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
     rows.map(function(r,i){
       var tip='<b>'+esc(r.tag)+'</b>'+r.weeks.map(function(w){
-        return '<br>'+esc(w.label)+': 50 × '+w.fighters+'/'+w.mf+' + 50 × '+kvkGrowthTxt(w.g).replace("+","")+'/'+kvkGrowthTxt(w.mg).replace("+","")+' = '+r1(w.pf+w.pg);
+        return '<br>'+esc(w.label)+': '+w.f+'/'+w.mf+' fighting, '+pct(w.t)+'/'+pct(w.mt)+' turnout, '+kvkBig(w.k)+'/'+kvkBig(w.mk)+' kills per 1B might → '+r1(w.pf)+' + '+r1(w.pt)+' + '+r1(w.pk)+' = '+r1(w.pf+w.pt+w.pk);
       }).join("");
       return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td><td><b>'+esc(r.tag)+'</b></td>'+
         '<td class="num on">'+r1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
-        '<td class="num">'+r1(r.fight)+'</td><td class="num">'+r1(r.growth)+'</td><td class="num">'+r.weeks.length+'</td></tr>';
+        '<td class="num">'+r1(r.fight)+'</td><td class="num">'+r1(r.turnout)+'</td><td class="num">'+r1(r.might)+'</td><td class="num">'+r.weeks.length+'</td></tr>';
     }).join("")+'</tbody></table></div>';
   return html;
 }
