@@ -148,6 +148,21 @@ textarea{resize:vertical;line-height:1.5}
 #kvk-tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--panel-2);font-size:12px;line-height:1.45;padding:6px 9px;border-radius:3px;max-width:240px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 #kvk-tip b{font-weight:600}
 table.reg td.kvk-na{color:var(--ink-3)}
+table.kvk-ab th.on{color:var(--ink)}
+table.kvk-ab td.on{font-weight:600}
+table.kvk-ab tbody tr:focus{outline:2px solid var(--indigo);outline-offset:-2px}
+.kvk-mini{display:block;height:4px;background:var(--panel-2);border-radius:2px;margin-top:4px;min-width:70px}
+.kvk-mini span{display:block;height:4px;background:#2a78d6;border-radius:2px}
+.kvk-ab .sh{display:none}
+@media(max-width:560px){
+  table.kvk-ab th,table.kvk-ab td{padding:7px 6px}
+  table.kvk-ab:not(.kvk-ov) th:nth-child(5),table.kvk-ab:not(.kvk-ov) td:nth-child(5){display:none}
+  table.kvk-ov th:nth-child(6),table.kvk-ov td:nth-child(6){display:none}
+  .kvk-ab .lg{display:none}.kvk-ab .sh{display:inline}
+  .kvk-mini{min-width:48px}
+}
+/* the unpublished-changes bar sets display:flex inline, which overrode [hidden] for every visitor */
+#dirtybar[hidden]{display:none!important}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);font-family:var(--mono)}
 @media(prefers-reduced-motion:no-preference){section{animation:fade .18s ease-out}@keyframes fade{from{opacity:0}to{opacity:1}}}
 </style>
@@ -2617,21 +2632,110 @@ function kvkShareMultiples(ms, tags){
   '<p class="derivation">Each panel is one alliance’s share of the points #75 put on the top-100 board, oldest match on the left; the figure is the latest. All panels share one scale, 0 to '+max+'%. – means not on the board, ? means on the board but its share is not on file. Neither is a zero.</p>';
 }
 
-/* Kills gained in one collector week, per alliance, as horizontal bars. */
-function kvkKillBars(w, limit){
-  var rows=Object.keys(w.alliances).map(function(aid){ var a=w.alliances[aid]; return { aid:aid, tag:kvkCanon(a.tag||aid), a:a }; })
-    .filter(function(r){ return r.a.readBoth>0; })
-    .sort(function(x,y){ return y.a.kills-x.a.kills; });
-  if(limit) rows=rows.slice(0,limit);
-  var max=Math.max.apply(null,rows.map(function(r){ return r.a.kills; }).concat([1]));
-  return '<div class="kvk-hb">'+rows.map(function(r){
-    var tip='<b>'+esc(r.tag)+'</b><br>'+kvkBig(r.a.kills)+' kills gained · '+r.a.fighters+' of '+r.a.readBoth+' players read both times made kills';
-    return '<span class="t">'+esc(r.tag)+'</span><span class="track" tabindex="0" data-tip="'+esc(tip)+'"><span class="fill" style="width:'+(r.a.kills/max*100).toFixed(1)+'%"></span></span>'+
-      '<span class="n">'+kvkBig(r.a.kills)+' · '+r.a.fighters+'/'+r.a.readBoth+'</span>';
-  }).join("")+'</div>';
+/* Alliance performance in one collector week: how many members fought, and
+   how much the alliance's kill count grew. Alliances only, never players.
+   Growth = kills gained / the same players' kills at the start of the week, so
+   an alliance is measured on exactly the members read both times. Alliances
+   with fewer than KVK_MIN_READ members read both times are listed apart: a
+   handful of players makes a percentage meaningless. */
+var KVK_MIN_READ=10;
+var KVK_SORT=(function(){ try { return localStorage.getItem("kvkSort")==="growth"?"growth":"fighters"; } catch(e){ return "fighters"; } })();
+function kvkGrowth(a){ return a.killsBefore>0 ? a.kills/a.killsBefore*100 : null; }
+function kvkGrowthTxt(g){ return g===null ? "–" : (g<0.05&&g>0 ? "+<0.1%" : "+"+(Math.round(g*10)/10).toFixed(1)+"%"); }
+function kvkAllianceBoard(w, limit, idp){
+  var all=Object.keys(w.alliances).map(function(aid){ var a=w.alliances[aid]; return { aid:aid, tag:kvkCanon(a.tag||aid), a:a, g:kvkGrowth(a) }; });
+  var rows=all.filter(function(r){ return r.a.readBoth>=KVK_MIN_READ; });
+  var small=all.filter(function(r){ return r.a.readBoth<KVK_MIN_READ; });
+  var hasGrowth=rows.some(function(r){ return r.g!==null; });
+  var mode=hasGrowth?KVK_SORT:"fighters";
+  rows.sort(function(x,y){
+    if(mode==="growth") return ((y.g===null?-1:y.g)-(x.g===null?-1:x.g)) || (y.a.fighters-x.a.fighters);
+    return (y.a.fighters-x.a.fighters) || ((y.g||0)-(x.g||0));
+  });
+  var shown=limit?rows.slice(0,limit):rows;
+  var max=Math.max.apply(null,shown.map(function(r){ return mode==="growth"?(r.g||0):r.a.fighters; }).concat([0.0001]));
+  var btn=function(m,lab){ return '<button class="btn small '+(mode===m?'':'ghost')+'" data-kvksort="'+m+'" aria-pressed="'+(mode===m)+'"'+(m==="growth"&&!hasGrowth?' disabled':'')+'>'+lab+'</button>'; };
+  var html='<div class="btnrow" style="margin:0 0 8px;align-items:center"><span class="tag" style="margin-right:4px">SORT BY</span>'+btn("fighters","Most players fighting")+btn("growth","Kill growth %")+'</div>'+
+    '<div class="tablescroll"><table class="reg kvk-ab"><thead><tr><th class="num">#</th><th>Alliance</th>'+
+    '<th class="num'+(mode==="fighters"?' on':'')+'"><span class="lg">Players fighting</span><span class="sh">Fighting</span></th><th class="num'+(mode==="growth"?' on':'')+'"><span class="lg">Kill growth</span><span class="sh">Growth</span></th><th class="num">Kills gained</th></tr></thead><tbody>'+
+    shown.map(function(r,i){
+      var v=mode==="growth"?(r.g||0):r.a.fighters;
+      var bar='<span class="kvk-mini"><span style="width:'+(v/max*100).toFixed(1)+'%"></span></span>';
+      var tip='<b>'+esc(r.tag)+'</b><br>'+r.a.fighters+' of '+r.a.readBoth+' members made kills ('+Math.round(r.a.fighters/r.a.readBoth*100)+'%)<br>'+
+        'kill count '+kvkBig(r.a.killsBefore)+' → '+kvkBig((r.a.killsBefore||0)+r.a.kills)+' ('+kvkGrowthTxt(r.g)+')';
+      return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td><td><b>'+esc(r.tag)+'</b></td>'+
+        '<td class="num'+(mode==="fighters"?' on':'')+'">'+r.a.fighters+' <span class="tag">of '+r.a.readBoth+'</span>'+(mode==="fighters"?bar:'')+'</td>'+
+        '<td class="num'+(mode==="growth"?' on':'')+'">'+kvkGrowthTxt(r.g)+(mode==="growth"?bar:'')+'</td>'+
+        '<td class="num">'+kvkBig(r.a.kills)+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+  var notes=[];
+  if(limit&&rows.length>limit) notes.push((rows.length-limit)+" more alliance"+(rows.length-limit===1?"":"s")+" on the KvK tab");
+  if(small.length) notes.push("left out, fewer than "+KVK_MIN_READ+" members: "+small.map(function(r){ return esc(r.tag); }).join(", "));
+  if(!hasGrowth) notes.push("kill growth needs a week read by collector k2 or later");
+  return html+(notes.length?'<p class="tag" style="margin:6px 0 0">'+notes.join(" · ")+'</p>':'');
 }
+function kvkWireSort(el, rerender){
+  Array.prototype.forEach.call(el.querySelectorAll("[data-kvksort]"),function(b){
+    b.onclick=function(){ KVK_SORT=b.getAttribute("data-kvksort"); try { localStorage.setItem("kvkSort",KVK_SORT); } catch(e){} rerender(); };
+  });
+}
+function kvkBoardNote(w){
+  return '<p class="derivation">Read from lastasylum.gg on '+esc(kvkStamp(w.from))+' and '+esc(kvkStamp(w.to))+'. <b>Players fighting</b>: members who made any kills in between, out of those read both times. <b>Kill growth</b>: how much those members’ combined kill count grew, so a small alliance with few past kills grows faster from the same effort; read it together with players fighting. Joiners and leavers that week are left out. Kills show who fought, not KvK points.</p>';
+}
+
 function kvkWeekLabel(w){
-  return w.kvk&&w.kvk.length ? "KvK of "+w.kvk.map(kvkDay).join(" and ") : "no KvK in this week";
+  return w.kvk&&w.kvk.length ? "week of "+w.kvk.map(kvkDay).join(" and ") : "a week with no Saturday";
+}
+
+/* Overall: who helped the server most, across every recorded week.
+   Each week, each alliance with at least KVK_MIN_READ members read both times
+   earns up to 100 points:
+     50 × its players fighting ÷ the most players fighting that week
+   + 50 × its kill growth      ÷ the highest kill growth that week
+   The total is the sum over all scored weeks, so turning up every week counts.
+   A week without the start-of-week kill total (before collector k2) cannot be
+   scored on growth and is left out entirely rather than half-scored. */
+var KVK_W_FIGHT=50, KVK_W_GROWTH=50;
+function kvkScores(weeks){
+  var tot={}, scored=[];
+  (weeks||[]).forEach(function(w){
+    var el=Object.keys(w.alliances).map(function(aid){ return { aid:aid, a:w.alliances[aid], g:kvkGrowth(w.alliances[aid]) }; })
+      .filter(function(r){ return r.a.readBoth>=KVK_MIN_READ && r.g!==null; });
+    if(!el.length) return;
+    var mf=Math.max.apply(null,el.map(function(r){ return r.a.fighters; })), mg=Math.max.apply(null,el.map(function(r){ return r.g; }));
+    if(!(mf>0)||!(mg>0)) return;
+    scored.push(w);
+    el.forEach(function(r){
+      var pf=KVK_W_FIGHT*r.a.fighters/mf, pg=KVK_W_GROWTH*r.g/mg;
+      var t=tot[r.aid]=tot[r.aid]||{ aid:r.aid, tag:"", fight:0, growth:0, weeks:[] };
+      t.tag=kvkCanon(r.a.tag||r.aid); t.fight+=pf; t.growth+=pg;
+      t.weeks.push({ label:kvkWeekLabel(w), fighters:r.a.fighters, of:r.a.readBoth, g:r.g, pf:pf, pg:pg, mf:mf, mg:mg });
+    });
+  });
+  var rows=Object.keys(tot).map(function(k){ var t=tot[k]; t.points=t.fight+t.growth; return t; })
+    .sort(function(x,y){ return (y.points-x.points) || (y.weeks.length-x.weeks.length); });
+  return { rows:rows, weeks:scored };
+}
+function kvkOverallBoard(limit){
+  var sc=kvkScores(KVK&&KVK.weeks), rows=limit?sc.rows.slice(0,limit):sc.rows;
+  if(!rows.length) return '<p class="derivation">The overall ranking starts with the first week read by collector k2 or later.</p>';
+  var max=Math.max.apply(null,rows.map(function(r){ return r.points; }));
+  var r1=function(v){ return (Math.round(v*10)/10).toFixed(1); };
+  var html='<div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
+    '<th class="num on">Points</th><th class="num"><span class="lg">from fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">from growth</span><span class="sh">Growth</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
+    rows.map(function(r,i){
+      var tip='<b>'+esc(r.tag)+'</b>'+r.weeks.map(function(w){
+        return '<br>'+esc(w.label)+': 50 × '+w.fighters+'/'+w.mf+' + 50 × '+kvkGrowthTxt(w.g).replace("+","")+'/'+kvkGrowthTxt(w.mg).replace("+","")+' = '+r1(w.pf+w.pg);
+      }).join("");
+      return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td><td><b>'+esc(r.tag)+'</b></td>'+
+        '<td class="num on">'+r1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
+        '<td class="num">'+r1(r.fight)+'</td><td class="num">'+r1(r.growth)+'</td><td class="num">'+r.weeks.length+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+  html+='<p class="derivation"><b>How the points work.</b> Each week, every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points: '+
+    '<span class="mono">50 × players fighting ÷ most players fighting that week</span> + <span class="mono">50 × kill growth ÷ highest kill growth that week</span>. '+
+    'The best alliance on each measure gets the full 50 for it. Points add up over every recorded week ('+sc.weeks.length+' so far), so an alliance that shows up every week climbs. '+
+    'Fighting rewards size and turnout, growth rewards effort relative to past kills, so a small alliance can rank high on growth. Hover or tap a row for its weekly sums.</p>';
+  return html;
 }
 
 /* ---------- front page ---------- */
@@ -2647,14 +2751,16 @@ function renderKvkFront(){
     kvkMatchStrip(ms)+kvkShareMultiples(ms,tags);
   var weeks=(KVK.weeks||[]);
   var lastWeek=weeks[weeks.length-1];
-  html+='<h3 style="margin-top:18px">Kills gained, '+(lastWeek?esc(kvkWeekLabel(lastWeek)):'per alliance')+'</h3>';
+  html+='<h3 style="margin-top:18px">Alliance performance, '+(lastWeek?esc(kvkWeekLabel(lastWeek)):'per week')+'</h3>';
   if(lastWeek){
-    html+=kvkKillBars(lastWeek,8)+'<p class="derivation">Kills gained between two weekly readings of lastasylum.gg ('+esc(kvkStamp(lastWeek.from))+' to '+esc(kvkStamp(lastWeek.to))+'), counted per player and summed by the alliance they are in now. The second figure is how many members made any kills, out of those read both times. Kills show who fought, not KvK points.</p>';
+    html+=kvkAllianceBoard(lastWeek,10)+kvkBoardNote(lastWeek);
+    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, all weeks</h3>'+kvkOverallBoard(10);
   } else {
     html+='<p class="derivation">Read weekly from lastasylum.gg. '+(KVK.latest?'The first reading was taken '+esc(kvkStamp(KVK.latest.at))+'; kills per alliance appear after the next KvK.':'The first reading will be taken within a few hours; kills per alliance appear after the KvK that follows it.')+'</p>';
   }
   html+='<div class="btnrow"><button class="btn ghost small" id="kvk-open">All KvK figures →</button></div>';
   el.innerHTML=html;
+  kvkWireSort(el, renderKvk);
   $("kvk-open").onclick=function(){ active="kvk"; renderTabs(); window.scrollTo(0,0); };
 }
 
@@ -2693,7 +2799,7 @@ function renderKvkTab(){
     html+='<p class="derivation">'+(KVK.latest?'The baseline reading was taken '+esc(kvkStamp(KVK.latest.at))+' ('+Object.keys(KVK.latest.alliances).length+' alliances). The first week of kills appears after the next KvK, once the Sunday reading is in.':'No reading has been taken yet. The collector takes its first one within a few hours of being deployed.')+'</p>';
   } else {
     var lastW=weeks[weeks.length-1];
-    html+='<p style="font-size:14px;margin-bottom:10px">Latest: <b>'+esc(kvkWeekLabel(lastW))+'</b>, '+esc(kvkStamp(lastW.from))+' to '+esc(kvkStamp(lastW.to))+'.</p>'+kvkKillBars(lastW,0);
+    html+='<p style="font-size:14px;margin-bottom:10px">Latest: <b>'+esc(kvkWeekLabel(lastW))+'</b>, '+esc(kvkStamp(lastW.from))+' to '+esc(kvkStamp(lastW.to))+'.</p>'+kvkAllianceBoard(lastW,0)+kvkBoardNote(lastW);
     var aids={}; weeks.forEach(function(w){ Object.keys(w.alliances).forEach(function(aid){ aids[aid]=kvkCanon(w.alliances[aid].tag||aid); }); });
     var order=Object.keys(aids).sort(function(a,b){ var x=lastW.alliances[a], y=lastW.alliances[b]; return (y?y.kills:-1)-(x?x.kills:-1); });
     html+='<div class="tablescroll" style="margin-top:12px"><table class="reg"><thead><tr><th>Alliance</th>'+
@@ -2704,14 +2810,15 @@ function renderKvkTab(){
         return '<tr><td><b>'+esc(aids[aid])+'</b></td>'+weeks.map(function(w){
           var x=w.alliances[aid];
           if(!x||!x.readBoth) return '<td class="num kvk-na">–</td>';
-          return '<td class="num">'+kvkBig(x.kills)+' <span class="tag">'+x.fighters+'/'+x.readBoth+'</span></td>';
+          return '<td class="num">'+x.fighters+'/'+x.readBoth+' <span class="tag">'+kvkGrowthTxt(kvkGrowth(x))+'</span></td>';
         }).join("")+
         '<td class="num">'+(a?a.members:'–')+'</td><td class="num">'+(a?kvkBig(a.power):'–')+'</td>'+
         '<td class="num">'+(a&&a.powerBefore?(a.power>=a.powerBefore?'+':'')+kvkBig(a.power-a.powerBefore):'–')+'</td></tr>';
       }).join("")+'</tbody></table></div>';
-    html+='<p class="derivation">Each column is the change between two weekly readings, labelled with the KvK it covers. 8/45 means 8 of the 45 members read both times made kills. A player read only once — someone who joined or left that week — is left out, so a newcomer’s career kills never count as one week’s. Power, week is the alliance total now minus a week ago, so it moves with members joining and leaving.</p>';
+    html+='<p class="derivation">Each column is the change between two weekly readings, labelled with the KvK it covers. 8/45 means 8 of the 45 members read both times made kills; the percentage is the growth of their combined kill count. A player read only once — someone who joined or left that week — is left out, so a newcomer’s career kills never count as one week’s. Power, week is the alliance total now minus a week ago, so it moves with members joining and leaving.</p>';
   }
 
+  html+='<h3>Who helped the server most — all weeks</h3>'+kvkOverallBoard(0);
   var c=KVK.collector||{};
   var caps=Object.keys(KVK.captures||{}).sort().reverse().slice(0,5);
   html+='<h3>Where the kill figures come from</h3><div class="card" style="font-size:14px">'+
@@ -2726,6 +2833,7 @@ function renderKvkTab(){
     }).join(" · "):'')+
     '</p></div>';
   el.innerHTML=html;
+  kvkWireSort(el, renderKvk);
 }
 
 function renderKvk(){ renderKvkFront(); renderKvkTab(); }
