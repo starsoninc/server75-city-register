@@ -3235,8 +3235,8 @@ function SnapshotPanel({ snapshots, onRestore, onManualSnapshot, editMode }) {
    The dashboard can never know by itself that somebody left the alliance —
    the game does. Paste the in-game list here and it diffs the two, so the
    roster stops drifting upward forever. */
-const APP_VERSION = "v86";
-const APP_BUILT = "2026-10-19";
+const APP_VERSION = "v87";
+const APP_BUILT = "2026-10-20";
 /* What officers see on the badge.
    APP_VERSION is the build number and stays the truth for the changelog, the
    deploy check and the Ask context — never reuse one, never renumber history.
@@ -3244,7 +3244,7 @@ const APP_BUILT = "2026-10-19";
    "what were the other 54?" from people who have no reason to know. Bump this
    only when the dashboard changes in a way an officer would notice; the build
    number keeps moving underneath it either way. */
-const APP_RELEASE = "v1.22";
+const APP_RELEASE = "v1.23";
 const MEMBER_CAP = 100;
 function parseGameList(text) {
   const out = [];
@@ -5739,6 +5739,7 @@ function App() {
     ["targets", "Targets", "ti-target"],
     ["donations", "Donations", "ti-coins"],
     ["might", "Might", "ti-trending-up"],
+    ["heroes", "Hero might", "ti-shield-star"],
     ["merger", "Merger planner", "ti-arrows-join"],
     ["caravan", "Caravan", "ti-caravan"],
     ["events", "Events", "ti-calendar-event"],
@@ -5758,7 +5759,7 @@ function App() {
        is how it stays undiscovered. */
     ["weekly", "Weekly update", "ti-checklist", ["weekly"]],
     ["people", "People", "ti-users", ["roster", "attention", "merger", "mentoring", "removed"]],
-    ["performance", "Performance", "ti-chart-bar", ["participation", "kingdom", "targets", "donations", "might", "reports"]],
+    ["performance", "Performance", "ti-chart-bar", ["participation", "kingdom", "targets", "donations", "might", "heroes", "reports"]],
     ["operations", "Operations", "ti-calendar-event", ["r4", "shifts", "events", "duties", "caravan"]],
     ["admin", "Admin", "ti-tool", ["ask", "import", "feed", "requests", "submit"]]
   ];
@@ -5843,7 +5844,7 @@ function App() {
       onArchive: setArchived,
       onReconcile: () => setReconciling(true)
     }
-  ), tab === "attention" && /* @__PURE__ */ React.createElement(AttentionTab, { ranked, riskCtx, onOpenProfile: setProfileId, onEdit: setEditing, contactIndex, onLogContact: logContact, editMode }), tab === "reports" && /* @__PURE__ */ React.createElement(ReportsTab, { riskCtx, ranked, warLog, contactIndex, shifts, rotation: r4Rotation, feed }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitTab, { members: activeMembers, onSubmit: submitChangeRequest }), tab === "requests" && /* @__PURE__ */ React.createElement(RequestsTab, { pending, history: changeHistory, onResolve: resolveRequest }), tab === "r4" && el(R4RotationTab, { rotation: r4Rotation, onChange: saveR4Rotation, members, todayISO }), tab === "shifts" && el(ShiftsTab, { shifts, onChange: saveShifts, leaders: mentorNames, r4Names: r4DutyNames, serverOffset }), tab === "mentoring" && /* @__PURE__ */ React.createElement(MentoringTab, { members: activeMembers, leaderNames: mentorNames, onUpdateMember: updateMemberFields }), tab === "participation" && /* @__PURE__ */ React.createElement(ParticipationTab, { members: activeMembers, data: participation, onChange: saveParticipation, warLog, onWarLogChange: saveWarLog }), tab === "kingdom" && el(KingdomTab, { store: kvk, onLoad: loadKvk, onStore: setKvk, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onSnapshot: snapshotBefore }), tab === "targets" && el(TargetsTab, { access: targetsLock, onAccess: loadTargetsLock, store: feed, onLoadFeed: loadFeed, might: feed && feed.might, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onSaveAva: handleFeedAva }), tab === "donations" && /* @__PURE__ */ React.createElement(DonationsTab, { members: activeMembers, data: donations, onChange: saveDonations }), tab === "might" && el(MightTab, { members: activeMembers, data: mightView, onChange: saveMightFromView, editMode, onNavigate: setTab }), tab === "merger" && el(MergerTab, { state: merger, onState: setMerger, onLoad: loadMerger, ctx: { members, might: mightView, ranked, riskCtx, shifts, r4Rotation, duties, vipPool }, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt }), tab === "caravan" && /* @__PURE__ */ React.createElement(CaravanVipTab, { members: activeMembers, allMembers: members, data: caravanVip, onChange: saveCaravanVip, participation, donations, vipPool, onChangePool: saveVipPool, runs: caravanRuns, onChangeRuns: saveCaravanRuns, runners: r4DutyNames }), tab === "events" && /* @__PURE__ */ React.createElement(EventsTab, { events, serverOffset, onChangeEvents: saveEvents, onChangeOffset: saveServerOffset, duties }), tab === "duties" && /* @__PURE__ */ React.createElement(DutiesTab, { members: activeMembers, events, duties, dutyColumns, onChangeDuties: saveDuties, onChangeColumns: saveDutyColumns }), tab === "removed" && /* @__PURE__ */ React.createElement(RemovedTab, { log: removedLog }), tab === "feed" && el(FeedTab, { store: feed, onLoad: loadFeed, members, mightStored: might, overlay: feedMight.overlay, agreement: feedMight.agreement, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onLinks: handleFeedLinks, onOpponent: handleFeedOpponent, onReconcile: (text) => setReconciling(text), onRename: handleFeedRename, onRanks: handleFeedRanks, participation, kvkStore: kvk, onLoadKvk: loadKvk, onAuto: handleFeedAuto, autoNotice: feedAutoNotice }), tab === "import" && /* @__PURE__ */ React.createElement(ImportTab, { members, onImport: handleImport, onSaveMembers: saveMembers, snapshots, onRestore: handleRestore, onManualSnapshot: snapshotBefore, editMode, stores: { members, r4_schedule: r4Schedule, r4_rotation: r4Rotation, participation, donations, might, war_log: warLog, caravan_vip: caravanVip, caravan_runs: caravanRuns, vip_pool: vipPool, events, duties, duty_columns: dutyColumns, shifts, server_offset: serverOffset, removed_log: removedLog, pending_changes: pending, change_history: changeHistory } }), editing && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "1rem" } }, /* @__PURE__ */ React.createElement(Modal, { title: editing === "new" ? "Add member" : "Edit member", onClose: () => setEditing(null) }, /* @__PURE__ */ React.createElement(MemberForm, { initial: editing === "new" ? null : editing, onSave: handleSaveMember, onCancel: () => setEditing(null), leaders: mentorNames }))), removing && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "1rem" } }, /* @__PURE__ */ React.createElement(Modal, { title: "Remove member", onClose: () => setRemoving(null) }, /* @__PURE__ */ React.createElement(RemoveForm, { member: removing, onConfirm: handleConfirmRemove, onCancel: () => setRemoving(null) }))), reconciling && el(Modal, { title: "Reconcile roster with the game", onClose: () => setReconciling(false), wide: true }, el(ReconcilePanel, { members, onApply: handleReconcile, onClose: () => setReconciling(false), editMode, initialText: typeof reconciling === "string" ? reconciling : "" })), profileMember && el(Modal, { title: "Member profile", onClose: () => setProfileId(null), wide: true }, el(MemberProfile, { member: profileMember, risk: riskByName[profileMember.name], riskCtx, contact: contactState(contactIndex, profileMember), onEdit: () => { setProfileId(null); setEditing(profileMember); } })));
+  ), tab === "attention" && /* @__PURE__ */ React.createElement(AttentionTab, { ranked, riskCtx, onOpenProfile: setProfileId, onEdit: setEditing, contactIndex, onLogContact: logContact, editMode }), tab === "reports" && /* @__PURE__ */ React.createElement(ReportsTab, { riskCtx, ranked, warLog, contactIndex, shifts, rotation: r4Rotation, feed }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitTab, { members: activeMembers, onSubmit: submitChangeRequest }), tab === "requests" && /* @__PURE__ */ React.createElement(RequestsTab, { pending, history: changeHistory, onResolve: resolveRequest }), tab === "r4" && el(R4RotationTab, { rotation: r4Rotation, onChange: saveR4Rotation, members, todayISO }), tab === "shifts" && el(ShiftsTab, { shifts, onChange: saveShifts, leaders: mentorNames, r4Names: r4DutyNames, serverOffset }), tab === "mentoring" && /* @__PURE__ */ React.createElement(MentoringTab, { members: activeMembers, leaderNames: mentorNames, onUpdateMember: updateMemberFields }), tab === "participation" && /* @__PURE__ */ React.createElement(ParticipationTab, { members: activeMembers, data: participation, onChange: saveParticipation, warLog, onWarLogChange: saveWarLog }), tab === "kingdom" && el(KingdomTab, { store: kvk, onLoad: loadKvk, onStore: setKvk, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onSnapshot: snapshotBefore }), tab === "targets" && el(TargetsTab, { access: targetsLock, onAccess: loadTargetsLock, store: feed, onLoadFeed: loadFeed, might: feed && feed.might, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onSaveAva: handleFeedAva }), tab === "donations" && /* @__PURE__ */ React.createElement(DonationsTab, { members: activeMembers, data: donations, onChange: saveDonations }), tab === "might" && el(MightTab, { members: activeMembers, data: mightView, onChange: saveMightFromView, editMode, onNavigate: setTab }), tab === "heroes" && el(HeroMightTab, { members: activeMembers, store: feed, onLoadFeed: loadFeed, onNavigate: setTab, offline: !!offlineAt }), tab === "merger" && el(MergerTab, { state: merger, onState: setMerger, onLoad: loadMerger, ctx: { members, might: mightView, ranked, riskCtx, shifts, r4Rotation, duties, vipPool }, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt }), tab === "caravan" && /* @__PURE__ */ React.createElement(CaravanVipTab, { members: activeMembers, allMembers: members, data: caravanVip, onChange: saveCaravanVip, participation, donations, vipPool, onChangePool: saveVipPool, runs: caravanRuns, onChangeRuns: saveCaravanRuns, runners: r4DutyNames }), tab === "events" && /* @__PURE__ */ React.createElement(EventsTab, { events, serverOffset, onChangeEvents: saveEvents, onChangeOffset: saveServerOffset, duties }), tab === "duties" && /* @__PURE__ */ React.createElement(DutiesTab, { members: activeMembers, events, duties, dutyColumns, onChangeDuties: saveDuties, onChangeColumns: saveDutyColumns }), tab === "removed" && /* @__PURE__ */ React.createElement(RemovedTab, { log: removedLog }), tab === "feed" && el(FeedTab, { store: feed, onLoad: loadFeed, members, mightStored: might, overlay: feedMight.overlay, agreement: feedMight.agreement, editMode, writable: !offlineAt && !revalidating, offline: !!offlineAt, onLinks: handleFeedLinks, onOpponent: handleFeedOpponent, onReconcile: (text) => setReconciling(text), onRename: handleFeedRename, onRanks: handleFeedRanks, participation, kvkStore: kvk, onLoadKvk: loadKvk, onAuto: handleFeedAuto, autoNotice: feedAutoNotice }), tab === "import" && /* @__PURE__ */ React.createElement(ImportTab, { members, onImport: handleImport, onSaveMembers: saveMembers, snapshots, onRestore: handleRestore, onManualSnapshot: snapshotBefore, editMode, stores: { members, r4_schedule: r4Schedule, r4_rotation: r4Rotation, participation, donations, might, war_log: warLog, caravan_vip: caravanVip, caravan_runs: caravanRuns, vip_pool: vipPool, events, duties, duty_columns: dutyColumns, shifts, server_offset: serverOffset, removed_log: removedLog, pending_changes: pending, change_history: changeHistory } }), editing && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "1rem" } }, /* @__PURE__ */ React.createElement(Modal, { title: editing === "new" ? "Add member" : "Edit member", onClose: () => setEditing(null) }, /* @__PURE__ */ React.createElement(MemberForm, { initial: editing === "new" ? null : editing, onSave: handleSaveMember, onCancel: () => setEditing(null), leaders: mentorNames }))), removing && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "1rem" } }, /* @__PURE__ */ React.createElement(Modal, { title: "Remove member", onClose: () => setRemoving(null) }, /* @__PURE__ */ React.createElement(RemoveForm, { member: removing, onConfirm: handleConfirmRemove, onCancel: () => setRemoving(null) }))), reconciling && el(Modal, { title: "Reconcile roster with the game", onClose: () => setReconciling(false), wide: true }, el(ReconcilePanel, { members, onApply: handleReconcile, onClose: () => setReconciling(false), editMode, initialText: typeof reconciling === "string" ? reconciling : "" })), profileMember && el(Modal, { title: "Member profile", onClose: () => setProfileId(null), wide: true }, el(MemberProfile, { member: profileMember, risk: riskByName[profileMember.name], riskCtx, contact: contactState(contactIndex, profileMember), onEdit: () => { setProfileId(null); setEditing(profileMember); } })));
 }
 function StatCard({ label, value, icon, cls, small, wide, onClick }) {
   return /* @__PURE__ */ React.createElement("div", { onClick, role: onClick ? "button" : void 0, tabIndex: onClick ? 0 : void 0, onKeyDown: onClick ? (e) => {
@@ -13018,6 +13019,149 @@ function HomeHeroes({ feed, today }) {
     el("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "10px" } }, serverPanels),
     section(labels.join(" & ") + " only"),
     el("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "10px" } }, ourPanels));
+}
+
+/* ---------- Performance: the Hero might tab (v87) ----------
+   The Might tab's twin, for hero might. Same weekly board (mightBoard), so
+   "since", "over 4 weeks", the totals and the sparkline mean exactly what they
+   mean on the Might tab, and the two cannot drift apart.
+
+   WHERE THE FIGURES COME FROM. Collector c6 reads #75's Hero Might Rank once a
+   day; one reading per week goes on the board: the last day read in that week
+   (weeks as everywhere else here, from Sunday). The site lists only #75's top
+   100, so a member below it has no figure — shown as a dash, never as zero.
+   The collector keeps daily hero lists for 40 days, so the board reaches back
+   about six weeks.
+
+   WHOSE. Only accounts that are ours: read on the WPP or RISE alliance page
+   (now or in any kept weekly reading) or linked to a member. A stranger with a
+   member's name elsewhere on the list is never counted. Accounts are matched
+   to members by link first, then by name, exactly as site might is
+   (feedResolve); one member with two accounts is left out until an officer
+   links one. Nothing here is written anywhere. */
+function heroWeeksByName(might, members, links, feedObj) {
+  const out = { byName: {}, extra: {}, days: {}, latestDay: null, listed: 0, unmatched: [] };
+  const H = heroStore(might);
+  if (!H) return out;
+  const dates = heroDates(H);
+  if (!dates.length) return out;
+  const lastOfWeek = {};
+  dates.forEach((d) => { const w = weekKeyFor(d); if (w) lastOfWeek[w] = d; });
+  const ours = new Set();
+  if (feedIsObj(might.weeks)) Object.keys(might.weeks).forEach((p) => ours.add(String(p)));
+  heroRoster(feedObj, [FEED_HOME_ID, FEED_SISTER_ID]).forEach((r) => ours.add(r.pid));
+  if (feedIsObj(links)) Object.keys(links).forEach((p) => ours.add(String(p)));
+  const pids = new Set();
+  Object.keys(lastOfWeek).forEach((w) => Object.keys(H.snaps[lastOfWeek[w]]).forEach((p) => { if (ours.has(p) && heroVal(H.snaps[lastOfWeek[w]], p, 0) !== null) pids.add(p); }));
+  const info = feedIsObj(H.info) ? H.info : {};
+  const names = feedIsObj(might.names) ? might.names : {};
+  const nameOf = (pid) => (names[pid] && names[pid].name) || (info[pid] && info[pid].n) || "";
+  /* Resolved over every account of ours, not only those on the hero list, so a
+     member with two accounts is held back here exactly as on the Might tab. */
+  const res = feedResolve([...ours].map((pid) => ({ pid, name: nameOf(pid) })), members, links);
+  const latest = dates[dates.length - 1];
+  const cur = H.snaps[latest];
+  const latestWeek = weekKeyFor(latest);
+  const prevWeeks = Object.keys(lastOfWeek).filter((w) => w < latestWeek).sort();
+  const was = prevWeeks.length ? H.snaps[lastOfWeek[prevWeeks[prevWeeks.length - 1]]] : null;
+  const rank = heroRanks(cur), rankWas = was ? heroRanks(was) : {};
+  out.listed = Object.keys(rank).length;
+  pids.forEach((pid) => {
+    const x = res.get(pid);
+    if (!x || !x.member) { if (heroVal(cur, pid, 0) !== null) out.unmatched.push(nameOf(pid) || pid); return; }
+    const hist = {};
+    Object.keys(lastOfWeek).forEach((w) => { const v = heroVal(H.snaps[lastOfWeek[w]], pid, 0); if (v !== null) hist[w] = Math.round(v); });
+    const name = x.member.name;
+    out.byName[name] = Object.assign(out.byName[name] || {}, hist);
+    if (heroVal(cur, pid, 0) !== null) {
+      out.extra[name] = { pid, rank: rank[pid] || null, rankWas: rankWas[pid] || null, best: heroVal(cur, pid, 1), hero: (info[pid] && info[pid].h) || null };
+    }
+  });
+  out.unmatched.sort((a, b) => a.localeCompare(b));
+  out.days = lastOfWeek;
+  out.latestDay = latest;
+  return out;
+}
+function HeroMightTab({ members, store, onLoadFeed, onNavigate, offline }) {
+  const [sort, setSort] = useState("might");
+  const [search, setSearch] = useState("");
+  useEffect(() => { if (!store && onLoadFeed) onLoadFeed(); }, [store]);
+  const hw = useMemo(() => store && store.status === "ready" ? heroWeeksByName(store.might, members, store.links, store.feed) : null, [store, members]);
+  if (!store || store.status === "loading") {
+    return el("p", { style: { textAlign: "center", color: "var(--text-muted)", padding: "2rem 0" } },
+      el("i", { className: "ti ti-loader", style: { marginRight: "6px" }, "aria-hidden": "true" }), "Reading what the collector has filed…");
+  }
+  if (store.status === "error") {
+    return el("div", null, el(KvkNote, { tone: "danger" }, store.error, offline ? " The lastasylum.gg readings are not part of the offline copy kept in this browser." : ""), feedBtn("ti-refresh", "Try again", onLoadFeed));
+  }
+  const b = mightBoard(members, hw.byName);
+  /* The day actually read, which is not the week's first day. */
+  const read = (w) => w && hw.days[w] ? fmtWeek(hw.days[w]) : w ? fmtWeek(w) : "";
+  const q = search.trim().toLowerCase();
+  const ex = (r) => hw.extra[r.name] || null;
+  const val = (r) => sort === "gain" ? (r.since ? r.since.abs : null) : sort === "pct" ? (r.since ? r.since.pct : null) : sort === "span" ? (r.span ? r.span.abs : null) : r.cur;
+  const rows = b.rows.filter((r) => !q || r.name.toLowerCase().includes(q)).sort((a, c) => {
+    if (sort === "name") return a.name.localeCompare(c.name);
+    const x = val(a), y = val(c);
+    if (x === null && y === null) return a.name.localeCompare(c.name);
+    if (x === null) return 1;
+    if (y === null) return -1;
+    return y - x || a.name.localeCompare(c.name);
+  });
+  const cellNum = { textAlign: "right", fontVariantNumeric: "tabular-nums" };
+  const tone = (d) => !d ? "var(--text-muted)" : d.abs > 0 ? "var(--text-success)" : d.abs < 0 ? "var(--text-danger)" : "var(--text-muted)";
+  const rankCell = (r) => {
+    const e = ex(r);
+    if (!e || !e.rank) return el("span", { style: { color: "var(--text-muted)" } }, "–");
+    const move = heroRankMove(e);
+    return el("span", { style: cellNum }, "#" + e.rank, move ? el("span", { style: { marginLeft: "4px", fontSize: "11px", color: move[0] === "▲" ? "var(--text-success)" : "var(--text-danger)" }, title: "#" + e.rankWas + " at the last reading before this week" }, move) : null);
+  };
+  const heroCell = (r) => {
+    const e = ex(r);
+    if (!e || (!e.hero && e.best === null)) return el("span", { style: { color: "var(--text-muted)" } }, "–");
+    return el("span", { title: e.best !== null ? e.best.toLocaleString("en-US") : "" }, (e.hero || "?") + (e.best !== null ? " · " + fmtBig(e.best) : ""));
+  };
+  return el("div", null,
+    el("p", { style: { fontSize: "13px", color: "var(--text-muted)", margin: "0 0 12px", maxWidth: "780px", lineHeight: 1.5 } },
+      "Each member's hero might — all their heroes added up — week by week, from #" + FEED_SERVER + "'s Hero Might Rank on lastasylum.gg, which the collector reads every day. The week's reading is the last day read in it. The site lists only the server's top 100, so a member below it has no figure: blank, not zero, and growth is only shown between two readings that both exist."),
+    !b.latest ? el(KvkNote, { tone: "info" }, heroStore(store.might)
+      ? "None of our members is on #" + FEED_SERVER + "'s hero list yet, or none is matched to the roster. Links are made on the lastasylum.gg tab."
+      : "No hero readings yet. They fill in from the collector's next daily read (c6) of #" + FEED_SERVER + "'s hero rankings.",
+      " ", el("button", { onClick: () => onNavigate("feed"), style: { marginLeft: "6px" } }, "Open the lastasylum.gg tab")) : null,
+    b.latest ? el("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "12px", marginBottom: "1.25rem" } },
+      el(StatCard, { label: "Latest reading", value: read(b.latest) + " · " + b.have + " of " + b.total + " on the list", icon: "ti-calendar", cls: "badge-blue", small: true }),
+      el(StatCard, { label: "Hero might (" + b.have + " on the list)", value: fmtBig(b.sum), icon: "ti-shield-star", cls: "badge-blue", small: true }),
+      b.totalSince ? el(StatCard, { label: "Since " + read(b.prev) + " (" + b.totalSince.n + " with both)", value: b.totalSince.pct === null ? "–" : mightPct(b.totalSince.pct), icon: "ti-arrows-diff", cls: "badge-blue", small: true }) : null,
+      b.totalSpan ? el(StatCard, { label: "Over " + b.spanWeeks + " weeks (" + b.totalSpan.n + " with both)", value: b.totalSpan.pct === null ? "–" : mightPct(b.totalSpan.pct), icon: "ti-chart-line", cls: "badge-blue", small: true }) : null) : null,
+    b.latest && b.missing.length ? el(KvkNote, { tone: "info" }, b.missing.length + " member" + (b.missing.length === 1 ? " has" : "s have") + " no hero figure for " + read(b.latest) + " — below #" + FEED_SERVER + "'s top 100, or an account not matched to the roster: " + b.missing.join(", ") + ".") : null,
+    b.latest && hw.unmatched.length ? el(KvkNote, { tone: "warn" }, "On the hero list from our alliance pages but not matched to one roster member, so not counted: " + hw.unmatched.join(", ") + ". Link them on the lastasylum.gg tab.") : null,
+    b.latest && !b.prev ? el(KvkNote, { tone: "info" }, "One weekly reading so far. Growth appears after the second.") : null,
+    b.latest ? el("div", null,
+      el(FilterBar, null,
+        el(SearchField, { value: search, onChange: setSearch }),
+        el("select", { value: sort, onChange: (e) => setSort(e.target.value), "aria-label": "Sort by", style: { minWidth: "200px", maxWidth: "100%" } },
+          el("option", { value: "might" }, "Sort: hero might, highest first"),
+          el("option", { value: "gain" }, "Sort: biggest gain since last reading"),
+          el("option", { value: "pct" }, "Sort: fastest growth since last reading"),
+          b.base ? el("option", { value: "span" }, "Sort: biggest gain over " + b.spanWeeks + " weeks") : null,
+          el("option", { value: "name" }, "Sort: name"))),
+      el(KvkTable, {
+        head: [["#", "r"], ["Member"], ["Rank on #" + FEED_SERVER, "r"], ["Hero might", "r"], [b.prev ? "Since " + read(b.prev) : "Since last", "r"], ["%", "r"]].concat(b.base ? [["Over " + b.spanWeeks + " wk", "r"], ["%", "r"]] : []).concat([["Strongest hero"], ["Last " + b.shown.length + " readings"]]),
+        rows: rows.map((r, i) => [
+          i + 1,
+          el("span", { style: { fontWeight: 500 } }, r.name),
+          rankCell(r),
+          r.cur !== null ? el("span", { title: r.cur.toLocaleString("en-US") }, fmtBig(r.cur)) : el("span", { style: { color: "var(--text-muted)" }, title: r.known ? "Last on the list " + read(r.known.week) + ": " + r.known.value.toLocaleString("en-US") : "Never on the list in the readings kept" }, "–"),
+          el("span", { style: Object.assign({ color: tone(r.since) }, cellNum) }, r.since ? mightDelta(r.since.abs) : "–"),
+          el("span", { style: Object.assign({ color: tone(r.since) }, cellNum) }, r.since ? mightPct(r.since.pct) : "")
+        ].concat(b.base ? [
+          el("span", { style: Object.assign({ color: tone(r.span) }, cellNum) }, r.span ? mightDelta(r.span.abs) : "–"),
+          el("span", { style: Object.assign({ color: tone(r.span) }, cellNum) }, r.span ? mightPct(r.span.pct) : "")
+        ] : []).concat([heroCell(r), el(MightSpark, { values: r.series })]))
+      }),
+      rows.length === 0 ? el("p", { style: { textAlign: "center", color: "var(--text-muted)", padding: "1.5rem 0" } }, "No members match.") : null,
+      el("p", { style: { fontSize: "12px", color: "var(--text-muted)", margin: "10px 0 0", maxWidth: "780px" } },
+        "Read off the site, so there is nothing to correct by hand here. Daily hero readings are kept for 40 days, so this reaches back about six weeks. Day-by-day gains and the server's biggest risers are on Home, under Hero might.")) : null);
 }
 
 class ErrorBoundary extends React.Component {
