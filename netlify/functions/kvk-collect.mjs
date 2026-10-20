@@ -31,6 +31,11 @@
      in at the second reading. A player needs both readings to count, so a
      player who joins an alliance never brings their career kills with them.
      A total that went down is left out. Absence is "not known", never zero.
+   - k3: each member's castle level is kept too, so a week also says how many
+     members of an alliance upgraded their castle and by how many levels —
+     counted on the same both-readings rule, so a high-castle joiner never
+     counts as an upgrade. lastasylum.gg no longer shows an alliance level;
+     if it comes back it is kept, never required.
 
    ENVIRONMENT (already set for the register):
      GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH (default main)
@@ -40,7 +45,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k2";
+export const VERSION = "k3";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -236,6 +241,13 @@ function findTable(ts, required) {
   }
   return null;
 }
+/* A castle level: a whole number from 1 to 99, or null. An odd cell is not a
+   reason to drop the alliance — castles are extra, kills are what it is for. */
+export function castleOf(text) {
+  const m = /^\D*(\d{1,2})\D*$/.exec(String(text || "").trim());
+  const n = m ? Number(m[1]) : 0;
+  return n >= 1 ? n : null;
+}
 export function int(text) {
   const t = String(text || "").replace(/[\s  ]/g, "");
   if (!/^\d+$/.test(t) && !/^\d{1,3}(,\d{3})+$/.test(t)) return null;
@@ -313,7 +325,7 @@ export function parseAlliance(html) {
     if (!power || power <= 0) problems.push('power "' + cells[col.power].text + '"');
     if (!kills.ok) problems.push('kills "' + cells[col.kills].text + '"');
     if (problems.length) { bad.push("row " + (i + 1) + (name ? " (" + name + ")" : "") + ": " + problems.join(", ")); return; }
-    rows.push({ pid, name, power, kills: kills.value });
+    rows.push({ pid, name, power, kills: kills.value, castle: castleOf(cells[col.castle].text) });
   });
   if (bad.length) return refuse(bad.length + " row(s) could not be read — " + bad.slice(0, 3).join("; "));
   if (!rows.length) return refuse("the member table is empty");
@@ -325,13 +337,15 @@ export function parseAlliance(html) {
   if (srv && Number(srv[1]) !== SERVER) return refuse("this alliance is now on server #" + srv[1] + ", not #" + SERVER);
   const tn = tagName((/^(\[[^\]]*\][^·]*)/.exec(ttl) || [])[1] || "");
   const text = textOf(html);
-  const sm = /(\d[\d,]*)\s*Power\s*(\d[\d,]*)\s*Members\s*(\d[\d,]*)\s*Alliance level\s*(\d[\d,]*)\s*Kills/i.exec(text);
-  const summary = sm ? { power: int(sm[1]), members: int(sm[2]), kills: int(sm[4]) } : null;
+  // The site dropped "Alliance level" from this summary in October 2026; it is
+  // optional here so the member-count cross-check keeps working either way.
+  const sm = /(\d[\d,]*)\s*Power\s*(\d[\d,]*)\s*Members\s*(?:(\d[\d,]*)\s*Alliance level\s*)?(\d[\d,]*)\s*Kills/i.exec(text);
+  const summary = sm ? { power: int(sm[1]), members: int(sm[2]), level: sm[3] ? int(sm[3]) : null, kills: int(sm[4]) } : null;
   if (summary && summary.members !== null && summary.members !== rows.length) {
     return refuse("the page says " + summary.members + " members but " + rows.length + " rows were read");
   }
   return {
-    ok: true, rows, tag: tn.tag, name: tn.name,
+    ok: true, rows, tag: tn.tag, name: tn.name, level: summary ? summary.level : null,
     power: summary && summary.power !== null ? summary.power : rows.reduce((s, r) => s + r.power, 0),
     warnings: [srv ? null : "the page title does not name the server", summary ? null : "no summary above the table to cross-check the member count"].filter(Boolean)
   };
@@ -375,13 +389,25 @@ export function weekFrom(prev, cur) {
     const a = cur.alliances[aid];
     const was = prev.alliances[aid];
     alliances[aid] = { tag: a.tag, name: a.name, members: a.members, power: a.power,
-      powerBefore: was ? was.power : null, kills: 0, killsBefore: 0, fighters: 0, readBoth: 0, odd: 0 };
+      powerBefore: was ? was.power : null, kills: 0, killsBefore: 0, fighters: 0, readBoth: 0, odd: 0,
+      castleRead: 0, castleUp: 0, castleLevels: 0, castleBefore: 0, castles: {} };
+    if (a.level != null) alliances[aid].level = a.level;
+    if (was && was.level != null) alliances[aid].levelBefore = was.level;
   });
   Object.keys(cur.players).forEach((pid) => {
     const [aid, kNow] = cur.players[pid];
     const before = prev.players[pid];
     const row = alliances[aid];
     if (!row) return;
+    // Castles: the whole alliance as it is now, and the upgrades of members
+    // read both times. A castle cannot go down, so one that did is left out.
+    const cNow = cur.players[pid][3], cWas = before ? before[3] : undefined;
+    if (typeof cNow === "number") row.castles[cNow] = (row.castles[cNow] || 0) + 1;
+    if (typeof cNow === "number" && typeof cWas === "number" && cNow >= cWas) {
+      row.castleRead++;
+      row.castleBefore += cWas;
+      if (cNow > cWas) { row.castleUp++; row.castleLevels += cNow - cWas; }
+    }
     if (!before || typeof before[1] !== "number" || typeof kNow !== "number") return;
     const d = kNow - before[1];
     if (d < 0) { row.odd++; return; }
@@ -503,7 +529,8 @@ export async function runOnce(data, opts) {
       const out = parseAlliance(r.body);
       if (!out.ok) { p.skipped.push({ aid: item.aid, tag: item.tag, why: out.error }); report.pages.push({ path, ok: false, error: out.error }); continue; }
       p.alliances[item.aid] = { tag: out.tag || item.tag, name: out.name || item.name, members: out.rows.length, power: out.power };
-      out.rows.forEach((row) => { p.players[row.pid] = [item.aid, row.kills, row.power]; });
+      if (out.level != null) p.alliances[item.aid].level = out.level;
+      out.rows.forEach((row) => { p.players[row.pid] = [item.aid, row.kills, row.power, row.castle]; });
       report.pages.push({ path, ok: true, rows: out.rows.length, warnings: out.warnings.length ? out.warnings : undefined });
     } else if (item.type === "captures") {
       const path = LANG + "/leaderboard/kings/kvk?w=" + item.sat;
