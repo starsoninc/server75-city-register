@@ -2827,6 +2827,8 @@ function renderKvkTab(){
     html+='<p class="derivation">Each column is the change between two weekly readings, labelled with the KvK it covers. 8/45 means 8 of the 45 members read both times made kills; the percentage is the growth of their combined kill count. A player read only once — someone who joined or left that week — is left out, so a newcomer’s career kills never count as one week’s. Power, week is the alliance total now minus a week ago, so it moves with members joining and leaving.</p>';
   }
 
+  html+=kvkCastleSection();
+
   html+='<h3>Who helped the server most — all weeks</h3>'+kvkOverallBoard(0);
   var c=KVK.collector||{};
   var caps=Object.keys(KVK.captures||{}).sort().reverse().slice(0,5);
@@ -2843,6 +2845,82 @@ function renderKvkTab(){
     '</p></div>';
   el.innerHTML=html;
   kvkWireSort(el, renderKvk);
+}
+
+/* ---------- castle levels ----------
+   From collector k3 every member's castle level is read with the kills. A week
+   says, per alliance: members read both times whose castle is known
+   (castleRead), how many of them upgraded (castleUp) and by how many levels in
+   all (castleLevels), plus how many members sit at each level now (castles).
+   Same rule as kills: a joiner's castle is never counted as an upgrade. */
+function kvkCastleWeek(w){
+  return Object.keys(w.alliances||{}).some(function(aid){ return (w.alliances[aid].castleRead||0)>0; });
+}
+function kvkCastleAvg(h){
+  var n=0, s=0; Object.keys(h||{}).forEach(function(k){ n+=h[k]; s+=Number(k)*h[k]; });
+  return n ? s/n : null;
+}
+function kvkCastleTop(alliances){
+  var top=0; Object.keys(alliances).forEach(function(aid){ Object.keys(alliances[aid].castles||{}).forEach(function(k){ if(Number(k)>top) top=Number(k); }); });
+  return top;
+}
+/* Castle levels of the latest reading, for before the first k3 week exists. */
+function kvkCastleNow(){
+  var L=KVK&&KVK.latest; if(!L||!L.players) return null;
+  var by={}, any=false;
+  Object.keys(L.players).forEach(function(pid){
+    var p=L.players[pid], c=p[3]; if(typeof c!=="number") return;
+    any=true; (by[p[0]]=by[p[0]]||{})[c]=((by[p[0]]||{})[c]||0)+1;
+  });
+  if(!any) return null;
+  var al={}; Object.keys(by).forEach(function(aid){ var a=L.alliances[aid]||{}; al[aid]={ tag:a.tag, members:a.members, castles:by[aid] }; });
+  return al;
+}
+function kvkCastleSection(){
+  var weeks=(KVK.weeks||[]).slice(-8).filter(kvkCastleWeek);
+  var html='<h3>Castle upgrades per alliance</h3>';
+  if(!weeks.length){
+    var now=kvkCastleNow();
+    if(!now) return html+'<p class="derivation">Castle levels are read from the next weekly reading (Sunday from 05:00). Upgrades per alliance appear the Sunday after, once two readings can be compared.</p>';
+    var top=kvkCastleTop(now);
+    var ids=Object.keys(now).sort(function(a,b){ return (kvkCastleAvg(now[b].castles)||0)-(kvkCastleAvg(now[a].castles)||0); });
+    return html+'<p style="font-size:14px;margin-bottom:10px">Castle levels as read '+esc(kvkStamp(KVK.latest.at))+'. Upgrades per alliance appear after the next weekly reading.</p>'+
+      '<div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th><th class="num">Average castle</th><th class="num">At '+top+'</th><th class="num">Members</th></tr></thead><tbody>'+
+      ids.map(function(aid){ var a=now[aid], h=a.castles, n=0; Object.keys(h).forEach(function(k){ n+=h[k]; });
+        return '<tr><td><b>'+esc(kvkCanon(a.tag||aid))+'</b></td><td class="num">'+(kvkCastleAvg(h)).toFixed(1)+'</td><td class="num">'+(h[top]||0)+'</td><td class="num">'+n+'</td></tr>';
+      }).join("")+'</tbody></table></div>';
+  }
+  var lastW=weeks[weeks.length-1], top=kvkCastleTop(lastW.alliances), earlier=weeks.slice(0,-1);
+  var aids={}; weeks.forEach(function(w){ Object.keys(w.alliances).forEach(function(aid){ if(w.alliances[aid].castleRead) aids[aid]=kvkCanon(w.alliances[aid].tag||aid); }); });
+  var order=Object.keys(aids).sort(function(a,b){
+    var x=lastW.alliances[a]||{}, y=lastW.alliances[b]||{};
+    return ((y.castleUp||0)-(x.castleUp||0)) || ((y.castleLevels||0)-(x.castleLevels||0)) || ((kvkCastleAvg(y.castles)||0)-(kvkCastleAvg(x.castles)||0));
+  });
+  html+='<p style="font-size:14px;margin-bottom:10px">Latest: <b>'+esc(kvkStamp(lastW.from))+' to '+esc(kvkStamp(lastW.to))+'</b>. Sorted by members who upgraded.</p>'+
+    '<div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th>'+
+    '<th class="num on">Upgraded</th><th class="num">Levels gained</th>'+
+    '<th class="num">Average castle</th><th class="num">At '+top+'</th>'+
+    earlier.map(function(w){ return '<th class="num">'+esc(w.kvk&&w.kvk.length?w.kvk.map(kvkDay).join(", "):kvkStamp(w.to))+'</th>'; }).join("")+
+    '</tr></thead><tbody>'+
+    order.map(function(aid){
+      var a=lastW.alliances[aid];
+      var cells;
+      if(!a||!a.castleRead) cells='<td class="num kvk-na">–</td><td class="num kvk-na">–</td><td class="num kvk-na">–</td><td class="num kvk-na">–</td>';
+      else {
+        var avg=kvkCastleAvg(a.castles), gain=a.castleLevels/a.castleRead;
+        cells='<td class="num on">'+a.castleUp+' <span class="tag">of '+a.castleRead+'</span></td>'+
+          '<td class="num">'+(a.castleLevels?'+'+a.castleLevels:'0')+'</td>'+
+          '<td class="num">'+(avg===null?'–':avg.toFixed(1))+(gain>0?' <span class="tag">+'+gain.toFixed(2)+'</span>':'')+'</td>'+
+          '<td class="num">'+((a.castles||{})[top]||0)+'</td>';
+      }
+      var hist=earlier.map(function(w){
+        var x=w.alliances[aid];
+        if(!x||!x.castleRead) return '<td class="num kvk-na">–</td>';
+        return '<td class="num">'+x.castleUp+'/'+x.castleRead+(x.castleLevels?' <span class="tag">+'+x.castleLevels+' lv</span>':'')+'</td>';
+      }).join("");
+      return '<tr><td><b>'+esc(aids[aid])+'</b></td>'+cells+hist+'</tr>';
+    }).join("")+'</tbody></table></div>';
+  return html+'<p class="derivation"><b>Upgraded</b>: members whose castle level went up between two weekly readings, out of those read both times. <b>Levels gained</b>: all their upgrades added together, so one member going up two levels counts 2. <b>Average castle</b>: every member now; the small figure is the average gain per member read both times. <b>At '+top+'</b>: members at the highest castle level seen on the server. Joiners and leavers that week are left out, so a high-castle player moving in is not an upgrade.'+(earlier.length?' The dated columns are earlier weeks, labelled with the KvK they cover: upgraded / read, and levels gained.':'')+'</p>';
 }
 
 function renderKvk(){ renderKvkFront(); renderKvkTab(); }
