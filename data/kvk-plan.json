@@ -1,0 +1,2299 @@
+{
+ "v": 1,
+ "title": "against 67",
+ "matchDay": "2026-10-24",
+ "start": "16:00",
+ "home": 75,
+ "opponent": 67,
+ "updated": "2026-10-23",
+ "source": "Hero might from lastasylum.gg (23 Oct 2026). Attendance from the top-100 KvK boards of 3 and 10 October.",
+ "agreement": [
+  "Truce from 1 hour before, during, and 1 hour after the fight.",
+  "67 left, 75 right.",
+  "Be ported in 30 minutes before KvK (15:30).",
+  "Stay with your alliance. Port together; it makes rallies faster.",
+  "No base hits. At all.",
+  "Not fighting? Shield."
+ ],
+ "svg": "<svg viewBox=\"0 0 938 1370\" role=\"img\" aria-label=\"Base placement for kingdom 75 against 67\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"IBM Plex Sans, system-ui, sans-serif\"><defs><pattern id=\"kvkhx\" width=\"8\" height=\"8\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"8\" stroke=\"#c4c9bd\" stroke-width=\"3\"/></pattern></defs><rect x=\"10\" y=\"10\" width=\"216\" height=\"1350\" fill=\"url(#kvkhx)\"/><rect x=\"226\" y=\"10\" width=\"54\" height=\"1350\" fill=\"#dfe2d9\"/><rect x=\"496\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"424\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"928\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"568\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"352\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"1000\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"640\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"280\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"1072\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"712\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"208\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"1144\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"784\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"136\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"1216\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"856\" y=\"10\" width=\"18\" height=\"1350\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"64\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"280\" y=\"1288\" width=\"648\" height=\"18\" fill=\"#CFE3F2\"/><rect x=\"64\" y=\"496\" width=\"378\" height=\"378\" fill=\"#2B3A3D\" rx=\"4\"/><text x=\"253.0\" y=\"679.6\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"700\" fill=\"#EEF2EA\">Royal City</text><text x=\"112.60000000000001\" y=\"40\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#4e574e\">Kingdom 67</text><text x=\"112.60000000000001\" y=\"1344\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#4e574e\">Kingdom 67</text><text transform=\"translate(259.0,172) rotate(-90)\" text-anchor=\"middle\" font-size=\"15\" fill=\"#4e574e\">half-way line runs through this column</text><g class=\"kb\" data-k=\"4,-1\"><rect x=\"281.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"307.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"307.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-2\"><rect x=\"281.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"307.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-3\"><rect x=\"281.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"307.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-4\"><rect x=\"281.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"307.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-5\"><rect x=\"281.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"307.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-6\"><rect x=\"281.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"307.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,-7\"><rect x=\"281.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#B5382F\" opacity=\"0.9\" /><text x=\"307.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"307.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">HoG</text></g><g class=\"kb\" data-k=\"4,7\"><rect x=\"281.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"307.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"307.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,7\"><rect x=\"335.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"361.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"361.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,7\"><rect x=\"389.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"415.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"415.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,8\"><rect x=\"281.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"307.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,7\"><rect x=\"443.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"469.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,8\"><rect x=\"335.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"361.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,8\"><rect x=\"389.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"415.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,8\"><rect x=\"443.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">8</text><text x=\"469.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,9\"><rect x=\"281.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">9</text><text x=\"307.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,9\"><rect x=\"335.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">10</text><text x=\"361.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,9\"><rect x=\"389.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">11</text><text x=\"415.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,9\"><rect x=\"443.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">12</text><text x=\"469.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,10\"><rect x=\"281.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">13</text><text x=\"307.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,10\"><rect x=\"335.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">14</text><text x=\"361.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,10\"><rect x=\"389.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">15</text><text x=\"415.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,10\"><rect x=\"443.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">16</text><text x=\"469.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,11\"><rect x=\"281.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">17</text><text x=\"307.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,11\"><rect x=\"335.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">18</text><text x=\"361.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,11\"><rect x=\"389.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">19</text><text x=\"415.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,11\"><rect x=\"443.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">20</text><text x=\"469.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,12\"><rect x=\"281.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">21</text><text x=\"307.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,12\"><rect x=\"335.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">22</text><text x=\"361.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,12\"><rect x=\"389.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">23</text><text x=\"415.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,12\"><rect x=\"443.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">24</text><text x=\"469.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"4,13\"><rect x=\"281.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"307.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">25</text><text x=\"307.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,13\"><rect x=\"335.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"361.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">26</text><text x=\"361.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"6,13\"><rect x=\"389.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"415.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">27</text><text x=\"415.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"7,13\"><rect x=\"443.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#1E8A7A\" opacity=\"0.9\" /><text x=\"469.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">28</text><text x=\"469.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NEXT</text></g><g class=\"kb\" data-k=\"5,-1\"><rect x=\"335.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"361.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"361.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-2\"><rect x=\"335.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"361.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-3\"><rect x=\"335.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"361.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-4\"><rect x=\"335.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"361.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-5\"><rect x=\"335.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"361.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-6\"><rect x=\"335.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"361.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"5,-7\"><rect x=\"335.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.9\" /><text x=\"361.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"361.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ĚØN</text></g><g class=\"kb\" data-k=\"6,-1\"><rect x=\"389.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"415.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"415.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-2\"><rect x=\"389.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"415.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-3\"><rect x=\"389.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"415.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-4\"><rect x=\"389.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"415.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-5\"><rect x=\"389.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"415.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-6\"><rect x=\"389.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"415.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"6,-7\"><rect x=\"389.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#C45C97\" opacity=\"0.9\" /><text x=\"415.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"415.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">RAE</text></g><g class=\"kb\" data-k=\"7,-1\"><rect x=\"443.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"469.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-2\"><rect x=\"443.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"469.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-3\"><rect x=\"443.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"469.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-4\"><rect x=\"443.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"469.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-5\"><rect x=\"443.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">5</text><text x=\"469.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-6\"><rect x=\"443.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">6</text><text x=\"469.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,-7\"><rect x=\"443.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8DBDE8\" opacity=\"0.9\" /><text x=\"469.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">7</text><text x=\"469.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">UKR</text></g><g class=\"kb\" data-k=\"7,3\"><rect x=\"443.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"469.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,2\"><rect x=\"443.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"469.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,4\"><rect x=\"443.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"469.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,1\"><rect x=\"443.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"469.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,5\"><rect x=\"443.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">5</text><text x=\"469.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,0\"><rect x=\"443.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">6</text><text x=\"469.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"7,6\"><rect x=\"443.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"1\" stroke=\"#161b17\" stroke-width=\"2.5\"/><text x=\"469.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">7</text><text x=\"469.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,3\"><rect x=\"515.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">8</text><text x=\"541.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,2\"><rect x=\"515.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">9</text><text x=\"541.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,4\"><rect x=\"515.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">10</text><text x=\"541.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,1\"><rect x=\"515.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">11</text><text x=\"541.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,5\"><rect x=\"515.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">12</text><text x=\"541.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,0\"><rect x=\"515.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">13</text><text x=\"541.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,6\"><rect x=\"515.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"541.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">14</text><text x=\"541.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,3\"><rect x=\"587.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">15</text><text x=\"613.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,2\"><rect x=\"587.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">16</text><text x=\"613.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,4\"><rect x=\"587.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">17</text><text x=\"613.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,1\"><rect x=\"587.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">18</text><text x=\"613.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,5\"><rect x=\"587.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">19</text><text x=\"613.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,0\"><rect x=\"587.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">20</text><text x=\"613.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"9,6\"><rect x=\"587.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"613.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">21</text><text x=\"613.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,3\"><rect x=\"659.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">22</text><text x=\"685.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,2\"><rect x=\"659.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">23</text><text x=\"685.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,4\"><rect x=\"659.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">24</text><text x=\"685.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,1\"><rect x=\"659.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">25</text><text x=\"685.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,5\"><rect x=\"659.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">26</text><text x=\"685.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,0\"><rect x=\"659.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">27</text><text x=\"685.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"10,6\"><rect x=\"659.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"685.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">28</text><text x=\"685.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,3\"><rect x=\"731.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">29</text><text x=\"757.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,2\"><rect x=\"731.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">30</text><text x=\"757.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,4\"><rect x=\"731.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">31</text><text x=\"757.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,1\"><rect x=\"731.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">32</text><text x=\"757.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,5\"><rect x=\"731.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">33</text><text x=\"757.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,0\"><rect x=\"731.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">34</text><text x=\"757.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"11,6\"><rect x=\"731.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"757.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">35</text><text x=\"757.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,3\"><rect x=\"803.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">36</text><text x=\"829.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,2\"><rect x=\"803.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">37</text><text x=\"829.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,4\"><rect x=\"803.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">38</text><text x=\"829.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,1\"><rect x=\"803.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">39</text><text x=\"829.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,5\"><rect x=\"803.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">40</text><text x=\"829.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,0\"><rect x=\"803.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">41</text><text x=\"829.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"12,6\"><rect x=\"803.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"829.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">42</text><text x=\"829.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,3\"><rect x=\"875.5\" y=\"659.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"688.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">43</text><text x=\"901.0\" y=\"704\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,2\"><rect x=\"875.5\" y=\"713.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"742.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">44</text><text x=\"901.0\" y=\"758\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,4\"><rect x=\"875.5\" y=\"605.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"634.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">45</text><text x=\"901.0\" y=\"650\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,1\"><rect x=\"875.5\" y=\"767.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"796.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">46</text><text x=\"901.0\" y=\"812\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,5\"><rect x=\"875.5\" y=\"551.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"580.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">47</text><text x=\"901.0\" y=\"596\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,0\"><rect x=\"875.5\" y=\"821.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"850.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">48</text><text x=\"901.0\" y=\"866\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"13,6\"><rect x=\"875.5\" y=\"497.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#D9A520\" opacity=\"0.9\" /><text x=\"901.0\" y=\"526.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">49</text><text x=\"901.0\" y=\"542\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">WPP</text></g><g class=\"kb\" data-k=\"8,-1\"><rect x=\"515.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"541.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-2\"><rect x=\"515.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"541.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-1\"><rect x=\"587.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"613.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-3\"><rect x=\"515.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"541.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-2\"><rect x=\"587.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"613.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-3\"><rect x=\"587.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"613.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-4\"><rect x=\"515.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"541.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-4\"><rect x=\"587.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">8</text><text x=\"613.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-5\"><rect x=\"515.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">9</text><text x=\"541.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-5\"><rect x=\"587.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">10</text><text x=\"613.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-6\"><rect x=\"515.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">11</text><text x=\"541.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-6\"><rect x=\"587.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">12</text><text x=\"613.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,-7\"><rect x=\"515.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"541.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">13</text><text x=\"541.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"9,-7\"><rect x=\"587.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#7A55B0\" opacity=\"0.9\" /><text x=\"613.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">14</text><text x=\"613.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">AURA</text></g><g class=\"kb\" data-k=\"8,7\"><rect x=\"515.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"541.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,8\"><rect x=\"515.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"541.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,7\"><rect x=\"587.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"613.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,9\"><rect x=\"515.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"541.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,8\"><rect x=\"587.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">5</text><text x=\"613.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,9\"><rect x=\"587.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">6</text><text x=\"613.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,10\"><rect x=\"515.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">7</text><text x=\"541.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,10\"><rect x=\"587.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">8</text><text x=\"613.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,11\"><rect x=\"515.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">9</text><text x=\"541.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,11\"><rect x=\"587.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">10</text><text x=\"613.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,12\"><rect x=\"515.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">11</text><text x=\"541.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,12\"><rect x=\"587.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">12</text><text x=\"613.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"8,13\"><rect x=\"515.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"541.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">13</text><text x=\"541.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"9,13\"><rect x=\"587.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E58A3C\" opacity=\"0.9\" /><text x=\"613.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">14</text><text x=\"613.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">K13</text></g><g class=\"kb\" data-k=\"10,-4\"><rect x=\"659.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"685.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"685.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"10,-5\"><rect x=\"659.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"685.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"685.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"11,-4\"><rect x=\"731.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"757.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"757.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"11,-5\"><rect x=\"731.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"757.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"757.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"10,-6\"><rect x=\"659.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"685.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">5</text><text x=\"685.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"12,-4\"><rect x=\"803.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"829.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">6</text><text x=\"829.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"11,-6\"><rect x=\"731.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"757.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">7</text><text x=\"757.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"12,-5\"><rect x=\"803.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"829.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">8</text><text x=\"829.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"10,-7\"><rect x=\"659.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"685.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">9</text><text x=\"685.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"13,-4\"><rect x=\"875.5\" y=\"1091.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"901.0\" y=\"1120.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">10</text><text x=\"901.0\" y=\"1136\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"12,-6\"><rect x=\"803.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"829.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">11</text><text x=\"829.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"11,-7\"><rect x=\"731.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"757.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">12</text><text x=\"757.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"13,-5\"><rect x=\"875.5\" y=\"1163.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"901.0\" y=\"1192.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">13</text><text x=\"901.0\" y=\"1208\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"12,-7\"><rect x=\"803.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"829.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">14</text><text x=\"829.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"13,-6\"><rect x=\"875.5\" y=\"1235.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"901.0\" y=\"1264.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">15</text><text x=\"901.0\" y=\"1280\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"13,-7\"><rect x=\"875.5\" y=\"1307.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#AEB84A\" opacity=\"0.9\" /><text x=\"901.0\" y=\"1336.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">16</text><text x=\"901.0\" y=\"1352\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">MMAG</text></g><g class=\"kb\" data-k=\"10,-3\"><rect x=\"659.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#9AA5B1\" opacity=\"0.9\" /><text x=\"685.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"685.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RYL</text></g><g class=\"kb\" data-k=\"11,-3\"><rect x=\"731.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#9AA5B1\" opacity=\"0.9\" /><text x=\"757.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"757.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RYL</text></g><g class=\"kb\" data-k=\"12,-3\"><rect x=\"803.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#9AA5B1\" opacity=\"0.9\" /><text x=\"829.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"829.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RYL</text></g><g class=\"kb\" data-k=\"13,-3\"><rect x=\"875.5\" y=\"1019.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#9AA5B1\" opacity=\"0.9\" /><text x=\"901.0\" y=\"1048.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"901.0\" y=\"1064\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RYL</text></g><g class=\"kb\" data-k=\"10,-1\"><rect x=\"659.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"685.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"685.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"10,-2\"><rect x=\"659.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"685.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"685.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"11,-1\"><rect x=\"731.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"757.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"757.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"11,-2\"><rect x=\"731.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"757.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"757.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"12,-1\"><rect x=\"803.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"829.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"829.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"12,-2\"><rect x=\"803.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"829.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"829.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"13,-1\"><rect x=\"875.5\" y=\"875.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"901.0\" y=\"904.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"901.0\" y=\"920\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"13,-2\"><rect x=\"875.5\" y=\"947.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#8C6D46\" opacity=\"0.9\" /><text x=\"901.0\" y=\"976.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">8</text><text x=\"901.0\" y=\"992\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">NOPE</text></g><g class=\"kb\" data-k=\"10,7\"><rect x=\"659.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"685.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">1</text><text x=\"685.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"10,8\"><rect x=\"659.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"685.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">2</text><text x=\"685.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"11,7\"><rect x=\"731.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"757.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">3</text><text x=\"757.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"10,9\"><rect x=\"659.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"685.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">4</text><text x=\"685.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"11,8\"><rect x=\"731.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"757.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">5</text><text x=\"757.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"12,7\"><rect x=\"803.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"829.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">6</text><text x=\"829.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"11,9\"><rect x=\"731.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"757.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">7</text><text x=\"757.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"12,8\"><rect x=\"803.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"829.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">8</text><text x=\"829.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"12,9\"><rect x=\"803.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"829.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">9</text><text x=\"829.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"13,7\"><rect x=\"875.5\" y=\"443.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"901.0\" y=\"472.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">10</text><text x=\"901.0\" y=\"488\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"13,8\"><rect x=\"875.5\" y=\"371.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"901.0\" y=\"400.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">11</text><text x=\"901.0\" y=\"416\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"13,9\"><rect x=\"875.5\" y=\"299.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#E8C766\" opacity=\"0.9\" /><text x=\"901.0\" y=\"328.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#1b1b1b\">12</text><text x=\"901.0\" y=\"344\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#1b1b1b\">RISE</text></g><g class=\"kb\" data-k=\"10,10\"><rect x=\"659.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"685.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">1</text><text x=\"685.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"10,11\"><rect x=\"659.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"685.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">2</text><text x=\"685.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"11,10\"><rect x=\"731.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"757.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">3</text><text x=\"757.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"11,11\"><rect x=\"731.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"757.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">4</text><text x=\"757.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"10,12\"><rect x=\"659.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"685.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">5</text><text x=\"685.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"12,10\"><rect x=\"803.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"829.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">6</text><text x=\"829.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"11,12\"><rect x=\"731.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"757.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">7</text><text x=\"757.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"12,11\"><rect x=\"803.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"829.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">8</text><text x=\"829.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"10,13\"><rect x=\"659.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"685.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">9</text><text x=\"685.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"13,10\"><rect x=\"875.5\" y=\"227.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"901.0\" y=\"256.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">10</text><text x=\"901.0\" y=\"272\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"12,12\"><rect x=\"803.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"829.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">11</text><text x=\"829.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"11,13\"><rect x=\"731.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"757.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">12</text><text x=\"757.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"13,11\"><rect x=\"875.5\" y=\"155.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"901.0\" y=\"184.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">13</text><text x=\"901.0\" y=\"200\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"12,13\"><rect x=\"803.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"829.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">14</text><text x=\"829.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"13,12\"><rect x=\"875.5\" y=\"83.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"901.0\" y=\"112.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">15</text><text x=\"901.0\" y=\"128\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><g class=\"kb\" data-k=\"13,13\"><rect x=\"875.5\" y=\"11.5\" width=\"51\" height=\"51\" rx=\"5\" fill=\"#2F6DB5\" opacity=\"0.9\" /><text x=\"901.0\" y=\"40.0\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"700\" fill=\"#fff\">16</text><text x=\"901.0\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"500\" fill=\"#fff\">ZfP</text></g><rect x=\"72\" y=\"513\" width=\"38\" height=\"20\" rx=\"5\" fill=\"#6B7A7D\"/><text x=\"91.0\" y=\"527\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"#EEF2EA\">Turret</text><rect x=\"396\" y=\"513\" width=\"38\" height=\"20\" rx=\"5\" fill=\"#E8C766\"/><text x=\"415.0\" y=\"527\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"#1b1b1b\">Turret</text><rect x=\"72\" y=\"837\" width=\"38\" height=\"20\" rx=\"5\" fill=\"#6B7A7D\"/><text x=\"91.0\" y=\"851\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"#EEF2EA\">Turret</text><rect x=\"396\" y=\"837\" width=\"38\" height=\"20\" rx=\"5\" fill=\"#E8C766\"/><text x=\"415.0\" y=\"851\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"#1b1b1b\">Turret</text><text x=\"307.0\" y=\"509\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">T1</text><text x=\"307.0\" y=\"870\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">B1</text><text x=\"361.0\" y=\"509\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">T2</text><text x=\"361.0\" y=\"870\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">B2</text><text x=\"415.0\" y=\"509\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">T3</text><text x=\"415.0\" y=\"870\" text-anchor=\"middle\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">B3</text><text x=\"438\" y=\"833\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R7</text><text x=\"438\" y=\"798.0\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R6</text><text x=\"438\" y=\"744.0\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R5</text><text x=\"438\" y=\"690.0\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R4</text><text x=\"438\" y=\"636.0\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R3</text><text x=\"438\" y=\"582.0\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R2</text><text x=\"438\" y=\"546\" text-anchor=\"end\" font-size=\"12\" fill=\"#EEF2EA\" opacity=\".85\">R1</text><rect x=\"307.0\" y=\"487.0\" width=\"396\" height=\"396\" fill=\"none\" stroke=\"#2F6DB5\" stroke-width=\"2\" stroke-dasharray=\"7 5\" opacity=\".85\"/><rect x=\"163.0\" y=\"235.0\" width=\"396\" height=\"396\" fill=\"none\" stroke=\"#2F6DB5\" stroke-width=\"2\" stroke-dasharray=\"7 5\" opacity=\".85\"/><rect x=\"163.0\" y=\"739.0\" width=\"396\" height=\"396\" fill=\"none\" stroke=\"#2F6DB5\" stroke-width=\"2\" stroke-dasharray=\"7 5\" opacity=\".85\"/><rect x=\"494\" y=\"674\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"501\" y1=\"691\" x2=\"501\" y2=\"679\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M501,679 L510,682.5 L501,686 Z\" fill=\"#fff\"/><rect x=\"350\" y=\"422\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"357\" y1=\"439\" x2=\"357\" y2=\"427\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M357,427 L366,430.5 L357,434 Z\" fill=\"#fff\"/><rect x=\"296\" y=\"926\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"303\" y1=\"943\" x2=\"303\" y2=\"931\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M303,931 L312,934.5 L303,938 Z\" fill=\"#fff\"/><rect x=\"350\" y=\"926\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"357\" y1=\"943\" x2=\"357\" y2=\"931\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M357,931 L366,934.5 L357,938 Z\" fill=\"#fff\"/><rect x=\"404\" y=\"926\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"411\" y1=\"943\" x2=\"411\" y2=\"931\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M411,931 L420,934.5 L411,938 Z\" fill=\"#fff\"/><rect x=\"566\" y=\"422\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"573\" y1=\"439\" x2=\"573\" y2=\"427\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M573,427 L582,430.5 L573,434 Z\" fill=\"#fff\"/><rect x=\"458\" y=\"926\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"465\" y1=\"943\" x2=\"465\" y2=\"931\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M465,931 L474,934.5 L465,938 Z\" fill=\"#fff\"/><rect x=\"566\" y=\"926\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#2F6DB5\" stroke=\"#fff\" stroke-width=\"1.5\"/><line x1=\"573\" y1=\"943\" x2=\"573\" y2=\"931\" stroke=\"#fff\" stroke-width=\"1.6\"/><path d=\"M573,931 L582,934.5 L573,938 Z\" fill=\"#fff\"/><g id=\"kvkme\"></g></svg>",
+ "base": 54,
+ "geom": {
+  "4,-1": [
+   280,
+   874
+  ],
+  "4,-2": [
+   280,
+   946
+  ],
+  "4,-3": [
+   280,
+   1018
+  ],
+  "4,-4": [
+   280,
+   1090
+  ],
+  "4,-5": [
+   280,
+   1162
+  ],
+  "4,-6": [
+   280,
+   1234
+  ],
+  "4,-7": [
+   280,
+   1306
+  ],
+  "4,7": [
+   280,
+   442
+  ],
+  "5,7": [
+   334,
+   442
+  ],
+  "6,7": [
+   388,
+   442
+  ],
+  "4,8": [
+   280,
+   370
+  ],
+  "7,7": [
+   442,
+   442
+  ],
+  "5,8": [
+   334,
+   370
+  ],
+  "6,8": [
+   388,
+   370
+  ],
+  "7,8": [
+   442,
+   370
+  ],
+  "4,9": [
+   280,
+   298
+  ],
+  "5,9": [
+   334,
+   298
+  ],
+  "6,9": [
+   388,
+   298
+  ],
+  "7,9": [
+   442,
+   298
+  ],
+  "4,10": [
+   280,
+   226
+  ],
+  "5,10": [
+   334,
+   226
+  ],
+  "6,10": [
+   388,
+   226
+  ],
+  "7,10": [
+   442,
+   226
+  ],
+  "4,11": [
+   280,
+   154
+  ],
+  "5,11": [
+   334,
+   154
+  ],
+  "6,11": [
+   388,
+   154
+  ],
+  "7,11": [
+   442,
+   154
+  ],
+  "4,12": [
+   280,
+   82
+  ],
+  "5,12": [
+   334,
+   82
+  ],
+  "6,12": [
+   388,
+   82
+  ],
+  "7,12": [
+   442,
+   82
+  ],
+  "4,13": [
+   280,
+   10
+  ],
+  "5,13": [
+   334,
+   10
+  ],
+  "6,13": [
+   388,
+   10
+  ],
+  "7,13": [
+   442,
+   10
+  ],
+  "5,-1": [
+   334,
+   874
+  ],
+  "5,-2": [
+   334,
+   946
+  ],
+  "5,-3": [
+   334,
+   1018
+  ],
+  "5,-4": [
+   334,
+   1090
+  ],
+  "5,-5": [
+   334,
+   1162
+  ],
+  "5,-6": [
+   334,
+   1234
+  ],
+  "5,-7": [
+   334,
+   1306
+  ],
+  "6,-1": [
+   388,
+   874
+  ],
+  "6,-2": [
+   388,
+   946
+  ],
+  "6,-3": [
+   388,
+   1018
+  ],
+  "6,-4": [
+   388,
+   1090
+  ],
+  "6,-5": [
+   388,
+   1162
+  ],
+  "6,-6": [
+   388,
+   1234
+  ],
+  "6,-7": [
+   388,
+   1306
+  ],
+  "7,-1": [
+   442,
+   874
+  ],
+  "7,-2": [
+   442,
+   946
+  ],
+  "7,-3": [
+   442,
+   1018
+  ],
+  "7,-4": [
+   442,
+   1090
+  ],
+  "7,-5": [
+   442,
+   1162
+  ],
+  "7,-6": [
+   442,
+   1234
+  ],
+  "7,-7": [
+   442,
+   1306
+  ],
+  "7,3": [
+   442,
+   658
+  ],
+  "7,2": [
+   442,
+   712
+  ],
+  "7,4": [
+   442,
+   604
+  ],
+  "7,1": [
+   442,
+   766
+  ],
+  "7,5": [
+   442,
+   550
+  ],
+  "7,0": [
+   442,
+   820
+  ],
+  "7,6": [
+   442,
+   496
+  ],
+  "8,3": [
+   514,
+   658
+  ],
+  "8,2": [
+   514,
+   712
+  ],
+  "8,4": [
+   514,
+   604
+  ],
+  "8,1": [
+   514,
+   766
+  ],
+  "8,5": [
+   514,
+   550
+  ],
+  "8,0": [
+   514,
+   820
+  ],
+  "8,6": [
+   514,
+   496
+  ],
+  "9,3": [
+   586,
+   658
+  ],
+  "9,2": [
+   586,
+   712
+  ],
+  "9,4": [
+   586,
+   604
+  ],
+  "9,1": [
+   586,
+   766
+  ],
+  "9,5": [
+   586,
+   550
+  ],
+  "9,0": [
+   586,
+   820
+  ],
+  "9,6": [
+   586,
+   496
+  ],
+  "10,3": [
+   658,
+   658
+  ],
+  "10,2": [
+   658,
+   712
+  ],
+  "10,4": [
+   658,
+   604
+  ],
+  "10,1": [
+   658,
+   766
+  ],
+  "10,5": [
+   658,
+   550
+  ],
+  "10,0": [
+   658,
+   820
+  ],
+  "10,6": [
+   658,
+   496
+  ],
+  "11,3": [
+   730,
+   658
+  ],
+  "11,2": [
+   730,
+   712
+  ],
+  "11,4": [
+   730,
+   604
+  ],
+  "11,1": [
+   730,
+   766
+  ],
+  "11,5": [
+   730,
+   550
+  ],
+  "11,0": [
+   730,
+   820
+  ],
+  "11,6": [
+   730,
+   496
+  ],
+  "12,3": [
+   802,
+   658
+  ],
+  "12,2": [
+   802,
+   712
+  ],
+  "12,4": [
+   802,
+   604
+  ],
+  "12,1": [
+   802,
+   766
+  ],
+  "12,5": [
+   802,
+   550
+  ],
+  "12,0": [
+   802,
+   820
+  ],
+  "12,6": [
+   802,
+   496
+  ],
+  "13,3": [
+   874,
+   658
+  ],
+  "13,2": [
+   874,
+   712
+  ],
+  "13,4": [
+   874,
+   604
+  ],
+  "13,1": [
+   874,
+   766
+  ],
+  "13,5": [
+   874,
+   550
+  ],
+  "13,0": [
+   874,
+   820
+  ],
+  "13,6": [
+   874,
+   496
+  ],
+  "8,-1": [
+   514,
+   874
+  ],
+  "8,-2": [
+   514,
+   946
+  ],
+  "9,-1": [
+   586,
+   874
+  ],
+  "8,-3": [
+   514,
+   1018
+  ],
+  "9,-2": [
+   586,
+   946
+  ],
+  "9,-3": [
+   586,
+   1018
+  ],
+  "8,-4": [
+   514,
+   1090
+  ],
+  "9,-4": [
+   586,
+   1090
+  ],
+  "8,-5": [
+   514,
+   1162
+  ],
+  "9,-5": [
+   586,
+   1162
+  ],
+  "8,-6": [
+   514,
+   1234
+  ],
+  "9,-6": [
+   586,
+   1234
+  ],
+  "8,-7": [
+   514,
+   1306
+  ],
+  "9,-7": [
+   586,
+   1306
+  ],
+  "8,7": [
+   514,
+   442
+  ],
+  "8,8": [
+   514,
+   370
+  ],
+  "9,7": [
+   586,
+   442
+  ],
+  "8,9": [
+   514,
+   298
+  ],
+  "9,8": [
+   586,
+   370
+  ],
+  "9,9": [
+   586,
+   298
+  ],
+  "8,10": [
+   514,
+   226
+  ],
+  "9,10": [
+   586,
+   226
+  ],
+  "8,11": [
+   514,
+   154
+  ],
+  "9,11": [
+   586,
+   154
+  ],
+  "8,12": [
+   514,
+   82
+  ],
+  "9,12": [
+   586,
+   82
+  ],
+  "8,13": [
+   514,
+   10
+  ],
+  "9,13": [
+   586,
+   10
+  ],
+  "10,-4": [
+   658,
+   1090
+  ],
+  "10,-5": [
+   658,
+   1162
+  ],
+  "11,-4": [
+   730,
+   1090
+  ],
+  "11,-5": [
+   730,
+   1162
+  ],
+  "10,-6": [
+   658,
+   1234
+  ],
+  "12,-4": [
+   802,
+   1090
+  ],
+  "11,-6": [
+   730,
+   1234
+  ],
+  "12,-5": [
+   802,
+   1162
+  ],
+  "10,-7": [
+   658,
+   1306
+  ],
+  "13,-4": [
+   874,
+   1090
+  ],
+  "12,-6": [
+   802,
+   1234
+  ],
+  "11,-7": [
+   730,
+   1306
+  ],
+  "13,-5": [
+   874,
+   1162
+  ],
+  "12,-7": [
+   802,
+   1306
+  ],
+  "13,-6": [
+   874,
+   1234
+  ],
+  "13,-7": [
+   874,
+   1306
+  ],
+  "10,-3": [
+   658,
+   1018
+  ],
+  "11,-3": [
+   730,
+   1018
+  ],
+  "12,-3": [
+   802,
+   1018
+  ],
+  "13,-3": [
+   874,
+   1018
+  ],
+  "10,-1": [
+   658,
+   874
+  ],
+  "10,-2": [
+   658,
+   946
+  ],
+  "11,-1": [
+   730,
+   874
+  ],
+  "11,-2": [
+   730,
+   946
+  ],
+  "12,-1": [
+   802,
+   874
+  ],
+  "12,-2": [
+   802,
+   946
+  ],
+  "13,-1": [
+   874,
+   874
+  ],
+  "13,-2": [
+   874,
+   946
+  ],
+  "10,7": [
+   658,
+   442
+  ],
+  "10,8": [
+   658,
+   370
+  ],
+  "11,7": [
+   730,
+   442
+  ],
+  "10,9": [
+   658,
+   298
+  ],
+  "11,8": [
+   730,
+   370
+  ],
+  "12,7": [
+   802,
+   442
+  ],
+  "11,9": [
+   730,
+   298
+  ],
+  "12,8": [
+   802,
+   370
+  ],
+  "12,9": [
+   802,
+   298
+  ],
+  "13,7": [
+   874,
+   442
+  ],
+  "13,8": [
+   874,
+   370
+  ],
+  "13,9": [
+   874,
+   298
+  ],
+  "10,10": [
+   658,
+   226
+  ],
+  "10,11": [
+   658,
+   154
+  ],
+  "11,10": [
+   730,
+   226
+  ],
+  "11,11": [
+   730,
+   154
+  ],
+  "10,12": [
+   658,
+   82
+  ],
+  "12,10": [
+   802,
+   226
+  ],
+  "11,12": [
+   730,
+   82
+  ],
+  "12,11": [
+   802,
+   154
+  ],
+  "10,13": [
+   658,
+   10
+  ],
+  "13,10": [
+   874,
+   226
+  ],
+  "12,12": [
+   802,
+   82
+  ],
+  "11,13": [
+   730,
+   10
+  ],
+  "13,11": [
+   874,
+   154
+  ],
+  "12,13": [
+   802,
+   10
+  ],
+  "13,12": [
+   874,
+   82
+  ],
+  "13,13": [
+   874,
+   10
+  ]
+ },
+ "alliances": [
+  {
+   "tag": "WPP",
+   "color": "#D9A520",
+   "ink": "#1b1b1b",
+   "block": "Whole right side, lanes R1–R7",
+   "wall": 7,
+   "stack": "flag row behind R4",
+   "role": "City rallies and the core of the 30-player garrison. Rally leaders: ArchaicKaspa, Anjutka, Kari2434.",
+   "players": [
+    {
+     "name": "ArchaicKaspa",
+     "alliance": "WPP",
+     "slot": 1,
+     "row": 1,
+     "where": "R4, row 1",
+     "key": "7,3",
+     "wall": true,
+     "heroMight": 107.5,
+     "status": ""
+    },
+    {
+     "name": "Anjutka",
+     "alliance": "WPP",
+     "slot": 2,
+     "row": 1,
+     "where": "R5, row 1",
+     "key": "7,2",
+     "wall": true,
+     "heroMight": 94.5,
+     "status": ""
+    },
+    {
+     "name": "Kari2434",
+     "alliance": "WPP",
+     "slot": 3,
+     "row": 1,
+     "where": "R3, row 1",
+     "key": "7,4",
+     "wall": true,
+     "heroMight": 76.8,
+     "status": ""
+    },
+    {
+     "name": "BIGDADDYDOC",
+     "alliance": "WPP",
+     "slot": 4,
+     "row": 1,
+     "where": "R6, row 1",
+     "key": "7,1",
+     "wall": true,
+     "heroMight": 74.6,
+     "status": ""
+    },
+    {
+     "name": "Wooo~",
+     "alliance": "WPP",
+     "slot": 5,
+     "row": 1,
+     "where": "R2, row 1",
+     "key": "7,5",
+     "wall": true,
+     "heroMight": 68.6,
+     "status": ""
+    },
+    {
+     "name": "Fäytällŷ",
+     "alliance": "WPP",
+     "slot": 6,
+     "row": 1,
+     "where": "R7, row 1",
+     "key": "7,0",
+     "wall": true,
+     "heroMight": 67.0,
+     "status": ""
+    },
+    {
+     "name": "-Lalala-",
+     "alliance": "WPP",
+     "slot": 7,
+     "row": 1,
+     "where": "R1, row 1",
+     "key": "7,6",
+     "wall": true,
+     "heroMight": 66.8,
+     "status": ""
+    },
+    {
+     "name": "•BAGIRA•",
+     "alliance": "WPP",
+     "slot": 8,
+     "row": 2,
+     "where": "R4, row 2",
+     "key": "8,3",
+     "wall": false,
+     "heroMight": 65.9,
+     "status": ""
+    },
+    {
+     "name": "Fmkurby",
+     "alliance": "WPP",
+     "slot": 9,
+     "row": 2,
+     "where": "R5, row 2",
+     "key": "8,2",
+     "wall": false,
+     "heroMight": 61.2,
+     "status": ""
+    },
+    {
+     "name": "BaSeNka",
+     "alliance": "WPP",
+     "slot": 10,
+     "row": 2,
+     "where": "R3, row 2",
+     "key": "8,4",
+     "wall": false,
+     "heroMight": 61.1,
+     "status": ""
+    },
+    {
+     "name": "-badrealcat-",
+     "alliance": "WPP",
+     "slot": 11,
+     "row": 2,
+     "where": "R6, row 2",
+     "key": "8,1",
+     "wall": false,
+     "heroMight": 60.9,
+     "status": ""
+    },
+    {
+     "name": "p037",
+     "alliance": "WPP",
+     "slot": 12,
+     "row": 2,
+     "where": "R2, row 2",
+     "key": "8,5",
+     "wall": false,
+     "heroMight": 57.8,
+     "status": ""
+    },
+    {
+     "name": "GalaxyPanda",
+     "alliance": "WPP",
+     "slot": 13,
+     "row": 2,
+     "where": "R7, row 2",
+     "key": "8,0",
+     "wall": false,
+     "heroMight": 57.0,
+     "status": ""
+    },
+    {
+     "name": "zZzSUNNYzZz",
+     "alliance": "WPP",
+     "slot": 14,
+     "row": 2,
+     "where": "R1, row 2",
+     "key": "8,6",
+     "wall": false,
+     "heroMight": 55.9,
+     "status": ""
+    },
+    {
+     "name": "HERES",
+     "alliance": "WPP",
+     "slot": 15,
+     "row": 3,
+     "where": "R4, row 3",
+     "key": "9,3",
+     "wall": false,
+     "heroMight": 55.5,
+     "status": ""
+    },
+    {
+     "name": "Geriii",
+     "alliance": "WPP",
+     "slot": 16,
+     "row": 3,
+     "where": "R5, row 3",
+     "key": "9,2",
+     "wall": false,
+     "heroMight": 53.0,
+     "status": ""
+    },
+    {
+     "name": "Judji",
+     "alliance": "WPP",
+     "slot": 17,
+     "row": 3,
+     "where": "R3, row 3",
+     "key": "9,4",
+     "wall": false,
+     "heroMight": 51.7,
+     "status": ""
+    },
+    {
+     "name": "LiaLan",
+     "alliance": "WPP",
+     "slot": 18,
+     "row": 3,
+     "where": "R6, row 3",
+     "key": "9,1",
+     "wall": false,
+     "heroMight": 51.6,
+     "status": ""
+    },
+    {
+     "name": "Nіkа",
+     "alliance": "WPP",
+     "slot": 19,
+     "row": 3,
+     "where": "R2, row 3",
+     "key": "9,5",
+     "wall": false,
+     "heroMight": 51.6,
+     "status": ""
+    },
+    {
+     "name": "Krisatisfy",
+     "alliance": "WPP",
+     "slot": 20,
+     "row": 3,
+     "where": "R7, row 3",
+     "key": "9,0",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "OlivKa",
+     "alliance": "WPP",
+     "slot": 21,
+     "row": 3,
+     "where": "R1, row 3",
+     "key": "9,6",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "S16",
+     "alliance": "WPP",
+     "slot": 22,
+     "row": 4,
+     "where": "R4, row 4",
+     "key": "10,3",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "Hankaroo",
+     "alliance": "WPP",
+     "slot": 23,
+     "row": 4,
+     "where": "R5, row 4",
+     "key": "10,2",
+     "wall": false,
+     "heroMight": 86.5,
+     "status": ""
+    },
+    {
+     "name": "пyпyпу",
+     "alliance": "WPP",
+     "slot": 24,
+     "row": 4,
+     "where": "R3, row 4",
+     "key": "10,4",
+     "wall": false,
+     "heroMight": 78.4,
+     "status": ""
+    },
+    {
+     "name": "JaneInHeaven",
+     "alliance": "WPP",
+     "slot": 25,
+     "row": 4,
+     "where": "R6, row 4",
+     "key": "10,1",
+     "wall": false,
+     "heroMight": 66.1,
+     "status": ""
+    },
+    {
+     "name": "Kuckudulis",
+     "alliance": "WPP",
+     "slot": 26,
+     "row": 4,
+     "where": "R2, row 4",
+     "key": "10,5",
+     "wall": false,
+     "heroMight": 65.2,
+     "status": ""
+    },
+    {
+     "name": "PhoeNIXX",
+     "alliance": "WPP",
+     "slot": 27,
+     "row": 4,
+     "where": "R7, row 4",
+     "key": "10,0",
+     "wall": false,
+     "heroMight": 60.8,
+     "status": ""
+    },
+    {
+     "name": "NinjaSpaceKitty",
+     "alliance": "WPP",
+     "slot": 28,
+     "row": 4,
+     "where": "R1, row 4",
+     "key": "10,6",
+     "wall": false,
+     "heroMight": 57.9,
+     "status": ""
+    },
+    {
+     "name": "WhipsAsylum",
+     "alliance": "WPP",
+     "slot": 29,
+     "row": 5,
+     "where": "R4, row 5",
+     "key": "11,3",
+     "wall": false,
+     "heroMight": 55.1,
+     "status": ""
+    },
+    {
+     "name": "Sivas1453",
+     "alliance": "WPP",
+     "slot": 30,
+     "row": 5,
+     "where": "R5, row 5",
+     "key": "11,2",
+     "wall": false,
+     "heroMight": 54.9,
+     "status": ""
+    },
+    {
+     "name": "MaggPie",
+     "alliance": "WPP",
+     "slot": 31,
+     "row": 5,
+     "where": "R3, row 5",
+     "key": "11,4",
+     "wall": false,
+     "heroMight": 54.8,
+     "status": ""
+    },
+    {
+     "name": "AiryFairy",
+     "alliance": "WPP",
+     "slot": 32,
+     "row": 5,
+     "where": "R6, row 5",
+     "key": "11,1",
+     "wall": false,
+     "heroMight": 54.5,
+     "status": ""
+    },
+    {
+     "name": "Archie°Krista",
+     "alliance": "WPP",
+     "slot": 33,
+     "row": 5,
+     "where": "R2, row 5",
+     "key": "11,5",
+     "wall": false,
+     "heroMight": 52.5,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "NEXT",
+   "color": "#1E8A7A",
+   "ink": "#fff",
+   "block": "Top edge T1–T3 plus the NE corner",
+   "wall": 4,
+   "stack": "flag row behind T2",
+   "role": "Second city rally group, alternating with WPP. Your corner also holds our NE turret; push on 67's NW turret.",
+   "players": [
+    {
+     "name": "Voodooya",
+     "alliance": "NEXT",
+     "slot": 1,
+     "row": 1,
+     "where": "T1, row 1",
+     "key": "4,7",
+     "wall": true,
+     "heroMight": 87.4,
+     "status": ""
+    },
+    {
+     "name": "Nethra",
+     "alliance": "NEXT",
+     "slot": 2,
+     "row": 1,
+     "where": "T2, row 1",
+     "key": "5,7",
+     "wall": true,
+     "heroMight": 85.3,
+     "status": ""
+    },
+    {
+     "name": "DaniLynn",
+     "alliance": "NEXT",
+     "slot": 3,
+     "row": 1,
+     "where": "T3, row 1",
+     "key": "6,7",
+     "wall": true,
+     "heroMight": 81.5,
+     "status": ""
+    },
+    {
+     "name": "TheDoBo",
+     "alliance": "NEXT",
+     "slot": 4,
+     "row": 2,
+     "where": "T1, row 2",
+     "key": "4,8",
+     "wall": false,
+     "heroMight": 80.8,
+     "status": ""
+    },
+    {
+     "name": "Witchyyyyirl",
+     "alliance": "NEXT",
+     "slot": 5,
+     "row": 1,
+     "where": "NE corner",
+     "key": "7,7",
+     "wall": true,
+     "heroMight": 78.4,
+     "status": ""
+    },
+    {
+     "name": "Jujubet",
+     "alliance": "NEXT",
+     "slot": 6,
+     "row": 2,
+     "where": "T2, row 2",
+     "key": "5,8",
+     "wall": false,
+     "heroMight": 73.6,
+     "status": ""
+    },
+    {
+     "name": "PLGDRAGOON",
+     "alliance": "NEXT",
+     "slot": 7,
+     "row": 2,
+     "where": "T3, row 2",
+     "key": "6,8",
+     "wall": false,
+     "heroMight": 58.4,
+     "status": ""
+    },
+    {
+     "name": "Halil34",
+     "alliance": "NEXT",
+     "slot": 8,
+     "row": 2,
+     "where": "row 2",
+     "key": "7,8",
+     "wall": false,
+     "heroMight": 54.7,
+     "status": ""
+    },
+    {
+     "name": "ŞapkalıAdam",
+     "alliance": "NEXT",
+     "slot": 9,
+     "row": 3,
+     "where": "T1, row 3",
+     "key": "4,9",
+     "wall": false,
+     "heroMight": 52.3,
+     "status": ""
+    },
+    {
+     "name": "huguito",
+     "alliance": "NEXT",
+     "slot": 10,
+     "row": 3,
+     "where": "T2, row 3",
+     "key": "5,9",
+     "wall": false,
+     "heroMight": 51.1,
+     "status": ""
+    },
+    {
+     "name": "DoctorChill",
+     "alliance": "NEXT",
+     "slot": 11,
+     "row": 3,
+     "where": "T3, row 3",
+     "key": "6,9",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "vuhuu",
+     "alliance": "NEXT",
+     "slot": 12,
+     "row": 3,
+     "where": "row 3",
+     "key": "7,9",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "Kedi",
+     "alliance": "NEXT",
+     "slot": 13,
+     "row": 4,
+     "where": "T1, row 4",
+     "key": "4,10",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "KRAVENX",
+     "alliance": "NEXT",
+     "slot": 14,
+     "row": 4,
+     "where": "T2, row 4",
+     "key": "5,10",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "Gigi",
+     "alliance": "NEXT",
+     "slot": 15,
+     "row": 4,
+     "where": "T3, row 4",
+     "key": "6,10",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "Bennit",
+     "alliance": "NEXT",
+     "slot": 16,
+     "row": 4,
+     "where": "row 4",
+     "key": "7,10",
+     "wall": false,
+     "heroMight": 67.8,
+     "status": ""
+    },
+    {
+     "name": "Ariee",
+     "alliance": "NEXT",
+     "slot": 17,
+     "row": 5,
+     "where": "T1, row 5",
+     "key": "4,11",
+     "wall": false,
+     "heroMight": 65.6,
+     "status": ""
+    },
+    {
+     "name": "StarSteph",
+     "alliance": "NEXT",
+     "slot": 18,
+     "row": 5,
+     "where": "T2, row 5",
+     "key": "5,11",
+     "wall": false,
+     "heroMight": 56.9,
+     "status": ""
+    },
+    {
+     "name": "Wolfgo",
+     "alliance": "NEXT",
+     "slot": 19,
+     "row": 5,
+     "where": "T3, row 5",
+     "key": "6,11",
+     "wall": false,
+     "heroMight": 56.8,
+     "status": ""
+    },
+    {
+     "name": "VLADIN",
+     "alliance": "NEXT",
+     "slot": 20,
+     "row": 5,
+     "where": "row 5",
+     "key": "7,11",
+     "wall": false,
+     "heroMight": 55.4,
+     "status": ""
+    },
+    {
+     "name": "Penny23",
+     "alliance": "NEXT",
+     "slot": 21,
+     "row": 6,
+     "where": "T1, row 6",
+     "key": "4,12",
+     "wall": false,
+     "heroMight": 55.3,
+     "status": ""
+    },
+    {
+     "name": "OhNo",
+     "alliance": "NEXT",
+     "slot": 22,
+     "row": 6,
+     "where": "T2, row 6",
+     "key": "5,12",
+     "wall": false,
+     "heroMight": 55.0,
+     "status": ""
+    },
+    {
+     "name": "KYR0irl",
+     "alliance": "NEXT",
+     "slot": 23,
+     "row": 6,
+     "where": "T3, row 6",
+     "key": "6,12",
+     "wall": false,
+     "heroMight": 54.6,
+     "status": ""
+    },
+    {
+     "name": "archaicCHILL",
+     "alliance": "NEXT",
+     "slot": 24,
+     "row": 6,
+     "where": "row 6",
+     "key": "7,12",
+     "wall": false,
+     "heroMight": 53.4,
+     "status": ""
+    },
+    {
+     "name": "Milliez",
+     "alliance": "NEXT",
+     "slot": 25,
+     "row": 7,
+     "where": "T1, row 7",
+     "key": "4,13",
+     "wall": false,
+     "heroMight": 53.0,
+     "status": ""
+    },
+    {
+     "name": "w1ood",
+     "alliance": "NEXT",
+     "slot": 26,
+     "row": 7,
+     "where": "T2, row 7",
+     "key": "5,13",
+     "wall": false,
+     "heroMight": 52.7,
+     "status": ""
+    },
+    {
+     "name": "SilentBlight",
+     "alliance": "NEXT",
+     "slot": 27,
+     "row": 7,
+     "where": "T3, row 7",
+     "key": "6,13",
+     "wall": false,
+     "heroMight": 52.1,
+     "status": ""
+    },
+    {
+     "name": "Armarak",
+     "alliance": "NEXT",
+     "slot": 28,
+     "row": 7,
+     "where": "row 7",
+     "key": "7,13",
+     "wall": false,
+     "heroMight": 51.6,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "HoG",
+   "color": "#B5382F",
+   "ink": "#fff",
+   "block": "Bottom, lane B1",
+   "wall": 1,
+   "stack": "flag row behind B1",
+   "role": "Push on 67's SW turret, rally led by TERMİNATÖR. Refill the garrison when it empties.",
+   "players": [
+    {
+     "name": "TERMİNATÖR",
+     "alliance": "HoG",
+     "slot": 1,
+     "row": 1,
+     "where": "B1, row 1",
+     "key": "4,-1",
+     "wall": true,
+     "heroMight": 82.6,
+     "status": ""
+    },
+    {
+     "name": "Elfik1234",
+     "alliance": "HoG",
+     "slot": 2,
+     "row": 2,
+     "where": "B1, row 2",
+     "key": "4,-2",
+     "wall": false,
+     "heroMight": 66.2,
+     "status": ""
+    },
+    {
+     "name": "MajicSloth🦥",
+     "alliance": "HoG",
+     "slot": 3,
+     "row": 3,
+     "where": "B1, row 3",
+     "key": "4,-3",
+     "wall": false,
+     "heroMight": 60.7,
+     "status": ""
+    },
+    {
+     "name": "PaTiSoN",
+     "alliance": "HoG",
+     "slot": 4,
+     "row": 4,
+     "where": "B1, row 4",
+     "key": "4,-4",
+     "wall": false,
+     "heroMight": 58.9,
+     "status": ""
+    },
+    {
+     "name": "rkl",
+     "alliance": "HoG",
+     "slot": 5,
+     "row": 5,
+     "where": "B1, row 5",
+     "key": "4,-5",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "ŘƏX̌ÏFƏŘ",
+     "alliance": "HoG",
+     "slot": 6,
+     "row": 6,
+     "where": "B1, row 6",
+     "key": "4,-6",
+     "wall": false,
+     "heroMight": 64.3,
+     "status": ""
+    },
+    {
+     "name": "꧁OK69꧂",
+     "alliance": "HoG",
+     "slot": 7,
+     "row": 7,
+     "where": "B1, row 7",
+     "key": "4,-7",
+     "wall": false,
+     "heroMight": 63.9,
+     "status": ""
+    },
+    {
+     "name": "Penciu",
+     "alliance": "HoG",
+     "slot": 8,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 61.4,
+     "status": ""
+    },
+    {
+     "name": "MonkeyBob",
+     "alliance": "HoG",
+     "slot": 9,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 60.4,
+     "status": ""
+    },
+    {
+     "name": "Zanko",
+     "alliance": "HoG",
+     "slot": 10,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 60.1,
+     "status": ""
+    },
+    {
+     "name": "TheShrimp",
+     "alliance": "HoG",
+     "slot": 11,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 57.5,
+     "status": ""
+    },
+    {
+     "name": "Paul•el•Sabio",
+     "alliance": "HoG",
+     "slot": 12,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 53.8,
+     "status": ""
+    },
+    {
+     "name": "DrCrabber🦀",
+     "alliance": "HoG",
+     "slot": 13,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 53.4,
+     "status": ""
+    },
+    {
+     "name": "CaitalaN",
+     "alliance": "HoG",
+     "slot": 14,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 52.2,
+     "status": ""
+    },
+    {
+     "name": "MrsOwlPacino",
+     "alliance": "HoG",
+     "slot": 15,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 52.0,
+     "status": ""
+    },
+    {
+     "name": "BarbaraVA",
+     "alliance": "HoG",
+     "slot": 16,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 51.0,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "ĚØN",
+   "color": "#4B5563",
+   "ink": "#fff",
+   "block": "Bottom, lane B2",
+   "wall": 1,
+   "stack": "flag row behind B2",
+   "role": "Push on 67's SW turret, rally led by ◈ⒷⒶⓃⒺ◈. Refill the garrison when it empties.",
+   "players": [
+    {
+     "name": "◈ⒷⒶⓃⒺ◈",
+     "alliance": "ĚØN",
+     "slot": 1,
+     "row": 1,
+     "where": "B2, row 1",
+     "key": "5,-1",
+     "wall": true,
+     "heroMight": 83.6,
+     "status": ""
+    },
+    {
+     "name": "h̶a̶z̶e̶l̶",
+     "alliance": "ĚØN",
+     "slot": 2,
+     "row": 2,
+     "where": "B2, row 2",
+     "key": "5,-2",
+     "wall": false,
+     "heroMight": 59.7,
+     "status": ""
+    },
+    {
+     "name": "maxximoo",
+     "alliance": "ĚØN",
+     "slot": 3,
+     "row": 3,
+     "where": "B2, row 3",
+     "key": "5,-3",
+     "wall": false,
+     "heroMight": 56.4,
+     "status": ""
+    },
+    {
+     "name": "marzipan",
+     "alliance": "ĚØN",
+     "slot": 4,
+     "row": 4,
+     "where": "B2, row 4",
+     "key": "5,-4",
+     "wall": false,
+     "heroMight": 55.5,
+     "status": ""
+    },
+    {
+     "name": "༅༔WYLD༔༅",
+     "alliance": "ĚØN",
+     "slot": 5,
+     "row": 5,
+     "where": "B2, row 5",
+     "key": "5,-5",
+     "wall": false,
+     "heroMight": 52.6,
+     "status": ""
+    },
+    {
+     "name": "Booberry",
+     "alliance": "ĚØN",
+     "slot": 6,
+     "row": 6,
+     "where": "B2, row 6",
+     "key": "5,-6",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "TweetzZz",
+     "alliance": "ĚØN",
+     "slot": 7,
+     "row": 7,
+     "where": "B2, row 7",
+     "key": "5,-7",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "TheCook",
+     "alliance": "ĚØN",
+     "slot": 8,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 78.6,
+     "status": ""
+    },
+    {
+     "name": "Farenzial",
+     "alliance": "ĚØN",
+     "slot": 9,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 64.5,
+     "status": ""
+    },
+    {
+     "name": "EusthaceOG",
+     "alliance": "ĚØN",
+     "slot": 10,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 58.4,
+     "status": ""
+    },
+    {
+     "name": "Mugsyloo",
+     "alliance": "ĚØN",
+     "slot": 11,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 57.7,
+     "status": ""
+    },
+    {
+     "name": "ChrissyOfEON",
+     "alliance": "ĚØN",
+     "slot": 12,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 54.4,
+     "status": ""
+    },
+    {
+     "name": "~Ophelia~",
+     "alliance": "ĚØN",
+     "slot": 13,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 51.9,
+     "status": ""
+    },
+    {
+     "name": "DrChaosQueen",
+     "alliance": "ĚØN",
+     "slot": 14,
+     "row": null,
+     "where": "further out in your block",
+     "key": null,
+     "wall": false,
+     "heroMight": 51.2,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "RAE",
+   "color": "#C45C97",
+   "ink": "#fff",
+   "block": "Bottom, lane B3",
+   "wall": 1,
+   "stack": "flag row behind B3",
+   "role": "Push on 67's SW turret, rally led by SurvivalFred, and reinforce our SE turret.",
+   "players": [
+    {
+     "name": "SurvivalFred",
+     "alliance": "RAE",
+     "slot": 1,
+     "row": 1,
+     "where": "B3, row 1",
+     "key": "6,-1",
+     "wall": true,
+     "heroMight": 81.2,
+     "status": ""
+    },
+    {
+     "name": "Emily1615",
+     "alliance": "RAE",
+     "slot": 2,
+     "row": 2,
+     "where": "B3, row 2",
+     "key": "6,-2",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "eskama",
+     "alliance": "RAE",
+     "slot": 3,
+     "row": 3,
+     "where": "B3, row 3",
+     "key": "6,-3",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "pinggysMan",
+     "alliance": "RAE",
+     "slot": 4,
+     "row": 4,
+     "where": "B3, row 4",
+     "key": "6,-4",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "THE-RAVEN",
+     "alliance": "RAE",
+     "slot": 5,
+     "row": 5,
+     "where": "B3, row 5",
+     "key": "6,-5",
+     "wall": false,
+     "heroMight": 55.4,
+     "status": ""
+    },
+    {
+     "name": "mazekeen",
+     "alliance": "RAE",
+     "slot": 6,
+     "row": 6,
+     "where": "B3, row 6",
+     "key": "6,-6",
+     "wall": false,
+     "heroMight": 53.3,
+     "status": ""
+    },
+    {
+     "name": "ZuRe",
+     "alliance": "RAE",
+     "slot": 7,
+     "row": 7,
+     "where": "B3, row 7",
+     "key": "6,-7",
+     "wall": false,
+     "heroMight": 51.6,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "UKR",
+   "color": "#8DBDE8",
+   "ink": "#1b1b1b",
+   "block": "SE corner, beside our turret",
+   "wall": 1,
+   "stack": "flag crossing at the SE corner",
+   "role": "Hold and reinforce our SE turret beside your corner.",
+   "players": [
+    {
+     "name": "LenferOk",
+     "alliance": "UKR",
+     "slot": 1,
+     "row": 1,
+     "where": "SE corner",
+     "key": "7,-1",
+     "wall": true,
+     "heroMight": 71.9,
+     "status": ""
+    },
+    {
+     "name": "DoKtorMejaa",
+     "alliance": "UKR",
+     "slot": 2,
+     "row": 2,
+     "where": "row 2",
+     "key": "7,-2",
+     "wall": false,
+     "heroMight": 52.0,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "AURA",
+   "color": "#7A55B0",
+   "ink": "#fff",
+   "block": "SE, directly behind UKR",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our SE turret and keep hitting turrets and enemy rallies.",
+   "players": [
+    {
+     "name": "Ammanitty",
+     "alliance": "AURA",
+     "slot": 1,
+     "row": 2,
+     "where": "row 2",
+     "key": "8,-1",
+     "wall": false,
+     "heroMight": null,
+     "status": "confirmed"
+    },
+    {
+     "name": "Superstunt",
+     "alliance": "AURA",
+     "slot": 2,
+     "row": 2,
+     "where": "row 2",
+     "key": "8,-2",
+     "wall": false,
+     "heroMight": null,
+     "status": "confirmed"
+    },
+    {
+     "name": "DrOizo",
+     "alliance": "AURA",
+     "slot": 3,
+     "row": 3,
+     "where": "row 3",
+     "key": "9,-1",
+     "wall": false,
+     "heroMight": null,
+     "status": "confirmed"
+    },
+    {
+     "name": "DrCatsfire",
+     "alliance": "AURA",
+     "slot": 4,
+     "row": 3,
+     "where": "row 3",
+     "key": "8,-3",
+     "wall": false,
+     "heroMight": null,
+     "status": "confirmed"
+    },
+    {
+     "name": "Yllet",
+     "alliance": "AURA",
+     "slot": 5,
+     "row": 3,
+     "where": "row 3",
+     "key": "9,-2",
+     "wall": false,
+     "heroMight": null,
+     "status": "confirmed"
+    },
+    {
+     "name": "balibalo",
+     "alliance": "AURA",
+     "slot": 6,
+     "row": 3,
+     "where": "row 3",
+     "key": "9,-3",
+     "wall": false,
+     "heroMight": null,
+     "status": "maybe"
+    },
+    {
+     "name": "Passionfrutti",
+     "alliance": "AURA",
+     "slot": 7,
+     "row": 4,
+     "where": "row 4",
+     "key": "8,-4",
+     "wall": false,
+     "heroMight": null,
+     "status": "maybe"
+    },
+    {
+     "name": "Rain",
+     "alliance": "AURA",
+     "slot": 8,
+     "row": 4,
+     "where": "row 4",
+     "key": "9,-4",
+     "wall": false,
+     "heroMight": null,
+     "status": "maybe"
+    },
+    {
+     "name": "Nic",
+     "alliance": "AURA",
+     "slot": 9,
+     "row": 5,
+     "where": "row 5",
+     "key": "8,-5",
+     "wall": false,
+     "heroMight": null,
+     "status": "maybe"
+    }
+   ]
+  },
+  {
+   "tag": "K13",
+   "color": "#E58A3C",
+   "ink": "#1b1b1b",
+   "block": "NE, behind NEXT's corner",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our NE turret and keep hitting turrets and enemy rallies.",
+   "players": [
+    {
+     "name": "Tecyla",
+     "alliance": "K13",
+     "slot": 1,
+     "row": 2,
+     "where": "row 2",
+     "key": "8,7",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "MableC",
+     "alliance": "K13",
+     "slot": 2,
+     "row": 2,
+     "where": "row 2",
+     "key": "8,8",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    },
+    {
+     "name": "Mr~Reaper",
+     "alliance": "K13",
+     "slot": 3,
+     "row": 3,
+     "where": "row 3",
+     "key": "9,7",
+     "wall": false,
+     "heroMight": 55.1,
+     "status": ""
+    },
+    {
+     "name": "Beat13",
+     "alliance": "K13",
+     "slot": 4,
+     "row": 3,
+     "where": "row 3",
+     "key": "8,9",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "RISE",
+   "color": "#E8C766",
+   "ink": "#1b1b1b",
+   "block": "NE, far block",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our NE turret and keep hitting.",
+   "players": [
+    {
+     "name": "VelvetFoxx",
+     "alliance": "RISE",
+     "slot": 1,
+     "row": 4,
+     "where": "row 4",
+     "key": "10,7",
+     "wall": false,
+     "heroMight": null,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "ZfP",
+   "color": "#2F6DB5",
+   "ink": "#fff",
+   "block": "NE, far block",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our NE turret and keep hitting.",
+   "players": [
+    {
+     "name": "Keshaツ",
+     "alliance": "ZfP",
+     "slot": 1,
+     "row": 4,
+     "where": "row 4",
+     "key": "10,10",
+     "wall": false,
+     "heroMight": 57.1,
+     "status": ""
+    },
+    {
+     "name": "nobody27",
+     "alliance": "ZfP",
+     "slot": 2,
+     "row": 5,
+     "where": "row 5",
+     "key": "10,11",
+     "wall": false,
+     "heroMight": 56.4,
+     "status": ""
+    }
+   ]
+  },
+  {
+   "tag": "NOPE",
+   "color": "#8C6D46",
+   "ink": "#fff",
+   "block": "SE, far block",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our SE turret and keep hitting.",
+   "players": []
+  },
+  {
+   "tag": "RYL",
+   "color": "#9AA5B1",
+   "ink": "#1b1b1b",
+   "block": "SE, far block",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our SE turret and keep hitting.",
+   "players": []
+  },
+  {
+   "tag": "MMAG",
+   "color": "#AEB84A",
+   "ink": "#1b1b1b",
+   "block": "SE, far block",
+   "wall": 0,
+   "stack": "front of your block",
+   "role": "Reinforce our SE turret and keep hitting.",
+   "players": []
+  }
+ ],
+ "unlisted": "Not on the list? Park in your alliance's block: take the next free base, working outward from the city. Never park on a blue flag row.",
+ "sections": [
+  {
+   "h": "The plan, step by step",
+   "rows": [
+    [
+     "15:00",
+     "Truce starts. No base hits from now until an hour after the fight.",
+     "Everyone"
+    ],
+    [
+     "by 15:30",
+     "Ported into your own block, troops healed, marches formed. Anyone who won't fight shields.",
+     "Everyone"
+    ],
+    [
+     "15:45",
+     "Rally leaders and the 30-name garrison list confirmed in chat.",
+     "R4s of each alliance"
+    ],
+    [
+     "16:00",
+     "First city rally in the opening minutes, a second one loaded behind it. Take and garrison our NE and SE turrets, then push on 67's NW and SW turrets.",
+     "WPP and NEXT on the city. NEXT's corner and UKR hold our turrets. NEXT goes for NW, the bottom lanes for SW."
+    ],
+    [
+     "Every 30 min",
+     "A wave of five war flags per alliance on its stack point: 16:00, 16:30, 17:00 and 17:30.",
+     "Named per alliance by the R4s"
+    ],
+    [
+     "City held",
+     "Fill the garrison to 30 with the strongest heroes online, not first come. Refill a slot the moment it empties.",
+     "WPP and NEXT front rows, then the bottom lanes"
+    ],
+    [
+     "Throughout",
+     "Always one loaded, unspent rally waiting. If the city flips, retake at once. Everyone else keeps hitting turrets and enemy rallies.",
+     "Rally leaders alternate, all others hit"
+    ],
+    [
+     "Decided",
+     "Record the top-100 screen when the city is decided, and again at the end.",
+     "One officer"
+    ],
+    [
+     "After",
+     "Truce runs one more hour. No base hits, shield if offline.",
+     "Everyone"
+    ]
+   ]
+  },
+  {
+   "h": "What decides it",
+   "items": [
+    [
+     "Never be without a loaded rally.",
+     "67 has four alliances deep enough to rally at full strength (AEAS, CoRe, BZRA and Mori). Our answer is two groups alternating; the next rally is formed before the current one lands."
+    ],
+    [
+     "Garrison the strongest.",
+     "Our top heroes outrank theirs at almost every depth. That only counts if those players are inside the city, so the 30 garrison places go by hero might."
+    ],
+    [
+     "Turrets before trading.",
+     "Turrets fire on the city and kill the other server's soldiers. Our NE and SE turrets are next to NEXT's corner, UKR and WPP; keep them reinforced. Every one of 67's turrets we take stops its fire on our garrison."
+    ],
+    [
+     "Fight for the whole match.",
+     "Both earlier losses to 67 came from them filling ranks 26–100. Anyone with a march out should be hitting something until the end."
+    ]
+   ]
+  },
+  {
+   "h": "War flags",
+   "items": [
+    [
+     "+2% attack per flag, up to five.",
+     "A flag lasts 30 minutes and has a 71.5-hour cooldown, so everyone has one flag for this match. Five flags on one spot give +10%."
+    ],
+    [
+     "Waves, not all at once.",
+     "Four waves of five per alliance keep +10% running for two hours."
+    ],
+    [
+     "One stack point per alliance.",
+     "A flag reaches about three bases each way. WPP's stack behind R4 covers all seven wall bases and the two rows behind them. Five flags of a wave go on neighbouring tiles of the same flag row."
+    ],
+    [
+     "Check one thing before 16:00.",
+     "The reach also takes in our two turrets and the right half of the city. Place one flag early and see whether the bonus shows for troops there."
+    ]
+   ]
+  },
+  {
+   "h": "Who 67 brings",
+   "text": "Their front line is Toxa (102.6M, Vero), ༺e乂ception༻ (97.0M) and TURTLETURTLE (91.0M), both AEAS. AEAS (21 top-100 heroes) took our city on 10 October; CoRe (17), BZRA (16) and Mori (15) are their other full rally groups. Expect AEAS first and plan the garrison against it."
+  },
+  {
+   "h": "How the wall was split",
+   "text": "The 15 bases touching the city go by the strength each alliance brings: hero might of the players who were on the last two KvK boards. Inside each alliance, those players come first by hero might, then everyone else. A one-tile flag row runs between every row of bases."
+  }
+ ]
+}
