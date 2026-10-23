@@ -165,6 +165,37 @@ table.kvk-ab tbody tr:focus{outline:2px solid var(--indigo);outline-offset:-2px}
 #dirtybar[hidden]{display:none!important}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3);font-family:var(--mono)}
 @media(prefers-reduced-motion:no-preference){section{animation:fade .18s ease-out}@keyframes fade{from{opacity:0}to{opacity:1}}}
+
+/* ---------- KvK plan tab ---------- */
+.kp-find{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
+.kp-find input{font:inherit;font-size:16px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:3px;background:var(--panel-2);min-width:min(320px,100%);flex:1 1 240px}
+.kp-find button{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;min-height:44px;border:1px solid var(--ink);border-radius:3px;background:var(--ink);color:var(--paper);cursor:pointer}
+.kp-find button.ghost{background:none;color:var(--ink)}
+.kp-me{border-left:4px solid var(--rubric);background:var(--panel);padding:12px 16px;margin:0 0 16px;border-radius:0 3px 3px 0}
+.kp-me .big{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.15}
+.kp-me dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:10px 0 0;font-size:14px}
+.kp-me dt{color:var(--ink-2)} .kp-me dd{margin:0}
+.kp-map{overflow:auto;-webkit-overflow-scrolling:touch;background:var(--panel-2);border:1px solid var(--rule);border-radius:3px;max-height:80vh}
+.kp-map svg{display:block;width:760px;max-width:none;height:auto}
+@media(min-width:900px){.kp-map svg{width:100%}}
+.kp-map .kb.dim{opacity:.28}
+@keyframes kpPulse{0%{stroke-opacity:1}100%{stroke-opacity:.35}}
+#kvkme rect{animation:kpPulse 1.2s ease-out infinite alternate}
+@media (prefers-reduced-motion:reduce){#kvkme rect{animation:none}}
+.kp-chip{display:inline-block;font-weight:700;font-size:12px;padding:1px 7px;border-radius:2px;letter-spacing:.02em}
+.kp-lists{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.kp-al h4{display:flex;gap:8px;align-items:baseline;margin:0 0 4px;font-size:13px;font-weight:400;color:var(--ink-2);border-bottom:2px solid var(--ink);padding-bottom:4px}
+.kp-al ol{list-style:none;margin:0;padding:0;font-size:14px}
+.kp-al li{display:grid;grid-template-columns:2.2em 1fr auto;gap:6px;padding:4px 0;border-bottom:1px solid var(--rule);cursor:pointer}
+.kp-al li:hover{background:var(--panel)}
+.kp-al li.w{font-weight:600}
+.kp-al li .n{font-family:var(--mono);color:var(--ink-2)}
+.kp-al li .wh{font-family:var(--mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+.kp-al .more{font-size:13px;margin-top:6px}
+.kp-steps td:first-child{font-family:var(--mono);white-space:nowrap;font-weight:600}
+.kp-steps td:last-child{color:var(--ink-2)}
+.kp-items li{margin:0 0 8px}
+.kp-legend{font-size:13px;color:var(--ink-2);margin:8px 0 0}
 </style>
 </head>
 <body>
@@ -199,6 +230,11 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);font-si
   <h2>KvK</h2>
   <p class="lede">Two records, kept apart because they measure different things. <b>Board shares</b> come from the officers' recordings of the in-game top-100 board after each match: each alliance's share of the points #75 put on it. <b>Kills gained</b> are read from lastasylum.gg once a week, after Saturday's KvK. They show who fought, not who scored.</p>
   <div id="kvk-tab"><p class="muted">Loading…</p></div>
+</section>
+
+<section id="tab-plan" hidden>
+  <h2 id="plan-title">KvK plan</h2>
+  <div id="plan-tab"><p class="muted">Loading…</p></div>
 </section>
 
 <section id="tab-cycle" hidden>
@@ -1623,8 +1659,8 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","In force now"],["kvk","KvK"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
-var active="now", viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+var TABS=[["now","In force now"],["kvk","KvK"],["plan","KvK plan"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
+var active=(/^#plan/.test(location.hash)?"plan":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
@@ -2935,6 +2971,108 @@ function renderKvk(){ renderKvkFront(); renderKvkTab(); }
     if(!j||!Array.isArray(j.matches)) throw new Error("the file is not a KvK record");
     KVK=j; renderKvk();
   }).catch(function(e){ KVK_ERR=String(e&&e.message||e); renderKvk(); });
+})();
+
+/* ---------- KvK plan tab ----------
+   Reads data/kvk-plan.json: the map (a ready SVG whose bases carry data-k="x,y"),
+   every placed player and the plan text. Picking your name rings your base. */
+var PLAN=null, PLAN_ERR=null, PLAN_ME="";
+function planPlayers(){ var out=[]; (PLAN.alliances||[]).forEach(function(a){ (a.players||[]).forEach(function(p){ out.push(p); }); }); return out; }
+function planFold(s){ return String(s||"").normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9Ѐ-ӿ؀-ۿ]/g,""); }
+function planFind(q){
+  var f=planFold(q); if(!f) return null;
+  var all=planPlayers(), hit=null;
+  all.forEach(function(p){ if(!hit && planFold(p.name)===f) hit=p; });
+  if(!hit) all.forEach(function(p){ if(!hit && planFold(p.name).indexOf(f)===0) hit=p; });
+  return hit;
+}
+function planAlliance(tag){ var r=null; (PLAN.alliances||[]).forEach(function(a){ if(a.tag===tag) r=a; }); return r; }
+function planChip(a){ return '<span class="kp-chip" style="background:'+esc(a.color)+';color:'+esc(a.ink)+'">'+esc(a.tag)+'</span>'; }
+function planMark(p){
+  var g=document.getElementById("kvkme"); if(!g) return;
+  g.innerHTML="";
+  var svg=g.ownerSVGElement;
+  Array.prototype.forEach.call(document.querySelectorAll("#plan-map .kb"),function(el){
+    el.classList.toggle("dim", !!p && el.getAttribute("data-k")!==p.key && planAllianceOfKey(el)!==p.alliance);
+  });
+  if(!p||!p.key||!PLAN.geom[p.key]) return;
+  var xy=PLAN.geom[p.key], s=PLAN.base, NS="http://www.w3.org/2000/svg";
+  var r=document.createElementNS(NS,"rect");
+  r.setAttribute("x",xy[0]-4); r.setAttribute("y",xy[1]-4); r.setAttribute("width",s+8); r.setAttribute("height",s+8);
+  r.setAttribute("rx",8); r.setAttribute("fill","rgba(163,43,30,.18)"); r.setAttribute("stroke","#a32b1e"); r.setAttribute("stroke-width",6);
+  g.appendChild(r);
+  var t=document.createElementNS(NS,"text");
+  t.setAttribute("x",xy[0]+s/2); t.setAttribute("y",xy[1]-10); t.setAttribute("text-anchor","middle");
+  t.setAttribute("font-size","16"); t.setAttribute("font-weight","700"); t.setAttribute("fill","#a32b1e"); t.setAttribute("paint-order","stroke");
+  t.setAttribute("stroke","#fff"); t.setAttribute("stroke-width","4"); t.textContent=p.name;
+  g.appendChild(t);
+  var box=$("plan-map"), b=r.getBBox(), vb=svg.viewBox.baseVal, sc=svg.getBoundingClientRect().width/vb.width;
+  box.scrollTo({left:Math.max(0,b.x*sc-box.clientWidth/2), top:Math.max(0,b.y*sc-box.clientHeight/2), behavior:"smooth"});
+}
+function planAllianceOfKey(el){ var t=el.querySelector("text:last-of-type"); return t?t.textContent:""; }
+function planShowMe(p){
+  var el=$("plan-me");
+  if(!p){ el.innerHTML=PLAN_ME?'<div class="kp-me"><b>No player called “'+esc(PLAN_ME)+'” is on the plan.</b><p style="margin:6px 0 0">'+esc(PLAN.unlisted)+'</p></div>':""; planMark(null); return; }
+  var a=planAlliance(p.alliance)||{};
+  var where=p.key?esc(p.where)+(p.wall?" — against the city wall":""):"Further out in your block than the map shows: keep going outward in your lane.";
+  el.innerHTML='<div class="kp-me"><div class="big">'+esc(p.name)+' '+planChip(a)+'</div><dl>'+
+    '<dt>Your base</dt><dd><b>Slot '+esc(p.slot)+'</b> in '+esc(a.block)+' · '+where+'</dd>'+
+    '<dt>Your flag</dt><dd>'+esc(a.stack)+'</dd>'+
+    '<dt>Your job</dt><dd>'+esc(a.role)+'</dd>'+
+    (p.status==="maybe"?'<dt>Note</dt><dd>Listed as maybe. If you are online, take this base.</dd>':'')+
+    '</dl></div>';
+  planMark(p);
+  try{ localStorage.setItem("kvkPlanMe",p.name); }catch(e){}
+}
+function planPick(q){ PLAN_ME=q; planShowMe(planFind(q)); }
+function renderPlanTab(){
+  var el=$("plan-tab"); if(!el) return;
+  if(PLAN_ERR){ el.innerHTML='<p class="warn">The KvK plan could not be loaded ('+esc(PLAN_ERR)+').</p>'; return; }
+  if(!PLAN) return;
+  $("plan-title").textContent="KvK plan — "+PLAN.title+", "+kvkDay(PLAN.matchDay)+", "+PLAN.start;
+  var names=planPlayers().map(function(p){ return '<option value="'+esc(p.name)+'">'; }).join("");
+  var h='<p class="lede">67 left, 75 right. One connected block per alliance. Inside a block, slot 1 is nearest the city and goes to the strongest player. Find yourself below and the map shows your base.</p>';
+  h+='<div class="kp-find"><input id="plan-q" list="plan-names" placeholder="Type your in-game name" autocomplete="off" aria-label="Your in-game name"><datalist id="plan-names">'+names+'</datalist>'+
+     '<button id="plan-go">Show my base</button><button class="ghost" id="plan-clear">Clear</button></div><div id="plan-me"></div>';
+  h+='<div class="kp-map" id="plan-map">'+PLAN.svg+'</div>';
+  h+='<p class="kp-legend">One square is one base (3 × 3 tiles). Light blue rows are one-tile flag rows: never park on them. Outlined bases touch the city wall. Blue flags are each alliance\'s flag stack point; dashed squares show how far a flag reaches. Gold turrets are ours. The middle column on top and bottom straddles the half-way line and stays empty.</p>';
+  h+='<h3>The agreement with 67</h3><ul class="kp-items">'+PLAN.agreement.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>';
+  h+='<h3>Who parks where</h3><div class="kp-lists">'+PLAN.alliances.filter(function(a){ return a.players&&a.players.length; }).map(function(a){
+    var shown=a.players.slice(0,12);
+    return '<div class="kp-al"><h4>'+planChip(a)+'<span>'+esc(a.block)+'</span></h4><ol>'+shown.map(function(p){
+      return '<li class="'+(p.wall?"w":"")+'" data-name="'+esc(p.name)+'"><span class="n">'+esc(p.slot)+'</span><span>'+esc(p.name)+(p.status==="maybe"?' <span class="muted">(maybe)</span>':'')+'</span><span class="wh">'+esc(p.key?p.where:"further out")+'</span></li>';
+    }).join("")+'</ol>'+(a.players.length>shown.length?'<p class="more muted">'+(a.players.length-shown.length)+' more: find yourself in the box above.</p>':'')+'</div>';
+  }).join("")+'</div>';
+  h+='<p class="kp-legend">'+esc(PLAN.unlisted)+'</p>';
+  (PLAN.sections||[]).forEach(function(sct){
+    h+='<h3>'+esc(sct.h)+'</h3>';
+    if(sct.rows) h+='<div class="tablescroll"><table class="reg kp-steps"><thead><tr><th>When</th><th>What happens</th><th>Who</th></tr></thead><tbody>'+
+      sct.rows.map(function(r){ return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>'; }).join("")+'</tbody></table></div>';
+    if(sct.items) h+='<ul class="kp-items">'+sct.items.map(function(it){ return '<li><b>'+esc(it[0])+'</b> '+esc(it[1])+'</li>'; }).join("")+'</ul>';
+    if(sct.text) h+='<p style="max-width:70ch">'+esc(sct.text)+'</p>';
+  });
+  h+='<p class="muted" style="font-size:13px">'+esc(PLAN.source)+' Updated '+esc(PLAN.updated)+'.</p>';
+  el.innerHTML=h;
+  var q=$("plan-q");
+  $("plan-go").onclick=function(){ planPick(q.value); };
+  q.onkeydown=function(e){ if(e.key==="Enter") planPick(q.value); };
+  q.onchange=function(){ if(planFind(q.value)) planPick(q.value); };
+  $("plan-clear").onclick=function(){ q.value=""; PLAN_ME=""; planShowMe(null); try{ localStorage.removeItem("kvkPlanMe"); }catch(e){} };
+  Array.prototype.forEach.call(el.querySelectorAll(".kp-al li"),function(li){ li.onclick=function(){ q.value=li.getAttribute("data-name"); planPick(q.value); window.scrollTo({top:$("plan-me").getBoundingClientRect().top+window.scrollY-20,behavior:"smooth"}); }; });
+  var start=""; var m=/[?&]me=([^&#]+)/.exec(location.search)||/[#&]me=([^&]+)/.exec(location.hash);
+  if(m) start=decodeURIComponent(m[1].replace(/\+/g," "));
+  if(!start){ try{ start=localStorage.getItem("kvkPlanMe")||""; }catch(e){} }
+  if(start){ q.value=start; planPick(start); }
+}
+(function loadPlan(){
+  if(typeof fetch!=="function"){ PLAN_ERR="this browser cannot fetch it"; renderPlanTab(); return; }
+  fetch("data/kvk-plan.json",{cache:"no-cache"}).then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json();
+  }).then(function(j){
+    if(!j||!Array.isArray(j.alliances)||typeof j.svg!=="string") throw new Error("the file is not a KvK plan");
+    PLAN=j; renderPlanTab();
+  }).catch(function(e){ PLAN_ERR=String(e&&e.message||e); renderPlanTab(); });
 })();
 
 renderAll();
