@@ -31,6 +31,13 @@
      in at the second reading. A player needs both readings to count, so a
      player who joins an alliance never brings their career kills with them.
      A total that went down is left out. Absence is "not known", never zero.
+   - k4: lastasylum.gg redesigned its Kingdom War week page (Oct 2026). The
+     capture table now has "Attacker → city", "Result (UTC), losses attack /
+     defense" and "City held by". parseCaptures reads the new table (and the
+     old one if it returns), keeps each capture in the old shape plus the time
+     and both sides' power losses, puts cities that were attacked and held in
+     a separate "held" list, and skips the rows of servers without a battle.
+     Same reader as the dashboard collector's c13.
    - k3: each member's castle level is kept too, so a week also says how many
      members of an alliance upgraded their castle and by how many levels —
      counted on the same both-readings rule, so a high-castle joiner never
@@ -45,7 +52,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k3";
+export const VERSION = "k4";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -351,14 +358,29 @@ export function parseAlliance(html) {
   };
 }
 
-/* One Saturday's Royal City captures, kept only where #75 is involved. */
+/* One Saturday's Royal City captures, kept only where #75 is involved.
+   k4: the new layout first; the old one if the site ever brings it back. */
 export function parseCaptures(html) {
-  const found = findTable(tables(html), ["royal city", "taken by", "alliance", "king of battle"]);
-  if (!found) return refuse("no capture table with the expected columns — the page layout has changed");
-  const { col } = found;
+  const ts = tables(html);
+  let found = null;
+  for (const t0 of ts) {
+    // A header row drawn with <td> instead of <th> is taken as the first body row.
+    const t = !t0.headers.length && t0.rows.length ? { headers: t0.rows[0].map((c) => header(c.text)), rows: t0.rows.slice(1) } : t0;
+    const col = {};
+    t.headers.forEach((name, j) => {
+      if (col.pair === undefined && /attacker/.test(name) && /city/.test(name)) col.pair = j;
+      else if (col.result === undefined && /^result/.test(name)) col.result = j;
+      else if (col.held === undefined && /held by/.test(name)) col.held = j;
+    });
+    if (col.pair !== undefined && col.result !== undefined && col.held !== undefined) { found = { table: t, col }; break; }
+  }
+  if (found) return parseCapturesNew(found);
+  const old = findTable(ts, ["royal city", "taken by", "alliance", "king of battle"]);
+  if (!old) return refuse("no capture table with the expected columns — the page layout has changed");
+  const { col } = old;
   const rows = [];
   let bad = 0;
-  found.table.rows.forEach((cells) => {
+  old.table.rows.forEach((cells) => {
     const city = /#(\d+)/.exec(cells[col["royal city"]].text);
     const by = /#(\d+)/.exec(cells[col["taken by"]].text);
     if (!city || !by) { bad++; return; }
@@ -366,7 +388,52 @@ export function parseCaptures(html) {
     rows.push({ city: Number(city[1]), takenBy: Number(by[1]), tag: tn.tag, alliance: tn.name, king: cells[col["king of battle"]].text });
   });
   if (bad) return refuse(bad + " row(s) could not be read");
-  return { ok: true, rows: rows.filter((r) => r.city === SERVER || r.takenBy === SERVER), total: rows.length };
+  return { ok: true, rows: rows.filter((r) => r.city === SERVER || r.takenBy === SERVER), held: [], total: rows.length };
+}
+
+/* k4: "-2.3B" -> 2300000000, "-850M" -> 850000000. A loss is kept as a positive number. */
+function loss(text) {
+  const m = /^-?\s*(\d+(?:[.,]\d+)?)\s*([KMB])?$/i.exec(String(text || "").trim());
+  if (!m) return null;
+  const n = Number(m[1].replace(",", "."));
+  const mult = { K: 1e3, M: 1e6, B: 1e9 }[(m[2] || "").toUpperCase()] || 1;
+  return Number.isFinite(n) ? Math.round(n * mult) : null;
+}
+
+/* k4: one row per attack:
+     "#67 → #75" | "Taken 15:35, -2.3B / -4B" | "[AEAS] AssEatersAnonymous, king Anjutka"
+   Rows without "taken" or "held" are servers with no battle and are skipped. */
+function parseCapturesNew({ table, col }) {
+  const rows = [], held = [];
+  let bad = 0;
+  table.rows.forEach((cells) => {
+    const pc = cells[col.pair], rc = cells[col.result], hc = cells[col.held];
+    const r = rc ? rc.text : "";
+    if (!/taken|held/i.test(r)) return;
+    if (!pc || !hc) { bad++; return; }
+    let nums = (pc.text.match(/#\d+/g) || []).map((x) => Number(x.slice(1)));
+    if (nums.length < 2) {
+      nums = [];
+      pc.hrefs.forEach((h) => { const m = /\/leaderboard\/servers\/(\d+)/.exec(h); if (m) nums.push(Number(m[1])); });
+    }
+    if (nums.length < 2) { bad++; return; }
+    const lm = /(-?\s*\d+(?:[.,]\d+)?\s*[KMB]?)\s*\/\s*(-?\s*\d+(?:[.,]\d+)?\s*[KMB]?)/i.exec(r);
+    const tm = /(\d{1,2}):(\d{2})/.exec(r);
+    // "[WOE] Wrath of Erevos, king Motorhead" — the comma is not always in the text.
+    const km = /^([\s\S]*)[,\s]+king\s+([\s\S]+)$/i.exec(hc.text);
+    const tn = tagName(km ? km[1].replace(/[,\s]+$/, "") : hc.text);
+    const row = {
+      city: nums[1], attacker: nums[0],
+      timeUtc: tm ? tm[1].padStart(2, "0") + ":" + tm[2] : null,
+      lossAttack: lm ? loss(lm[1]) : null, lossDefense: lm ? loss(lm[2]) : null,
+      tag: tn.tag, alliance: tn.name, king: km ? km[2].trim() : ""
+    };
+    if (/taken/i.test(r)) rows.push(Object.assign({ takenBy: nums[0] }, row));
+    else held.push(row);
+  });
+  if (bad) return refuse(bad + " battle row(s) could not be read");
+  const ours = (x) => x.city === SERVER || x.takenBy === SERVER || x.attacker === SERVER;
+  return { ok: true, rows: rows.filter(ours), held: held.filter(ours), total: rows.length };
 }
 
 /* ═══════════════════════════════ the record ═══════════════════════════════ */
@@ -540,7 +607,7 @@ export async function runOnce(data, opts) {
       if (err) { report.pages.push({ path, ok: false, error: err }); continue; }
       const out = parseCaptures(r.body);
       if (!out.ok) { report.pages.push({ path, ok: false, error: out.error }); continue; }
-      data.captures[item.sat] = { readAt: report.at, rows: out.rows };
+      data.captures[item.sat] = { readAt: report.at, rows: out.rows, held: out.held || [] };
       report.pages.push({ path, ok: true, rows: out.rows.length });
     } else {
       p.queue.shift();
