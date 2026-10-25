@@ -2758,9 +2758,19 @@ function kvkScores(weeks){
     .sort(function(x,y){ return (y.points-x.points) || (y.weeks.length-x.weeks.length); });
   return { rows:rows, weeks:scored };
 }
-function kvkOverallBoard(limit){
-  var sc=kvkScores(KVK&&KVK.weeks), rows=limit?sc.rows.slice(0,limit):sc.rows;
-  if(!rows.length) return '<p class="derivation">The overall ranking starts with the first recorded week.</p>';
+/* The last n KvK weeks that can be scored. All-time totals are not shown:
+   alliances merged in October 2026, so old weeks would credit tags that no
+   longer exist and penalise the merged ones. */
+function kvkRecentWeeks(n){
+  var kw=((KVK&&KVK.weeks)||[]).filter(function(w){ return w.kvk&&w.kvk.length; });
+  return kvkScores(kw).weeks.slice(-n);
+}
+function kvkOverallBoard(limit, n, withNote){
+  var recent=kvkRecentWeeks(n);
+  var sc=kvkScores(recent), rows=limit?sc.rows.slice(0,limit):sc.rows;
+  if(!rows.length) return '<p class="derivation">This ranking starts with the first recorded KvK week.</p>';
+  var span=n===1 ? 'Covers the '+esc(kvkWeekLabel(recent[0]))+' only.'
+    : 'Points add up over the last '+n+' KvK weeks'+(recent.length<n?' ('+recent.length+' recorded so far)':'')+': '+recent.map(function(w){ return esc(w.kvk.map(kvkDay).join(", ")); }).join(' · ')+'.';
   var max=Math.max.apply(null,rows.map(function(r){ return r.points; }));
   var r1=function(v){ return (Math.round(v*10)/10).toFixed(1); };
   var pct=function(v){ return Math.round(v)+'%'; };
@@ -2769,8 +2779,8 @@ function kvkOverallBoard(limit){
     '<span class="mono">33.3 × players fighting ÷ most players fighting</span> — how many showed up<br>'+
     '<span class="mono">33.3 × turnout ÷ best turnout</span> — what share of the alliance fought<br>'+
     '<span class="mono">33.3 × kills per 1B might ÷ best kills per 1B might</span> — kills for the alliance’s strength; might rises with troop tier too, so this partly evens tiers out.<br>'+
-    'Points add up over every recorded week ('+sc.weeks.length+' so far). “Fighting” means at least one kill that week; garrisons and reinforcements do not show on lastasylum.gg. Hover or tap a row for its weekly sums.</p>';
-  var html=note+'<div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
+    'Weeks before October’s alliance mergers would distort an all-time total, so the ranking is shown for the last KvK and the last four. “Fighting” means at least one kill that week; garrisons and reinforcements do not show on lastasylum.gg. Hover or tap a row for its weekly sums.</p>';
+  var html=(withNote?note:'')+'<p class="tag" style="margin:0 0 6px">'+span+'</p><div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
     '<th class="num on">Points</th><th class="num"><span class="lg">Fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">Turnout</span><span class="sh">Turn.</span></th><th class="num"><span class="lg">Kills/might</span><span class="sh">K/might</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
     rows.map(function(r,i){
       var tip='<b>'+esc(r.tag)+'</b>'+r.weeks.map(function(w){
@@ -2799,7 +2809,8 @@ function renderKvkFront(){
   html+='<h3 style="margin-top:18px">Alliance performance, '+(lastWeek?esc(kvkWeekLabel(lastWeek)):'per week')+'</h3>';
   if(lastWeek){
     html+=kvkAllianceBoard(lastWeek,10)+kvkBoardNote(lastWeek);
-    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, all weeks</h3>'+kvkOverallBoard(10);
+    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, last KvK</h3>'+kvkOverallBoard(10,1,true);
+    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, last 4 KvKs</h3>'+kvkOverallBoard(10,4,false);
   } else {
     html+='<p class="derivation">Read weekly from lastasylum.gg. '+(KVK.latest?'The first reading was taken '+esc(kvkStamp(KVK.latest.at))+'; kills per alliance appear after the next KvK.':'The first reading will be taken within a few hours; kills per alliance appear after the KvK that follows it.')+'</p>';
   }
@@ -2865,7 +2876,8 @@ function renderKvkTab(){
 
   html+=kvkCastleSection();
 
-  html+='<h3>Who helped the server most — all weeks</h3>'+kvkOverallBoard(0);
+  html+='<h3>Who helped the server most — last KvK</h3>'+kvkOverallBoard(0,1,true);
+  html+='<h3>Who helped the server most — last 4 KvKs</h3>'+kvkOverallBoard(0,4,false);
   var c=KVK.collector||{};
   var caps=Object.keys(KVK.captures||{}).sort().reverse().slice(0,5);
   html+='<h3>Where the kill figures come from</h3><div class="card" style="font-size:14px">'+
