@@ -229,15 +229,6 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   <div class="query" id="queries"></div>
   <h2>KvK contribution — who holds L7 and the kept L6/L5</h2>
   <div id="cs-front"><p class="muted" style="font-size:14px">Loading…</p></div>
-  <h2>In force now</h2>
-  <p class="lede" id="now-term">—</p>
-  <div class="grid grid-3" id="now-cards"></div>
-  <h3>Held with the crown</h3>
-  <div class="grid grid-3" id="crown-cards"></div>
-  <h3>Next handover</h3>
-  <div class="card" id="next-handover"></div>
-  <h3>Releases required</h3>
-  <div class="card" id="release-panel"></div>
   <h3>KvK — the last five matches</h3>
   <div id="kvk-front"><p class="muted" style="font-size:14px">Loading…</p></div>
 </section>
@@ -255,41 +246,10 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   <div id="plan-tab"><p class="muted">Loading…</p></div>
 </section>
 
-<section id="tab-cycle" hidden>
-  <h2>The rotation</h2>
-  <p class="lede" id="cycle-lede">—</p>
-  <div class="btnrow" style="margin-bottom:14px">
-    <button class="btn ghost small" id="cyc-prev">← Previous cycle</button>
-    <button class="btn ghost small" id="cyc-now">Current cycle</button>
-    <button class="btn ghost small" id="cyc-next">Next cycle →</button>
-  </div>
-  <div class="lattice-scroll"><table class="lattice" id="lattice"></table></div>
-  <p class="derivation" id="derivation"></p>
-  <p class="derivation alert" id="gcd-warn" hidden></p>
-  <h3>Term detail</h3>
-  <div class="tablescroll"><table class="reg" id="terms-table"></table></div>
-</section>
-
 <section id="tab-changes" hidden>
   <h2>Every change ever published</h2>
   <p class="lede">Pulled live from the repository. Each entry is one published version, with who published it and what they said they changed. Open any of them to see exactly what moved.</p>
   <div id="changes-list"><p class="muted">Loading…</p></div>
-</section>
-
-<section id="tab-contrib" hidden>
-  <h2>Contributions</h2>
-  <p class="lede">Enter each alliance's KvK and AvA totals, one week at a time. Everything below is calculated from these two numbers and nothing else, so anyone can check the ranking by re-entering the same figures.</p>
-  <div class="field" style="max-width:460px"><label for="cw">Week being entered</label>
-    <select id="cw"></select></div>
-  <div class="tablescroll"><table class="reg" id="contrib-table"></table></div>
-  <h3>The window, week by week</h3>
-  <p class="lede">Each cell is that week's score out of 100. Blanks are weeks an alliance did not report, not weeks it scored nothing.</p>
-  <div class="tablescroll"><table class="reg" id="week-matrix"></table></div>
-  <p class="derivation" id="contrib-note"></p>
-  <h3>What the numbers say about the pool</h3>
-  <div class="card" id="pool-advice"></div>
-  <div class="btnrow"><button class="btn" id="apply-scores">Apply these scores to the pool</button></div>
-  <p id="apply-msg" style="font-size:14px;margin-top:8px"></p>
 </section>
 
 <section id="tab-import" hidden>
@@ -324,16 +284,9 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
 
 <section id="tab-alliances" hidden>
   <h2>Alliances</h2>
-  <p class="lede">Every alliance holding a city on this server, and what it holds. Counts include the rotating cities as allocated for the current term.</p>
+  <p class="lede">Every alliance holding a city on this server, and what it holds, from the record.</p>
   <div class="tablescroll"><table class="reg" id="alliances-table"></table></div>
   <p class="derivation" id="cap-note"></p>
-</section>
-
-<section id="tab-pool" hidden>
-  <h2>The rotation pool</h2>
-  <p class="lede" id="pool-lede">—</p>
-  <div class="tablescroll"><table class="reg" id="pool-table"></table></div>
-  <p class="derivation" id="pool-note"></p>
 </section>
 
 <section id="tab-rules" hidden>
@@ -400,15 +353,6 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   </div>
   <div class="btnrow"><button class="btn" id="add-transfer">Record it</button></div>
 
-  <h3>Name a release</h3>
-  <p class="lede">When an alliance at the cap takes up a term, record which of its own cities it gave up. The alliance chooses; this only writes down what it chose.</p>
-  <div class="grid grid-2">
-    <div class="field"><label for="r-term">Term</label><select id="r-term"></select></div>
-    <div class="field"><label for="r-city">City released</label><select id="r-city"></select></div>
-  </div>
-  <div class="btnrow"><button class="btn" id="add-release">Record the release</button></div>
-  <div id="release-list" style="margin-top:12px"></div>
-
   <h3>Add a record entry</h3>
   <div class="grid grid-2">
     <div class="field"><label for="l-date">Date</label><input type="date" id="l-date" class="mono"></div>
@@ -420,29 +364,14 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
 
   </div>
 
-  <div id="sub-rotation" hidden>
-  <h3>Cycle settings</h3>
+  <div id="sub-settings" hidden>
+  <h3>Register settings</h3>
   <div class="grid grid-2">
-    <div class="field"><label for="e-start">Cycle start</label><input type="date" id="e-start" class="mono"></div>
-    <div class="field"><label for="e-term">Term length (days)</label><input type="number" id="e-term" class="mono" min="1" max="28"></div>
     <div class="field"><label for="e-pub">Published date</label><input type="date" id="e-pub" class="mono"></div>
     <div class="field"><label for="e-by">Published by</label><input type="text" id="e-by"></div>
-    <div class="field"><label for="e-margin">Relegation margin (points)</label><input type="number" id="e-margin" class="mono" step="0.1"></div>
-    <div class="field"><label for="e-window">Score window</label><input type="text" id="e-window"></div>
     <div class="field"><label for="e-cap">City cap per alliance (0 = none / unconfirmed)</label><input type="number" id="e-cap" class="mono" min="0" max="20"></div>
   </div>
-
-  <p id="lock-note" hidden class="warn">Greyed-out fields need a keeper token. Your token records what happened to your own alliance; it does not set the terms of the rotation.</p>
-
-  <h3>Rotation pool — order sets the schedule</h3>
-  <p class="lede">Order is the rotation order and is locked for the cycle. Score sets pick order when cities come free.</p>
-  <div id="e-pool"></div>
-  <div class="btnrow"><button class="btn ghost small" id="add-pool">Add alliance</button></div>
-
-  <h3>Which cities rotate</h3>
-  <p class="lede">Tick a city to put it into the rotation. Untick to give it a standing holder instead. Adding the four Blessing Temples here turns the Level 6 rotation into a full top-tier ladder.</p>
-  <div id="e-rot"></div>
-
+  <p id="lock-note" hidden class="warn">Greyed-out fields need a keeper token. Your token records what happened to your own alliance.</p>
   </div>
 
   <div id="sub-rules" hidden>
@@ -1502,39 +1431,12 @@ function termEnd(t){ return addDays(termStart(t+1),-1); }
 function currentTerm(){ return Math.floor((todayMs()-d(REGISTER.cycleStart))/(REGISTER.termDays*86400000)); }
 function gcd(a,b){ while(b){ var t=b; b=a%b; a=t; } return a; }
 
-function holdersForTerm(t){
-  var n=poolSize(), s=Math.min(slots(),n), out=[], taken={}, skipped={};
-  (REGISTER.skips||[]).forEach(function(x){ if(x.term===t) skipped[x.tag]=true; });
-  for(var i=0;i<s;i++){
-    var k=((s*t+i)%n+n)%n, guard=0;
-    while(guard<n && (taken[REGISTER.pool[k].tag]||skipped[REGISTER.pool[k].tag])){ k=(k+1)%n; guard++; }
-    taken[REGISTER.pool[k].tag]=true; out.push(REGISTER.pool[k]);
-  }
-  return out;
-}
-
 var _cache={};
-function assignmentsForTerm(t){
-  if(t<0) return {};
-  if(_cache[t]) return _cache[t];
-  var prev = t===0 ? {} : assignmentsForTerm(t-1);
-  var holders=holdersForTerm(t), map={}, used={};
-  holders.forEach(function(a){ if(prev[a.tag] && cityById(prev[a.tag])){ map[a.tag]=prev[a.tag]; used[prev[a.tag]]=true; } });
-  var rec=(REGISTER.picks||{})[String(t)]||{};
-  holders.forEach(function(a){ if(!map[a.tag]&&rec[a.tag]&&!used[rec[a.tag]]){ map[a.tag]=rec[a.tag]; used[rec[a.tag]]=true; } });
-  var incoming=holders.filter(function(a){ return !map[a.tag]; }).sort(function(x,y){ return (y.score||0)-(x.score||0); });
-  var free=rotCities().filter(function(c){ return !used[c.id]; });
-  incoming.forEach(function(a,i){ if(free[i]){ map[a.tag]=free[i].id; used[free[i].id]=true; } });
-  _cache[t]=map; return map;
-}
-function isProjected(t){ return !((REGISTER.picks||{})[String(t)]) && t>currentTerm(); }
 function cityById(id){ for(var i=0;i<REGISTER.cities.length;i++) if(REGISTER.cities[i].id===id) return REGISTER.cities[i]; return null; }
-function allianceByTag(tag){ for(var i=0;i<REGISTER.pool.length;i++) if(REGISTER.pool[i].tag===tag) return REGISTER.pool[i]; return null; }
 
-/* Who holds every city at term t.
-   Seed holders, then recorded transfers, then recorded releases, then the
-   rotation laid over the top. Before the rotation starts the seed stands —
-   absence of an assignment is not an empty city. */
+/* Who holds every city: seed holders, then recorded transfers, then recorded
+   releases. The old pool rotation is no longer laid over the top (removed
+   27 Oct 2026, Rules v3 §0); rotating cities follow the record like any other. */
 var _state={};
 function stateAtTerm(t){
   var key=String(t);
@@ -1547,18 +1449,14 @@ function stateAtTerm(t){
     .forEach(function(x){ if(d(x.date)<=cutoff && st[x.city]!==undefined) st[x.city]=x.to||""; });
 
   Object.keys(REGISTER.releases||{}).forEach(function(k){
-    if(+k<=t){ var r=REGISTER.releases[k];
+    if(t<0 || +k<=t){ var r=REGISTER.releases[k];
       Object.keys(r).forEach(function(tag){ if(st[r[tag]]===tag) st[r[tag]]=""; }); }
   });
 
-  if(t>=0){
-    var m=assignmentsForTerm(t);
-    rotCities().forEach(function(c){ st[c.id]=""; });
-    Object.keys(m).forEach(function(tag){ if(m[tag]) st[m[tag]]=tag; });
-  }
   _state[key]=st; return st;
 }
-function holderMapNow(){ return stateAtTerm(currentTerm()); }
+/* Today, not the start of an old rotation term: a transfer dated today shows today. */
+function holderMapNow(){ return stateAtTerm(-1); }
 
 /* Cities counting toward the cap: the crown city sits outside it, and a
    rotating city is counted separately because it is the one being taken up. */
@@ -1570,24 +1468,9 @@ function capCount(tag, st){
   return n;
 }
 
-/* Who must drop a city to take up term t, and what they have named. */
-function releasesFor(t){
-  var cap=REGISTER.cityCap||0;
-  if(!cap || t<0) return [];
-  var prevH = t>0 ? holdersForTerm(t-1).map(function(a){ return a.tag; }) : [];
-  var st = stateAtTerm(t-1);
-  var rec = (REGISTER.releases||{})[String(t)] || {};
-  return holdersForTerm(t).filter(function(a){ return prevH.indexOf(a.tag)<0; })
-    .map(function(a){
-      var held=capCount(a.tag, st);
-      return { tag:a.tag, name:a.name, held:held, needed:held>=cap, released:rec[a.tag]||null };
-    }).filter(function(r){ return r.needed; });
-}
-
-/* Tenure spans for one city: recorded history, then scheduled rotation. */
+/* Tenure spans for one city, from the record. */
 function tenureSpans(city){
   var out=[];
-  if(!city.rotates){
     var cur=city.holder||"", from="from the opening of this register";
     (REGISTER.transfers||[]).filter(function(x){ return x.city===city.id; })
       .sort(function(a,b){ return a.date<b.date?-1:1; })
@@ -1606,29 +1489,7 @@ function tenureSpans(city){
     });
     out.push({ holder:cur, from:from, to:null, kind:"recorded", why:"" });
     return out;
-  }
-
-  out.push({ holder:city.holder||"", from:"from the opening of this register",
-             to:fmtDate(termStart(0)), kind:"recorded", why:"before the rotation began" });
-  var last=null, cur=currentTerm(), end=Math.max(cur,0)+poolSize()*2;
-  for(var t=0;t<=end;t++){
-    var m=assignmentsForTerm(t), tag="";
-    Object.keys(m).forEach(function(k){ if(m[k]===city.id) tag=k; });
-    if(last && last.tag===tag){ last.until=t; continue; }
-    if(last) out.push(spanOf(last, cur));
-    last={ tag:tag, from:t, until:t };
-  }
-  if(last) out.push(spanOf(last, cur));
-  return out;
 }
-function spanOf(sp, cur){
-  var a=allianceByTag(sp.tag);
-  return { holder: a?a.name:(sp.tag||""),
-           from: fmtDate(termStart(sp.from)), to: fmtDate(termEnd(sp.until)),
-           kind: sp.until<cur ? "past" : (sp.from<=cur && cur<=sp.until ? "current" : "scheduled"),
-           why: sp.until!==sp.from ? "terms "+(sp.from+1)+"\u2013"+(sp.until+1) : "term "+(sp.from+1) };
-}
-
 function fingerprint(){
   var canon=JSON.stringify([REGISTER.schema,REGISTER.cycleStart,REGISTER.termDays,REGISTER.published,
     REGISTER.pool.map(function(a){return [a.tag,a.name,a.score];}),
@@ -1656,7 +1517,7 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ retu
 function shortLabel(name){ var w=String(name).replace(/[^\p{L}\p{N}]+/gu," ").trim().split(" "); return w[w.length-1]||name; }
 
 var SUBS=[["cities","Cities & buffs",false],["record","Handovers & record",false],
-          ["rotation","Rotation & pool",true],["rules","Rules text",true],["publish","Publish",false]];
+          ["settings","Settings",true],["rules","Rules text",true],["publish","Publish",false]];
 var subActive="cities";
 
 function renderSubnav(){
@@ -1685,7 +1546,7 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","In force now"],["kvk","KvK"],["plan","KvK plan"],["cycle","The rotation"],["cities","Cities"],["history","History"],["changes","Changes"],["contrib","Contributions"],["import","Import"],["alliances","Alliances"],["pool","The pool"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
+var TABS=[["now","Overview"],["kvk","KvK"],["plan","KvK plan"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
 var active=(/^#plan/.test(location.hash)?"plan":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
@@ -1704,113 +1565,6 @@ function renderQueries(){
     q.map(function(x){ return "<li>"+esc(x)+"</li>"; }).join("")+"</ul>";
 }
 
-function renderNow(){
-  var t=currentTerm();
-  if(t<0){
-    $("now-term").innerHTML="The rotation has not started. Term 1 begins <b>"+fmtDate(termStart(0))+"</b>. Cities below show their holders as recorded.";
-    $("now-cards").innerHTML=rotCities().map(function(c){
-      return '<div class="hold"><div class="lvl">Level '+esc(c.level)+' · not yet rotating</div><div class="city">'+esc(c.name)+'</div>'+
-        '<div class="holder">'+esc(c.holder||"—")+'</div>'+
-        (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
-    }).join("");
-  } else {
-    var end=termEnd(t), left=Math.round((end-todayMs())/86400000)+1;
-    $("now-term").innerHTML="Term "+(t+1)+" · "+fmtDate(termStart(t))+" to "+fmtDate(end)+" · <b class='now'>"+left+(left===1?" day":" days")+" remaining</b>";
-    var map=assignmentsForTerm(t);
-    $("now-cards").innerHTML=holdersForTerm(t).map(function(a){
-      var c=cityById(map[a.tag])||{};
-      return '<div class="hold"><div class="lvl">Level '+esc(c.level||"")+' · held now</div><div class="city">'+esc(c.name||"—")+'</div>'+
-        '<div class="holder">'+esc(a.name)+'</div><div class="meta">'+esc(c.coords||"coordinates not recorded")+'<br>until '+fmtDate(end)+'</div>'+
-        (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
-    }).join("");
-  }
-
-  $("crown-cards").innerHTML=crownCities().map(function(c){
-    return '<div class="hold crown"><div class="lvl">Level '+esc(c.level)+' · outside the rotation</div><div class="city">'+esc(c.name)+'</div>'+
-      '<div class="holder">'+esc(c.holder||"—")+'</div><div class="meta">held with the crown, for the duration of the reign</div>'+
-      (c.buff?'<div class="buff">'+esc(c.buff)+'</div>':'<div class="buff muted">Buff not recorded yet.</div>')+'</div>';
-  }).join("") || "<p class='muted'>None recorded.</p>";
-
-  var nt=Math.max(t+1,0);
-  var prevMap=assignmentsForTerm(nt-1), nextMap=assignmentsForTerm(nt);
-  var prevH=nt-1>=0?holdersForTerm(nt-1):[], nextH=holdersForTerm(nt);
-  var prevTags=prevH.map(function(a){return a.tag;}), nextTags=nextH.map(function(a){return a.tag;});
-  var leaving=prevH.filter(function(a){ return nextTags.indexOf(a.tag)<0; });
-  var arriving=nextH.filter(function(a){ return prevTags.indexOf(a.tag)<0; });
-  var rows=arriving.map(function(a){
-    var cid=nextMap[a.tag], c=cityById(cid)||{};
-    var from=leaving.filter(function(l){ return prevMap[l.tag]===cid; })[0];
-    var fromName = from ? from.name : (nt===0 ? (c.holder||"—") : "—");
-    return "<tr><td><b>"+esc(c.name||"—")+"</b></td><td>"+esc(fromName)+"</td><td>"+esc(a.name)+"</td></tr>";
-  }).join("");
-  $("next-handover").innerHTML="<p style='margin:0 0 10px'><b>"+fmtDate(termStart(nt))+"</b> — term "+(nt+1)+" begins. "+
-    arriving.length+(arriving.length===1?" city changes":" cities change")+" hands."+(isProjected(nt)?" <span class='pill'>projected</span>":"")+"</p>"+
-    "<div class='tablescroll'><table class='reg'><thead><tr><th>City</th><th>Leaves</th><th>Goes to</th></tr></thead><tbody>"+
-    (rows||"<tr><td colspan='3' class='muted'>Nothing changes.</td></tr>")+"</tbody></table></div>"+
-    "<p style='margin:12px 0 0;font-size:13px' class='muted'>Continuing holders keep the city they already have. The outgoing alliance does not defend; the incoming alliance captures during the scheduled window.</p>";
-
-  var cap=REGISTER.cityCap||0, reqs=releasesFor(nt);
-  if(!cap){
-    $("release-panel").innerHTML="<p style='margin:0' class='muted'>No city cap set. If the game limits an alliance's territories, set the cap on the Edit tab — the register will then work out who has to drop a city before each handover.</p>";
-  } else if(!reqs.length){
-    $("release-panel").innerHTML="<p style='margin:0'>Nobody. Every alliance taking up term "+(nt+1)+" is below the cap of "+cap+".</p>";
-  } else {
-    $("release-panel").innerHTML="<p style='margin:0 0 10px'>Cap is "+cap+". These alliances are at it and must release a city of <b>their own choosing</b> before taking up term "+(nt+1)+".</p>"+
-      "<div class='tablescroll'><table class='reg'><thead><tr><th>Alliance</th><th class='num'>Counts toward cap</th><th>Releasing</th></tr></thead><tbody>"+
-      reqs.map(function(r){
-        var c=r.released?cityById(r.released):null;
-        return "<tr><td><b>"+esc(r.name)+"</b></td><td class='num'>"+r.held+" / "+cap+"</td>"+
-          "<td>"+(c?"<b>"+esc(c.name)+"</b> <span class='tag'>L"+c.level+"</span>"
-                   :"<span class='now'>not yet named</span>")+"</td></tr>";
-      }).join("")+"</tbody></table></div>"+
-      "<p style='margin:12px 0 0;font-size:13px' class='muted'>A released city becomes unclaimed and is reallocated under the standing rules. An alliance unwilling to release may decline the term without penalty; the rotation advances past it.</p>";
-  }
-}
-
-function renderCycle(){
-  var n=poolSize(), s=Math.min(slots(),n), cur=currentTerm();
-  var curCycle=Math.floor(Math.max(cur,0)/n);
-  if(viewCycle===null) viewCycle=Math.max(curCycle,0);
-  var t0=viewCycle*n;
-  $("cycle-lede").innerHTML=n+" alliances, "+s+" rotating "+(s===1?"city":"cities")+", one term of "+REGISTER.termDays+
-    " days each. Red is the term running now.";
-
-  var head="<thead><tr><th class='rowhead'>Cycle "+(viewCycle+1)+"</th>";
-  for(var i=0;i<n;i++){ var t=t0+i;
-    head+="<th class='"+(t===cur?"is-now":"")+"'>T"+(t+1)+"<br><span style='font-weight:400'>"+fmtShort(termStart(t))+"</span></th>"; }
-  head+="</tr></thead>";
-  var body="<tbody>"+REGISTER.pool.map(function(a){
-    var cells="";
-    for(var i=0;i<n;i++){ var t=t0+i, m=assignmentsForTerm(t), cid=m[a.tag];
-      var cls=cid?((t===cur?"current":(t<cur?"past":"future"))):"out";
-      var c=cid?cityById(cid):null;
-      cells+="<td><span class='cell "+cls+"'>"+esc(c?shortLabel(c.name):"—")+"</span></td>";
-    }
-    return "<tr><th class='rowhead'>"+esc(a.name)+"</th>"+cells+"</tr>";
-  }).join("")+"</tbody>";
-  $("lattice").innerHTML=head+body;
-
-  var g=gcd(s,n);
-  $("derivation").innerHTML="<b>How this is derived.</b> The schedule is not stored. For term <span class='mono'>t</span>, the holders are pool positions "+
-    "<span class='mono'>("+s+"t)</span> through <span class='mono'>("+s+"t+"+(s-1)+")</span>, counted round the pool of "+n+". "+
-    (g===1?"Because "+s+" and "+n+" share no factor, every alliance holds a city exactly <b>"+s+" terms in "+n+"</b>, and the cycle closes with no adjustment. Nobody arranges that and nobody can adjust it — it follows from the pool order and the cycle start date, both locked for the cycle."
-          :"Every alliance holds a city "+s+" terms in "+n+".");
-  if(g>1){
-    $("gcd-warn").hidden=false;
-    $("gcd-warn").innerHTML="<b>Check this pairing.</b> "+s+" cities and "+n+" alliances share a common factor of "+g+
-      ", so the pool splits into "+g+" fixed groups that never mix — the same alliances always hold together, and the same ones always sit out together. Time is still shared evenly. Add or remove one alliance to break the groups up.";
-  } else $("gcd-warn").hidden=true;
-
-  var trows="";
-  for(var j=0;j<n;j++){ var t=t0+j, m=assignmentsForTerm(t), hs=holdersForTerm(t);
-    trows+="<tr><td><b>Term "+(t+1)+"</b>"+(t===cur?" <span class='pill rub'>now</span>":"")+(isProjected(t)?" <span class='pill'>projected</span>":"")+
-      "<br><span class='tag'>"+fmtShort(termStart(t))+" – "+fmtShort(termEnd(t))+"</span></td><td>"+
-      hs.map(function(a){ var c=cityById(m[a.tag]); return esc(a.name)+" <span class='muted'>— "+esc(c?c.name:"—")+"</span>"; }).join("<br>")+
-      "</td><td class='muted'>"+REGISTER.pool.filter(function(a){ return !m[a.tag]; }).map(function(a){ return esc(a.name); }).join("<br>")+"</td></tr>";
-  }
-  $("terms-table").innerHTML="<thead><tr><th>Term</th><th>Holding</th><th>Sitting out</th></tr></thead><tbody>"+trows+"</tbody>";
-}
-
 function renderCities(){
   var hm=holderMapNow(), f=cityFilter.toLowerCase();
   var list=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
@@ -1820,7 +1574,7 @@ function renderCities(){
   $("cities-table").innerHTML="<thead><tr><th class='num'>Lvl</th><th>City</th><th>Type</th><th>Holder</th><th>Buff</th></tr></thead><tbody>"+
     (list.length?list.map(function(c){
       return "<tr><td class='num'>"+esc(c.level)+"</td><td><b>"+esc(c.name)+"</b>"+
-        (c.rotates?" <span class='pill rub'>rotates</span>":"")+(c.crown?" <span class='pill'>crown</span>":"")+"</td>"+
+        (c.crown?" <span class='pill'>crown</span>":"")+"</td>"+
         "<td class='muted'>"+esc(c.type||"")+"</td><td>"+esc(hm[c.id]||"— unclaimed —")+"</td>"+
         "<td class='muted' style='font-size:13px'>"+esc(c.buff||"—")+"</td></tr>";
     }).join(""):"<tr><td colspan='5' class='muted'>Nothing matches that.</td></tr>")+"</tbody>";
@@ -1838,160 +1592,15 @@ function allAlliances(){
    week key here means the same span it means there. */
 function weekKeyOf(ms){ var day=new Date(ms).getUTCDay(); return iso(addDays(ms,-day)); }
 function currentWeek(){ return weekKeyOf(todayMs()); }
-function windowWeeks(){
-  var n=Math.max(1,+((REGISTER.contributions||{}).window)||5), end=d(currentWeek()), out=[];
-  for(var i=n-1;i>=0;i--) out.push(iso(addDays(end,-7*i)));
-  return out;
-}
-function weekEntries(k){ return ((REGISTER.contributions||{}).weeks||{})[k]||{}; }
-function minWeeks(){ var m=(REGISTER.contributions||{}).minWeeks; return m==null?3:+m; }
-
-/* Each week is scored on its own, then a alliance's weeks are averaged.
-   Scoring week by week matters: event sizes differ, and an alliance that
-   missed a week should be judged on the weeks it played rather than dragged
-   down by a zero it never earned.
-
-   An alliance below the minimum number of reported weeks is NOT scored zero
-   and NOT ranked. Too little data is a reason to say so, not to guess. */
-function weeklyScores(){
-  var out={};
-  windowWeeks().forEach(function(k){
-    var E=weekEntries(k), maxK=0, maxA=0;
-    Object.keys(E).forEach(function(t){
-      var e=E[t]||{};
-      if((+e.kvk||0)>maxK) maxK=+e.kvk||0;
-      if((+e.ava||0)>maxA) maxA=+e.ava||0;
-    });
-    out[k]={};
-    Object.keys(E).forEach(function(t){
-      var e=E[t]||{};
-      var has=(e.kvk!=null&&e.kvk!=="")||(e.ava!=null&&e.ava!=="");
-      if(!has) return;
-      var nk=maxK>0?100*(+e.kvk||0)/maxK:0, na=maxA>0?100*(+e.ava||0)/maxA:0;
-      out[k][t]={ kvk:nk, ava:na, score:(nk+na)/2 };
-    });
-  });
-  return out;
-}
-
-function contribScores(){
-  var wk=weeklyScores(), weeks=windowWeeks(), tags=allAlliances(), need=minWeeks(), out={};
-  tags.forEach(function(t){
-    var vals=[];
-    weeks.forEach(function(k){ if(wk[k][t]) vals.push(wk[k][t].score); });
-    var mean=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:null;
-    out[t]={ weeksReported:vals.length, weeksNeeded:need, weeksInWindow:weeks.length,
-             entered: vals.length>=need, thin: vals.length>0 && vals.length<need,
-             score: vals.length>=need ? mean : null, provisional: mean };
-  });
-  return out;
-}
-
-function renderContrib(){
-  var weeks=windowWeeks(), sel=(SELWEEK&&weeks.indexOf(SELWEEK)>=0)?SELWEEK:weeks[weeks.length-1];
-  SELWEEK=sel;
-  var E=weekEntries(sel), sc=contribScores(), wk=weeklyScores(), tags=allAlliances();
-
-  $("cw").innerHTML=weeks.map(function(k){
-    var n=Object.keys(weekEntries(k)).length;
-    return "<option value='"+k+"'"+(k===sel?" selected":"")+">Week of "+fmtDate(d(k))+
-      " — "+(n?n+" reported":"nothing entered")+(k===currentWeek()?" · this week":"")+"</option>";
-  }).join("");
-
-  var ranked=tags.filter(function(t){ return sc[t].entered; }).sort(function(a,b){ return sc[b].score-sc[a].score; });
-  var rank={}; ranked.forEach(function(t,i){ rank[t]=i+1; });
-  var inPool={}; REGISTER.pool.forEach(function(a){ inPool[a.tag]=true; });
-
-  $("contrib-table").innerHTML=
-    "<thead><tr><th>Alliance</th><th class='num'>KvK</th><th class='num'>AvA</th>"+
-    "<th class='num'>Weeks</th><th class='num'>Score</th><th class='num'>Rank</th></tr></thead><tbody>"+
-    tags.map(function(t){
-      var e=E[t]||{}, r=sc[t];
-      var f=function(k){ return "<input class='mono' type='number' min='0' data-cb='"+esc(k)+"' data-tag='"+esc(t)+
-        "' value='"+(e[k]==null?"":esc(e[k]))+"' placeholder='—' style='min-height:34px;padding:4px 7px;font-size:14px;text-align:right'>"; };
-      var score = r.entered ? r.score.toFixed(1)
-        : r.thin ? "<span class='muted'>"+r.provisional.toFixed(1)+" so far</span>"
-        : "<span class='muted'>no data</span>";
-      return "<tr><td><b>"+esc(t)+"</b>"+(inPool[t]?" <span class='pill'>pool</span>":"")+"</td>"+
-        "<td>"+f("kvk")+"</td><td>"+f("ava")+"</td>"+
-        "<td class='num'>"+r.weeksReported+" / "+r.weeksInWindow+
-          (r.thin?" <span class='pill rub'>thin</span>":"")+"</td>"+
-        "<td class='num'>"+score+"</td>"+
-        "<td class='num'>"+(r.entered?rank[t]:"<span class='muted'>—</span>")+"</td></tr>";
-    }).join("")+"</tbody>";
-
-  $("contrib-note").innerHTML="<b>How the score is worked out.</b> Within each week, an alliance's KvK and AvA totals "+
-    "are scaled against the best totals of that week to give 0–100 each, and averaged. An alliance's score is then the "+
-    "mean of its weeks across the "+weeks.length+"-week window. Scoring week by week keeps a big event week from "+
-    "drowning out a quiet one, and means a missed week costs an alliance nothing it did not lose on the field. "+
-    "Fewer than <b>"+minWeeks()+"</b> weeks reported and an alliance is not ranked at all — too little to judge on is "+
-    "a reason to say so, not to guess.";
-
-  $("week-matrix").innerHTML=
-    "<thead><tr><th>Alliance</th>"+weeks.map(function(k){
-      return "<th class='num'>"+fmtShort(d(k))+"</th>"; }).join("")+"<th class='num'>Mean</th></tr></thead><tbody>"+
-    tags.map(function(t){
-      var any=weeks.some(function(k){ return wk[k][t]; });
-      if(!any) return "";
-      return "<tr><td><b>"+esc(t)+"</b></td>"+weeks.map(function(k){
-        return "<td class='num'>"+(wk[k][t]?wk[k][t].score.toFixed(0):"<span class='muted'>·</span>")+"</td>";
-      }).join("")+"<td class='num'><b>"+(sc[t].score!=null?sc[t].score.toFixed(1):(sc[t].provisional!=null?sc[t].provisional.toFixed(1):"—"))+"</b></td></tr>";
-    }).join("")+"</tbody>";
-
-  var margin=+REGISTER.relegationMargin||0, size=REGISTER.pool.length;
-  if(!ranked.length){
-    $("pool-advice").innerHTML="<p style='margin:0' class='muted'>Nothing entered yet. Fill in at least the "+size+" pool alliances and this works out who belongs in the pool.</p>";
-  } else {
-    var byScore=ranked.slice(0,size);
-    var lowestIn=REGISTER.pool.map(function(a){ return sc[a.tag]&&sc[a.tag].entered?sc[a.tag].score:null; })
-      .filter(function(x){ return x!==null; }).sort(function(a,b){ return a-b; })[0];
-    var moves=[];
-    ranked.forEach(function(t){
-      if(inPool[t]||lowestIn==null) return;
-      if(sc[t].score>=lowestIn+margin) moves.push({tag:t,score:sc[t].score});
-    });
-    var missing=REGISTER.pool.filter(function(a){ return !sc[a.tag].entered; }).map(function(a){ return a.tag; });
-    $("pool-advice").innerHTML=
-      "<p style='margin:0 0 10px'>By score, the top "+size+" are <b>"+byScore.map(esc).join(", ")+"</b>.</p>"+
-      (missing.length?"<p style='margin:0 0 10px' class='now'>No figures yet for "+missing.map(esc).join(", ")+" — they are in the pool but cannot be ranked, so this comparison is incomplete.</p>":"")+
-      (moves.length
-        ? "<p style='margin:0 0 6px'>Clearing the "+margin+"-point margin to take a pool place: <b>"+
-          moves.map(function(m){ return esc(m.tag)+" ("+m.score.toFixed(1)+")"; }).join(", ")+"</b>.</p>"
-        : "<p style='margin:0 0 6px'>Nobody outside the pool clears the "+margin+"-point margin. Incumbents keep their places.</p>")+
-      "<p style='margin:8px 0 0;font-size:13px' class='muted'>Pool membership is reviewed once per cycle, not per term. "+
-      "Applying scores updates pick order straight away; it does not reorder the rotation, which stays locked.</p>";
-  }
-}
-
-/* Recompute the score and rank columns without rebuilding the inputs, so the
-   number you are typing does not lose focus mid-keystroke. */
-function renderContribLive(){
-  var sc=contribScores(), tags=allAlliances();
-  var ranked=tags.filter(function(t){ return sc[t].entered; }).sort(function(a,b){ return sc[b].score-sc[a].score; });
-  var rank={}; ranked.forEach(function(t,i){ rank[t]=i+1; });
-  var rows=document.querySelectorAll("#contrib-table tbody tr");
-  Array.prototype.forEach.call(rows,function(tr,i){
-    var t=tags[i]; if(!t) return;
-    var tds=tr.getElementsByTagName("td");
-    if(tds.length<6) return;
-    var r=sc[t];
-    tds[3].innerHTML = r.weeksReported+" / "+r.weeksInWindow+(r.thin?" <span class='pill rub'>thin</span>":"");
-    tds[4].innerHTML = r.entered ? r.score.toFixed(1)
-      : (r.thin ? "<span class='muted'>"+r.provisional.toFixed(1)+" so far</span>" : "<span class='muted'>no data</span>");
-    tds[5].innerHTML = r.entered ? rank[t] : "<span class='muted'>—</span>";
-  });
-}
-
 function renderHistory(){
   var f=histFilter.toLowerCase();
   var list=REGISTER.cities.filter(function(c){
-    if(!f) return c.rotates || c.crown || (REGISTER.transfers||[]).some(function(x){ return x.city===c.id; });
+    if(!f) return c.crown || c.level>=6 || (REGISTER.transfers||[]).some(function(x){ return x.city===c.id; });
     return (c.name+" "+(c.holder||"")+" "+(c.type||"")).toLowerCase().indexOf(f)>=0;
   }).sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
 
-  $("hist-lede").innerHTML="Tenure for every city, oldest first. <b>Recorded</b> spans happened. "+
-    "<b>Scheduled</b> spans follow from the rotation and have not happened yet. "+
-    (f?"Showing "+list.length+" matching.":"Showing the rotating cities, the crown city, and anything with a recorded transfer — type above to see the rest.");
+  $("hist-lede").innerHTML="Tenure for every city, oldest first, from the record. "+
+    (f?"Showing "+list.length+" matching.":"Showing the Level 6 and 7 cities and anything with a recorded transfer — type above to see the rest.");
 
   $("hist-list").innerHTML = list.length ? list.map(function(c){
     var spans=tenureSpans(c);
@@ -2022,32 +1631,16 @@ function renderAlliances(){
   var cap=REGISTER.cityCap||0;
   $("alliances-table").innerHTML="<thead><tr><th>Alliance</th><th class='num'>Cities</th><th class='num'>Highest</th>"+
     "<th class='num'>L7</th><th class='num'>L6</th><th class='num'>L5</th><th class='num'>L4</th><th class='num'>L3</th><th class='num'>L2</th><th class='num'>L1</th>"+
-    "<th class='num'>In pool</th></tr></thead><tbody>"+
+    "</tr></thead><tbody>"+
     rows.map(function(t){
       var r=by[t], atCap = cap && r.n>=cap;
       return "<tr><td><b>"+esc(t)+"</b>"+(atCap?" <span class='pill rub'>at cap</span>":"")+"</td>"+
         "<td class='num'>"+r.n+"</td><td class='num'>"+r.top+"</td>"+
-        [7,6,5,4,3,2,1].map(function(l){ return "<td class='num'>"+(r.lv[l]||"·")+"</td>"; }).join("")+
-        "<td class='num'>"+(allianceByTag(t)?"yes":"·")+"</td></tr>";
+        [7,6,5,4,3,2,1].map(function(l){ return "<td class='num'>"+(r.lv[l]||"·")+"</td>"; }).join("")+"</tr>";
     }).join("")+"</tbody>";
-  var blocked = cap ? Object.keys(by).filter(function(t){ return allianceByTag(t) && by[t].n>=cap; }) : [];
   $("cap-note").innerHTML = cap
-    ? "<b>City cap: "+cap+".</b> An alliance at the cap releases one of its own cities, of its own choosing, before taking up a rotation term. Alliances at the cap are marked."
-      + (blocked.length ? " In the pool and at the cap right now: <b>"+blocked.map(esc).join(", ")+"</b> \u2014 each needs a release scheduled alongside its handover." : "")
-    : "<b>City cap: not set.</b> Eleven alliances hold exactly six cities and none holds more, apart from the crown holder. If the game caps an alliance at six, an alliance at the cap cannot accept a rotating city without releasing one — set <span class='mono'>cityCap</span> in the register once it is confirmed.";
-}
-
-function renderPool(){
-  var n=poolSize(), s=Math.min(slots(),n);
-  $("pool-lede").innerHTML="The alliances in the rotation. Scores cover <b>"+esc(REGISTER.scoreWindow||"—")+
-    "</b> and come from KvK and AvA alliance totals, scaled against the best in each and averaged.";
-  var ranked=REGISTER.pool.map(function(a,i){ return {a:a,order:i}; }).sort(function(x,y){ return (y.a.score||0)-(x.a.score||0); });
-  $("pool-table").innerHTML="<thead><tr><th class='num'>Rank</th><th>Alliance</th><th class='num'>Score</th><th class='num'>Members</th><th class='num'>Rotation position</th></tr></thead><tbody>"+
-    ranked.map(function(r,i){ return "<tr><td class='num'>"+(i+1)+"</td><td><b>"+esc(r.a.name)+"</b></td>"+
-      "<td class='num'>"+((r.a.score||0).toFixed(1))+"</td><td class='num'>"+esc(r.a.members||"—")+"</td><td class='num'>"+(r.order+1)+"</td></tr>"; }).join("")+"</tbody>";
-  $("pool-note").innerHTML="<b>Rank is not rotation position.</b> Rank decides who picks first when cities come free. Rotation position decides when a turn falls, and is locked for the cycle. "+
-    "A challenger must beat the last pool place by <b>"+esc(REGISTER.relegationMargin)+" points</b> to take it; inside that margin the incumbent stays, so the pool does not churn on noise. "+
-    "With "+n+" alliances and "+s+" cities, each holds "+s+" terms in "+n+" — "+Math.round(100*s/n)+"% of the time.";
+    ? "<b>City cap: "+cap+".</b> Alliances at the cap are marked."
+    : "<b>City cap: not set.</b> Set it under Edit and publish → Settings once it is confirmed in game.";
 }
 
 /* A deliberately small markdown renderer: headings, rules, lists, emphasis,
@@ -2107,52 +1700,17 @@ function renderLog(){
 }
 
 function renderEdit(){
-  $("e-start").value=REGISTER.cycleStart; $("e-term").value=REGISTER.termDays;
   $("e-pub").value=REGISTER.published; $("e-by").value=REGISTER.publishedBy||"";
-  $("e-margin").value=REGISTER.relegationMargin; $("e-window").value=REGISTER.scoreWindow||"";
   $("e-cap").value=REGISTER.cityCap||0;
-  $("e-pool").innerHTML=REGISTER.pool.map(function(a,i){
-    return "<div class='rowedit pool'>"+
-      "<div class='field'><label>Position "+(i+1)+"</label><input data-p='name' data-i='"+i+"' value='"+esc(a.name)+"'></div>"+
-      "<div class='field'><label>Tag</label><input data-p='tag' data-i='"+i+"' class='mono' value='"+esc(a.tag)+"'></div>"+
-      "<div class='field'><label>Score</label><input data-p='score' data-i='"+i+"' class='mono' type='number' step='0.1' value='"+esc(a.score)+"'></div>"+
-      "<div class='field'><label>Members</label><input data-p='members' data-i='"+i+"' class='mono' type='number' value='"+esc(a.members||0)+"'></div>"+
-      "<div class='btnrow'><button class='btn ghost small' data-up='"+i+"'>↑</button><button class='btn ghost small' data-down='"+i+"'>↓</button><button class='btn ghost small' data-delp='"+i+"'>Remove</button></div></div>";
-  }).join("");
-  var high=REGISTER.cities.filter(function(c){ return c.level>=5; }).sort(function(a,b){ return b.level-a.level; });
-  $("e-rot").innerHTML=high.map(function(c){
-    var i=REGISTER.cities.indexOf(c);
-    return "<label style='display:flex;gap:10px;align-items:center;text-transform:none;letter-spacing:0;font-weight:400;font-size:15px;padding:7px 0;border-bottom:1px solid var(--rule)'>"+
-      "<input type='checkbox' data-rot='"+i+"' "+(c.rotates?"checked":"")+(c.crown?" disabled":"")+" style='width:18px;height:18px;min-height:0;flex:none'>"+
-      "<span>L"+c.level+" · <b>"+esc(c.name)+"</b> <span class='tag'>"+esc(c.holder||"")+"</span>"+(c.crown?" <span class='pill'>crown — outside the rotation</span>":"")+"</span></label>";
-  }).join("");
   var opts=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
   /* Chosen from the alliances that exist, never typed. A mistyped tag would
-     quietly create an eighteenth alliance that holds one city and reports no
-     contributions, and nothing downstream would notice. */
-  $("t-city").innerHTML=opts.filter(function(c){ return !c.rotates; })
+     quietly create an alliance that holds one city, and nothing downstream
+     would notice. */
+  $("t-city").innerHTML=opts
     .map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+" — "+esc(c.holder||"unclaimed")+"</option>"; }).join("");
   $("t-to").innerHTML="<option value=''>— unclaimed —</option>"+
     allAlliances().map(function(t){ return "<option value='"+esc(t)+"'>"+esc(t)+"</option>"; }).join("");
   if(!$("t-date").value) $("t-date").value=iso(todayMs());
-
-  var cur=Math.max(currentTerm(),0), terms=[];
-  for(var k=cur;k<cur+poolSize()*2;k++) terms.push(k);
-  $("r-term").innerHTML=terms.map(function(k){
-    var reqs=releasesFor(k);
-    return "<option value='"+k+"'>Term "+(k+1)+" — "+fmtShort(termStart(k))+
-      (reqs.length?" · "+reqs.map(function(r){ return r.name; }).join(", ")+" at cap":" · nobody at cap")+"</option>";
-  }).join("");
-  $("r-city").innerHTML=opts.filter(function(c){ return !c.rotates && !c.crown; })
-    .map(function(c){ return "<option value='"+esc(c.id)+"'>L"+c.level+" · "+esc(c.name)+" — "+esc(c.holder||"unclaimed")+"</option>"; }).join("");
-  var rl=REGISTER.releases||{}, rk=Object.keys(rl).sort(function(a,b){ return +a-+b; });
-  $("release-list").innerHTML = rk.length ? "<table class='reg'><tbody>"+rk.map(function(k){
-    return Object.keys(rl[k]).map(function(tag){
-      var c=cityById(rl[k][tag]);
-      return "<tr><td>Term "+(+k+1)+"</td><td><b>"+esc(tag)+"</b></td><td>"+esc(c?c.name:rl[k][tag])+
-        "</td><td style='text-align:right'><button class='btn ghost small' data-delr='"+k+"|"+tag+"'>Remove</button></td></tr>";
-    }).join("");
-  }).join("")+"</tbody></table>" : "<p class='muted' style='margin:0;font-size:13px'>No releases recorded.</p>";
 
   renderCityDetails();
   var R=REGISTER.rules||{};
@@ -2214,11 +1772,11 @@ function renderAll(){ _cache={}; _state={}; renderTabs(); renderQueries();
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
   $("pubby").textContent=REGISTER.publishedBy?"by "+REGISTER.publishedBy:"";
   $("foot-rules").textContent=REGISTER.rulesUrl||"—";
-  renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderRules(); renderLog(); renderEdit();
+  renderCities(); renderHistory(); renderAlliances(); renderRules(); renderLog(); renderEdit();
   if(EDITOR) applyRoleLocks(EDITOR.role); }
 function softRefresh(){ _cache={}; _state={}; viewCycle=null;
   $("fp").textContent=fingerprint(); $("pubdate").textContent=REGISTER.published;
-  renderQueries(); renderNow(); renderCycle(); renderCities(); renderContrib(); renderHistory(); renderAlliances(); renderPool(); renderRules(); renderLog();
+  renderQueries(); renderCities(); renderHistory(); renderAlliances(); renderRules(); renderLog();
   $("export").value=JSON.stringify(REGISTER,null,2);
   updateDirty(); }
 
@@ -2246,32 +1804,13 @@ document.addEventListener("input",function(e){
     updateDirty();
     return;
   }
-  if(el.dataset&&el.dataset.cb!==undefined){
-    REGISTER.contributions=REGISTER.contributions||{window:5,minWeeks:3,weeks:{}};
-    REGISTER.contributions.weeks=REGISTER.contributions.weeks||{};
-    var W=REGISTER.contributions.weeks, k=SELWEEK||currentWeek(), tag=el.dataset.tag;
-    W[k]=W[k]||{}; W[k][tag]=W[k][tag]||{};
-    if(el.value==="") delete W[k][tag][el.dataset.cb]; else W[k][tag][el.dataset.cb]=parseFloat(el.value)||0;
-    if(!Object.keys(W[k][tag]).length) delete W[k][tag];
-    if(!Object.keys(W[k]).length) delete W[k];
-    renderContribLive();
-    return;
-  }
-  if(el.dataset&&el.dataset.p!==undefined){ i=+el.dataset.i; var v=el.value;
-    if(el.dataset.p==="score"||el.dataset.p==="members") v=parseFloat(v)||0;
-    REGISTER.pool[i][el.dataset.p]=v; softRefresh(); }
-  else if(["e-start","e-term","e-pub","e-by","e-margin","e-window","e-cap"].indexOf(el.id)>=0){
-    REGISTER.cycleStart=$("e-start").value||REGISTER.cycleStart;
-    REGISTER.termDays=Math.max(1,parseInt($("e-term").value,10)||7);
+  if(["e-pub","e-by","e-cap"].indexOf(el.id)>=0){
     REGISTER.published=$("e-pub").value||REGISTER.published;
     REGISTER.publishedBy=$("e-by").value;
-    REGISTER.relegationMargin=parseFloat($("e-margin").value)||0;
-    REGISTER.scoreWindow=$("e-window").value;
     REGISTER.cityCap=Math.max(0,parseInt($("e-cap").value,10)||0); softRefresh(); }
 });
 document.addEventListener("change",function(e){
   var el=e.target;
-  if(el.id==="cw"){ SELWEEK=el.value; renderContrib(); return; }
   if(el.dataset&&el.dataset.ch!==undefined){
     var c=REGISTER.cities[+el.dataset.ch], was=c.holder||"";
     c.holder=el.value;
@@ -2280,22 +1819,6 @@ document.addEventListener("change",function(e){
     renderAll(); active="edit"; subActive="cities"; renderTabs();
     return;
   }
-  if(el.dataset&&el.dataset.rot!==undefined){
-    var c=REGISTER.cities[+el.dataset.rot];
-    c.rotates=el.checked;
-    if(c.rotates && !c.pickRank) c.pickRank=rotCities().length;
-    renderAll();
-  }
-});
-document.addEventListener("click",function(e){
-  var b=e.target.closest?e.target.closest("button"):null; if(!b) return; var ds=b.dataset,i,x;
-  if(ds.up!==undefined){ i=+ds.up; if(i>0){ x=REGISTER.pool.splice(i,1)[0]; REGISTER.pool.splice(i-1,0,x); renderAll(); } }
-  else if(ds.down!==undefined){ i=+ds.down; if(i<REGISTER.pool.length-1){ x=REGISTER.pool.splice(i,1)[0]; REGISTER.pool.splice(i+1,0,x); renderAll(); } }
-  else if(ds.delp!==undefined){ REGISTER.pool.splice(+ds.delp,1); renderAll(); }
-  else if(ds.delr!==undefined){ var pr=ds.delr.split("|");
-    if(REGISTER.releases && REGISTER.releases[pr[0]]){ delete REGISTER.releases[pr[0]][pr[1]];
-      if(!Object.keys(REGISTER.releases[pr[0]]).length) delete REGISTER.releases[pr[0]]; }
-    renderAll(); }
 });
 $("add-transfer").onclick=function(){
   var cid=$("t-city").value; if(!cid) return;
@@ -2307,20 +1830,6 @@ $("add-transfer").onclick=function(){
     text:(c?c.name:cid)+" → "+($("t-to").value.trim()||"unclaimed")+($("t-why").value.trim()?" ("+$("t-why").value.trim()+")":"") });
   $("t-why").value=""; renderAll();
 };
-$("add-release").onclick=function(){
-  var k=$("r-term").value, cid=$("r-city").value, c=cityById(cid);
-  if(!c) return;
-  var tag=c.holder||"";
-  var st=stateAtTerm(+k-1); Object.keys(st).forEach(function(id){ if(id===cid) tag=st[id]; });
-  if(!tag){ alert("That city has no holder, so there is nothing to release."); return; }
-  REGISTER.releases=REGISTER.releases||{};
-  REGISTER.releases[k]=REGISTER.releases[k]||{};
-  REGISTER.releases[k][tag]=cid;
-  REGISTER.log.push({ date:iso(termStart(+k)), kind:"Handover",
-    text:tag+" releases "+c.name+" to take up term "+(+k+1)+"." });
-  renderAll();
-};
-$("add-pool").onclick=function(){ REGISTER.pool.push({name:"[new alliance]",tag:"NEW"+REGISTER.pool.length,score:0,members:0}); renderAll(); };
 $("add-log").onclick=function(){ var t=$("l-text").value.trim(); if(!t){ $("l-text").focus(); return; }
   REGISTER.log.push({date:$("l-date").value||iso(todayMs()),kind:$("l-kind").value,text:t}); $("l-text").value=""; renderAll(); };
 $("copy").onclick=function(){ var ta=$("export"); ta.select(); ta.setSelectionRange(0,999999);
@@ -2381,11 +1890,9 @@ async function whoami(token, quiet){
    greying out is a courtesy, not a control. */
 function applyRoleLocks(role){
   var locked = role && role!=="keeper";
-  ["e-start","e-term","e-margin","e-window","e-cap","add-pool"].forEach(function(id){
+  ["e-cap"].forEach(function(id){
     var el=$(id); if(el) el.disabled=!!locked;
   });
-  Array.prototype.forEach.call(document.querySelectorAll("[data-p],[data-up],[data-down],[data-delp],[data-rot],[data-delc]"),
-    function(el){ el.disabled=!!locked; });
   /* Buffs and coordinates stay open to officers — they are observations about
      the map, not terms of the rotation. */
   Array.prototype.forEach.call(document.querySelectorAll("[data-cd]"), function(el){ el.disabled=false; });
@@ -2459,25 +1966,6 @@ $("import-go").onclick=function(){ var m=$("import-msg");
   try{ var p=JSON.parse($("import-text").value); if(!p.pool||!p.cities) throw new Error("no pool or cities in that");
     REGISTER=p; viewCycle=null; renderAll(); m.className=""; m.textContent="Loaded. Fingerprint is now "+fingerprint()+"."; }
   catch(err){ m.className="now"; m.textContent="That did not parse: "+err.message+". The block starts with { and ends with }."; } };
-$("cyc-prev").onclick=function(){ viewCycle=Math.max(0,(viewCycle||0)-1); renderCycle(); };
-$("cyc-next").onclick=function(){ viewCycle=(viewCycle||0)+1; renderCycle(); };
-$("cyc-now").onclick=function(){ viewCycle=Math.max(0,Math.floor(Math.max(currentTerm(),0)/poolSize())); renderCycle(); };
-
-$("apply-scores").onclick=function(){
-  var msg=$("apply-msg");
-  if(!EDITOR || EDITOR.role!=="keeper"){
-    msg.className="now"; msg.textContent="Applying scores changes pick order, so it needs a keeper token."; return;
-  }
-  var sc=contribScores(), n=0;
-  REGISTER.pool.forEach(function(a){
-    if(sc[a.tag]&&sc[a.tag].entered){ a.score=Math.round(sc[a.tag].score*10)/10; n++; }
-  });
-  var w=windowWeeks();
-  REGISTER.scoreWindow=w.length+" weeks, "+fmtDate(d(w[0]))+" to "+fmtDate(addDays(d(w[w.length-1]),6));
-  msg.className=""; msg.textContent=n+" of "+REGISTER.pool.length+" pool alliances updated. Publish to make it official.";
-  renderAll();
-};
-
 /* ---------- Import ---------- */
 var IMG=[];
 function fileToBase64(f){
