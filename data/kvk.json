@@ -5116,5 +5116,10 @@
    "note": "reading finished: 13 alliances, 1 skipped"
   },
   "lastOkAt": "2026-10-25T04:17:36.729Z"
- }
+ },
+ "offWeeks": [
+  "2026-10-17"
+ ],
+ "contribution": {},
+ "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 0.4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. attendance: players on the R5's participant-list screenshot. Example: \"2026-10-31\": {\"top100\": {\"WPP\": 50, \"NEXT\": 20}, \"attendance\": {\"WPP\": 88}, \"enteredBy\": \"KaspaKopf\", \"notes\": []}. offWeeks: Saturdays with no KvK; skipped everywhere."
 }
