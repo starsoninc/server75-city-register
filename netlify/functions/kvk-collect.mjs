@@ -38,6 +38,10 @@
      and both sides' power losses, puts cities that were attacked and held in
      a separate "held" list, and skips the rows of servers without a battle.
      Same reader as the dashboard collector's c13.
+   - k5: an alliance whose page summary names up to two more or fewer members
+     than the table holds is kept, with a warning; before, a gap of one dropped
+     the whole alliance from that week's reading (and so from two weeks of the
+     contribution standing). A bigger gap is still refused.
    - k3: each member's castle level is kept too, so a week also says how many
      members of an alliance upgraded their castle and by how many levels —
      counted on the same both-readings rule, so a high-castle joiner never
@@ -52,7 +56,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k4";
+export const VERSION = "k5";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -60,6 +64,7 @@ const DATA_PATH = "data/kvk.json";
 const UA_TOKEN = "Server75CityRegister";
 const TZ = "Europe/Berlin";
 
+const MEMBER_SLACK = 2;           // k5: page member count may differ from the rows by this much
 const MAX_ALLIANCES = 14;          // top alliances by kills on the server
 const MIN_ALLIANCE_KILLS = 1000000; // smaller tags are left out
 const PAUSE_MS = 1200;
@@ -348,13 +353,19 @@ export function parseAlliance(html) {
   // optional here so the member-count cross-check keeps working either way.
   const sm = /(\d[\d,]*)\s*Power\s*(\d[\d,]*)\s*Members\s*(?:(\d[\d,]*)\s*Alliance level\s*)?(\d[\d,]*)\s*Kills/i.exec(text);
   const summary = sm ? { power: int(sm[1]), members: int(sm[2]), level: sm[3] ? int(sm[3]) : null, kills: int(sm[4]) } : null;
-  if (summary && summary.members !== null && summary.members !== rows.length) {
+  // k5: the summary and the table are not always in step on the site (a member
+  // who just joined or left). A gap of up to MEMBER_SLACK is kept with a
+  // warning; skipping the whole alliance cost it two weeks of the standing
+  // (ĚØN, 25 Oct 2026: 88 on the page, 87 rows). A bigger gap is still refused.
+  const gap = summary && summary.members !== null ? summary.members - rows.length : 0;
+  if (Math.abs(gap) > MEMBER_SLACK) {
     return refuse("the page says " + summary.members + " members but " + rows.length + " rows were read");
   }
   return {
     ok: true, rows, tag: tn.tag, name: tn.name, level: summary ? summary.level : null,
     power: summary && summary.power !== null ? summary.power : rows.reduce((s, r) => s + r.power, 0),
-    warnings: [srv ? null : "the page title does not name the server", summary ? null : "no summary above the table to cross-check the member count"].filter(Boolean)
+    warnings: [srv ? null : "the page title does not name the server", summary ? null : "no summary above the table to cross-check the member count",
+      gap ? "the page says " + summary.members + " members, " + rows.length + " rows were read — kept (within " + MEMBER_SLACK + ")" : null].filter(Boolean)
   };
 }
 
