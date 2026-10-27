@@ -270,6 +270,44 @@
    "notes": [
     "Shares were recorded as shares of the whole board and converted here (÷ 50.8%), so each can be off by about 0.2 points."
    ]
+  },
+  {
+   "date": "2026-10-24",
+   "saturday": "2026-10-24",
+   "opponent": 67,
+   "result": "lost",
+   "cityTakenBy": 67,
+   "kingdomShare": 42.9,
+   "places": 43,
+   "alliances": {
+    "WPP": {
+     "share": 67.4,
+     "places": 22
+    },
+    "NEXT": {
+     "share": 20.8,
+     "places": 12
+    },
+    "HoG": {
+     "share": 5.6,
+     "places": 5
+    },
+    "ĚØN": {
+     "share": 2.6,
+     "places": 2
+    },
+    "RAE": {
+     "share": 2.5,
+     "places": 1
+    },
+    "AURA": {
+     "share": 1.1,
+     "places": 1
+    }
+   },
+   "notes": [
+    "From the top-100 board stored in the alliance dashboard (Kingdom KvK, 24 Oct), copied 27 Oct."
+   ]
   }
  ],
  "weeks": [
@@ -5120,6 +5158,22 @@
  "offWeeks": [
   "2026-10-17"
  ],
- "contribution": {},
+ "contribution": {
+  "2026-10-24": {
+   "top100": {
+    "WPP": 22,
+    "NEXT": 12,
+    "HoG": 5,
+    "ĚØN": 2,
+    "RAE": 1,
+    "AURA": 1
+   },
+   "attendance": {},
+   "enteredBy": "KaspaKopf",
+   "notes": [
+    "From the top-100 board stored in the alliance dashboard (Kingdom KvK, 24 Oct), copied 27 Oct. No attendance entered yet."
+   ]
+  }
+ },
  "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 0.4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. attendance: players on the R5's participant-list screenshot. Example: \"2026-10-31\": {\"top100\": {\"WPP\": 50, \"NEXT\": 20}, \"attendance\": {\"WPP\": 88}, \"enteredBy\": \"KaspaKopf\", \"notes\": []}. offWeeks: Saturdays with no KvK; skipped everywhere."
 }
