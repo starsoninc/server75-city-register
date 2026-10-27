@@ -157,7 +157,6 @@ table.kvk-ab tbody tr:focus{outline:2px solid var(--indigo);outline-offset:-2px}
 @media(max-width:560px){
   table.kvk-ab th,table.kvk-ab td{padding:7px 6px}
   table.kvk-ab:not(.kvk-ov) th:nth-child(5),table.kvk-ab:not(.kvk-ov) td:nth-child(5),table.kvk-ab:not(.kvk-ov) th:nth-child(6),table.kvk-ab:not(.kvk-ov) td:nth-child(6){display:none}
-  table.kvk-ov th:nth-child(7),table.kvk-ov td:nth-child(7){display:none}
   .kvk-ab .lg{display:none}.kvk-ab .sh{display:inline}
   .kvk-mini{min-width:48px}
 }
@@ -2750,75 +2749,7 @@ function kvkWeekLabel(w){
   return w.kvk&&w.kvk.length ? "week of "+w.kvk.map(kvkDay).join(" and ") : "a week with no Saturday";
 }
 
-/* Overall: who helped the server most, across every recorded week.
-   Kill counts depend on troop tier (T10 troops kill more, and killing higher
-   tiers counts for more), so raw kills and kill growth are not used. Each week,
-   each alliance with at least KVK_MIN_READ members read both times earns up to
-   100 points, a third from each of:
-     players fighting  ÷ the most players fighting that week      (headcount)
-     turnout           ÷ the best turnout that week               (share of members who fought)
-     kills per 1B might ÷ the best kills per 1B might that week   (output for its strength)
-   Might rises with troop tier too, so dividing kills by might evens tiers out
-   partly. The total is the sum over all recorded weeks. */
-var KVK_PART=100/3;
-function kvkTurnout(a){ return a.readBoth>0 ? a.fighters/a.readBoth*100 : null; }
 function kvkPerMight(a){ return a.power>0 ? a.kills/(a.power/1e9) : null; }
-function kvkScores(weeks){
-  var tot={}, scored=[];
-  (weeks||[]).forEach(function(w){
-    var el=Object.keys(w.alliances).map(function(aid){ var a=w.alliances[aid]; return { aid:aid, a:a, t:kvkTurnout(a), k:kvkPerMight(a) }; })
-      .filter(function(r){ return r.a.readBoth>=KVK_MIN_READ && r.t!==null && r.k!==null; });
-    if(!el.length) return;
-    var mf=Math.max.apply(null,el.map(function(r){ return r.a.fighters; })),
-        mt=Math.max.apply(null,el.map(function(r){ return r.t; })),
-        mk=Math.max.apply(null,el.map(function(r){ return r.k; }));
-    if(!(mf>0)||!(mt>0)||!(mk>0)) return;
-    scored.push(w);
-    el.forEach(function(r){
-      var pf=KVK_PART*r.a.fighters/mf, pt=KVK_PART*r.t/mt, pk=KVK_PART*r.k/mk;
-      var t=tot[r.aid]=tot[r.aid]||{ aid:r.aid, tag:"", fight:0, turnout:0, might:0, weeks:[] };
-      t.tag=kvkCanon(r.a.tag||r.aid); t.fight+=pf; t.turnout+=pt; t.might+=pk;
-      t.weeks.push({ label:kvkWeekLabel(w), f:r.a.fighters, mf:mf, t:r.t, mt:mt, k:r.k, mk:mk, pf:pf, pt:pt, pk:pk });
-    });
-  });
-  var rows=Object.keys(tot).map(function(k){ var t=tot[k]; t.points=t.fight+t.turnout+t.might; return t; })
-    .sort(function(x,y){ return (y.points-x.points) || (y.weeks.length-x.weeks.length); });
-  return { rows:rows, weeks:scored };
-}
-/* The last n KvK weeks that can be scored. All-time totals are not shown:
-   alliances merged in October 2026, so old weeks would credit tags that no
-   longer exist and penalise the merged ones. */
-function kvkRecentWeeks(n){
-  var kw=csKvkWeeks();
-  return kvkScores(kw).weeks.slice(-n);
-}
-function kvkOverallBoard(limit, n, withNote){
-  var recent=kvkRecentWeeks(n);
-  var sc=kvkScores(recent), rows=limit?sc.rows.slice(0,limit):sc.rows;
-  if(!rows.length) return '<p class="derivation">This ranking starts with the first recorded KvK week.</p>';
-  var span=n===1 ? 'Covers the '+esc(kvkWeekLabel(recent[0]))+' only.'
-    : 'Points add up over the last '+n+' KvK weeks'+(recent.length<n?' ('+recent.length+' recorded so far)':'')+': '+recent.map(function(w){ return esc(w.kvk.map(kvkDay).join(", ")); }).join(' · ')+'.';
-  var max=Math.max.apply(null,rows.map(function(r){ return r.points; }));
-  var r1=function(v){ return (Math.round(v*10)/10).toFixed(1); };
-  var pct=function(v){ return Math.round(v)+'%'; };
-  var note='<p class="derivation" style="margin:0 0 10px"><b>How the points work.</b> Raw kills are not used: T10 troops kill more, and killing higher tiers counts for more, so kill totals partly measure troop tier. '+
-    'Instead, each week every alliance with at least '+KVK_MIN_READ+' members read gets up to 100 points, a third from each of three measures, each compared with that week’s best alliance on it:<br>'+
-    '<span class="mono">33.3 × players fighting ÷ most players fighting</span> — how many showed up<br>'+
-    '<span class="mono">33.3 × turnout ÷ best turnout</span> — what share of the alliance fought<br>'+
-    '<span class="mono">33.3 × kills per 1B might ÷ best kills per 1B might</span> — kills for the alliance’s strength; might rises with troop tier too, so this partly evens tiers out.<br>'+
-    'Weeks before October’s alliance mergers would distort an all-time total, so the ranking is shown for the last KvK and the last four. “Fighting” means at least one kill that week; garrisons and reinforcements do not show on lastasylum.gg. Hover or tap a row for its weekly sums.</p>';
-  var html=(withNote?note:'')+'<p class="tag" style="margin:0 0 6px">'+span+'</p><div class="tablescroll"><table class="reg kvk-ab kvk-ov"><thead><tr><th class="num">#</th><th>Alliance</th>'+
-    '<th class="num on">Points</th><th class="num"><span class="lg">Fighting</span><span class="sh">Fight</span></th><th class="num"><span class="lg">Turnout</span><span class="sh">Turn.</span></th><th class="num"><span class="lg">Kills/might</span><span class="sh">K/might</span></th><th class="num">Weeks</th></tr></thead><tbody>'+
-    rows.map(function(r,i){
-      var tip='<b>'+esc(r.tag)+'</b>'+r.weeks.map(function(w){
-        return '<br>'+esc(w.label)+': '+w.f+'/'+w.mf+' fighting, '+pct(w.t)+'/'+pct(w.mt)+' turnout, '+kvkBig(w.k)+'/'+kvkBig(w.mk)+' kills per 1B might → '+r1(w.pf)+' + '+r1(w.pt)+' + '+r1(w.pk)+' = '+r1(w.pf+w.pt+w.pk);
-      }).join("");
-      return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td><td><b>'+esc(r.tag)+'</b></td>'+
-        '<td class="num on">'+r1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
-        '<td class="num">'+r1(r.fight)+'</td><td class="num">'+r1(r.turnout)+'</td><td class="num">'+r1(r.might)+'</td><td class="num">'+r.weeks.length+'</td></tr>';
-    }).join("")+'</tbody></table></div>';
-  return html;
-}
 
 /* ---------- front page ---------- */
 function renderKvkFront(){
@@ -2836,8 +2767,6 @@ function renderKvkFront(){
   html+='<h3 style="margin-top:18px">Alliance performance, '+(lastWeek?esc(kvkWeekLabel(lastWeek)):'per week')+'</h3>';
   if(lastWeek){
     html+=kvkAllianceBoard(lastWeek,10)+kvkBoardNote(lastWeek);
-    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, last KvK</h3>'+kvkOverallBoard(10,1,true);
-    html+='<h3 style="margin-top:18px">Who helped the server most — top 10, last 4 KvKs</h3>'+kvkOverallBoard(10,4,false);
   } else {
     html+='<p class="derivation">Read weekly from lastasylum.gg. '+(KVK.latest?'The first reading was taken '+esc(kvkStamp(KVK.latest.at))+'; kills per alliance appear after the next KvK.':'The first reading will be taken within a few hours; kills per alliance appear after the KvK that follows it.')+'</p>';
   }
@@ -2903,8 +2832,6 @@ function renderKvkTab(){
 
   html+=kvkCastleSection();
 
-  html+='<h3>Who helped the server most — last KvK</h3>'+kvkOverallBoard(0,1,true);
-  html+='<h3>Who helped the server most — last 4 KvKs</h3>'+kvkOverallBoard(0,4,false);
   var c=KVK.collector||{};
   var caps=Object.keys(KVK.captures||{}).sort().reverse().slice(0,5);
   html+='<h3>Where the kill figures come from</h3><div class="card" style="font-size:14px">'+
