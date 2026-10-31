@@ -2571,29 +2571,67 @@ function csEntry(sat){
     if(m&&m.alliances){ var src={}; Object.keys(m.alliances).forEach(function(t){ var p=m.alliances[t].places; if(p!==null&&p!==undefined) src[t]=p; }); hasTop=fold(src,top); }
   }
   hasAtt=fold(e.attendance,att);
-  return { top:top, att:att, hasTop:hasTop, hasAtt:hasAtt, notes:e.notes||[], by:e.enteredBy||"" };
+  /* cs2: "noKills" (a reason) leaves kill efficiency out of that KvK for every
+     alliance, when the collector could not measure it fairly for all of them. */
+  var noKills=e.noKills?String(e.noKills===true?"":e.noKills):null;
+  return { top:top, att:att, hasTop:hasTop, hasAtt:hasAtt, notes:e.notes||[], by:e.enteredBy||"", noKills:noKills };
 }
-function csStanding(w){
-  var sat=csSat(w), en=csEntry(sat);
-  var rows=Object.keys(w.alliances).map(function(aid){
-    var a=w.alliances[aid], tag=kvkCanon(a.tag||aid), m=a.members||a.readBoth||0;
+/* cs2: the newest reading that has this alliance, for its member count when the
+   reading the standing is built on missed it. Returns { a, at } or null. */
+function csOlderReading(tag){
+  var list=((KVK&&KVK.weeks)||[]).map(function(w){ return { als:w.alliances, at:w.to }; });
+  if(KVK&&KVK.latest) list.push({ als:KVK.latest.alliances, at:KVK.latest.at });
+  for(var i=list.length-1;i>=0;i--){
+    var als=list[i].als||{};
+    for(var aid in als){ if(als.hasOwnProperty(aid)&&kvkCanon(als[aid].tag||aid)===tag&&als[aid].members>0) return { aid:aid, a:als[aid], at:list[i].at }; }
+  }
+  return null;
+}
+/* w: the collector's week for that KvK, or (cs2, noKills only) the latest
+   reading standing in for a week the collector has not recorded yet. */
+function csStanding(w, satIn){
+  var sat=satIn||csSat(w), en=csEntry(sat), nk=en.noKills!==null;
+  var part3=nk?50:CS_PART, als={}, older=[];
+  Object.keys(w.alliances||{}).forEach(function(aid){ als[aid]=w.alliances[aid]; });
+  if(nk){
+    /* alliances on the board or with attendance that this reading missed */
+    var have={}; Object.keys(als).forEach(function(aid){ have[kvkCanon(als[aid].tag||aid)]=1; });
+    Object.keys(en.top).concat(Object.keys(en.att)).forEach(function(tag){
+      if(have[tag]) return; have[tag]=1;
+      var o=csOlderReading(tag);
+      if(o){ als["old:"+o.aid]=o.a; older.push({ tag:tag, at:o.at, members:o.a.members }); }
+    });
+  }
+  var mem=function(a){ return a.members||a.readBoth||0; };
+  var big=function(a){ return nk?mem(a)>=KVK_MIN_READ:a.readBoth>=KVK_MIN_READ; };
+  var rows=Object.keys(als).map(function(aid){
+    var a=als[aid], tag=kvkCanon(a.tag||aid), m=mem(a);
     var places=en.top[tag]||0, part=en.att.hasOwnProperty(tag)?en.att[tag]:null;
     return { aid:aid, tag:tag, a:a, members:m,
       places:places, top:m>0?Math.min(100,places/m*100):0,
-      k:kvkPerMight(a)||0,
+      k:nk?0:(kvkPerMight(a)||0),
       part:part, att:(part!==null&&m>0)?Math.min(100,part/m*100):0 };
-  }).filter(function(r){ return r.a.readBoth>=KVK_MIN_READ; });
+  }).filter(function(r){ return big(r.a); });
   var best=function(f){ return Math.max.apply(null,rows.map(f).concat([0])); };
   var bt=best(function(r){ return r.top; }), bk=best(function(r){ return r.k; }), ba=best(function(r){ return r.att; });
   rows.forEach(function(r){
-    r.pt=bt>0?CS_PART*r.top/bt:0; r.pk=bk>0?CS_PART*r.k/bk:0; r.pa=ba>0?CS_PART*r.att/ba:0;
+    r.pt=bt>0?part3*r.top/bt:0; r.pk=(!nk&&bk>0)?CS_PART*r.k/bk:0; r.pa=ba>0?part3*r.att/ba:0;
     r.points=r.pt+r.pk+r.pa;
   });
-  rows.sort(function(x,y){ return (y.points-x.points)||(y.k-x.k)||(x.tag<y.tag?-1:1); });
-  var small=Object.keys(w.alliances).map(function(aid){ return w.alliances[aid]; }).filter(function(a){ return a.readBoth<KVK_MIN_READ; });
-  return { w:w, sat:sat, en:en, rows:rows, best:{ top:bt, k:bk, att:ba }, final:en.hasTop, small:small };
+  rows.sort(function(x,y){ return (y.points-x.points)||(y.k-x.k)||(y.top-x.top)||(x.tag<y.tag?-1:1); });
+  var small=Object.keys(als).map(function(aid){ return als[aid]; }).filter(function(a){ return !big(a); });
+  return { w:w, sat:sat, en:en, rows:rows, best:{ top:bt, k:bk, att:ba }, final:en.hasTop, small:small,
+    noKills:nk, part:part3, older:older, early:!!satIn };
 }
-function csLatest(){ var ws=csKvkWeeks(); return ws.length?csStanding(ws[ws.length-1]):null; }
+function csLatest(){
+  var ws=csKvkWeeks(), last=ws.length?ws[ws.length-1]:null, lastSat=last?csSat(last):"";
+  /* cs2: a KvK entered with noKills after the collector's last week is shown
+     straight away, on the latest reading's member counts. */
+  var c=(KVK&&KVK.contribution)||{};
+  var early=Object.keys(c).filter(function(s){ return c[s]&&c[s].noKills&&s>lastSat&&!csOff(s); }).sort().pop();
+  if(early&&KVK.latest&&KVK.latest.alliances) return csStanding(KVK.latest, early);
+  return last?csStanding(last):null;
+}
 function csR1(v){ return (Math.round(v*10)/10).toFixed(1); }
 
 function csHolders(st){
@@ -2619,14 +2657,14 @@ function csTable(st, limit){
       var hold=st.final&&i<2;
       var tip='<b>'+esc(r.tag)+'</b> — KvK of '+esc(kvkDay(st.sat))+
         '<br>Top 100: '+(en.hasTop?r.places+' of '+r.members+' members = '+csR1(r.top)+'% (best '+csR1(b.top)+'%) → '+csR1(r.pt):'board not entered yet')+
-        '<br>Kills: '+kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk)+
+        (st.noKills?'<br>Kills: not counted for this KvK':'<br>Kills: '+kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk))+
         '<br>Attendance: '+(r.part!==null?r.part+' of '+r.members+' = '+csR1(r.att)+'% (best '+csR1(b.att)+'%) → '+csR1(r.pa):'no evidence submitted → 0.0')+
         '<br>= '+csR1(r.points)+' points';
       return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td>'+
         '<td class="'+(hold?'cs-h':'')+'"><b>'+esc(r.tag)+'</b>'+(hold?'<span class="hb">L7 · L6/L5</span>':(st.final&&i===2?'<span class="hb">challenger</span>':''))+'</td>'+
         '<td class="num on">'+csR1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
         '<td class="num">'+(en.hasTop?Math.round(r.top)+'% <span class="tag">'+r.places+'p</span>':na)+'</td>'+
-        '<td class="num">'+kvkBig(r.k)+'</td>'+
+        '<td class="num">'+(st.noKills?na:kvkBig(r.k))+'</td>'+
         '<td class="num">'+(r.part!==null?Math.round(r.att)+'%':na)+'</td>'+
         '<td class="num">'+r.members+'</td></tr>';
     }).join("")+'</tbody></table></div>';
@@ -2635,8 +2673,9 @@ function csWaiting(st){
   var miss=[];
   if(!st.en.hasTop) miss.push('the top-100 board');
   if(!st.en.hasAtt) miss.push('R5 attendance screenshots');
-  if(!miss.length) return '';
-  return '<div class="cs-wait">'+(st.final
+  var nk=st.noKills?'<div class="cs-wait"><b>Kill efficiency is not counted for the KvK of '+esc(kvkDay(st.sat))+'.</b> '+(st.en.noKills?esc(st.en.noKills)+' ':'')+'Top-100 presence and attendance count 50 points each this week.</div>':'';
+  if(!miss.length) return nk;
+  return nk+'<div class="cs-wait">'+(st.final
       ? '<b>No attendance evidence on file for the KvK of '+esc(kvkDay(st.sat))+'.</b> No evidence, no score: every alliance scores 0 on attendance until its R5 sends the participant-list screenshot to the council.'
       : '<b>Provisional — waiting for '+miss.join(' and ')+' from the KvK of '+esc(kvkDay(st.sat))+'.</b> Only kill efficiency is in so far, so no alliance is named as a holder yet.')+'</div>';
 }
@@ -2651,7 +2690,9 @@ function csFootnotes(st){
   var n=[];
   if(st.small.length) n.push('left out, fewer than '+KVK_MIN_READ+' members read: '+st.small.map(function(a){ return esc(kvkCanon(a.tag||"?")); }).join(", "));
   var sk=(KVK.latest&&KVK.latest.skipped)||[];
-  if(sk.length) n.push('not read by the collector this week: '+sk.map(function(x){ return esc(x.tag||x.aid); }).join(", "));
+  if(sk.length&&!st.noKills) n.push('not read by the collector this week: '+sk.map(function(x){ return esc(x.tag||x.aid); }).join(", "));
+  (st.older||[]).forEach(function(o){ n.push(esc(o.tag)+': '+o.members+' members, from the collector’s reading of '+esc(kvkDay(String(o.at).slice(0,10)))); });
+  if(st.early) n.push('member counts from the collector’s reading of '+esc(kvkDay(String(st.w.at).slice(0,10)))+'; they update when the collector reads this KvK');
   st.en.notes.forEach(function(t){ n.push(esc(t)); });
   if(st.en.by) n.push('board and attendance entered by '+esc(st.en.by));
   return n.length?'<p class="tag" style="margin:6px 0 0">'+n.join(' · ')+'</p>':'';

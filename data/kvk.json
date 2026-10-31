@@ -5240,9 +5240,10 @@
    "enteredBy": "KaspaKopf",
    "notes": [
     "From the full top-100 board (screen recording, 31 Oct). No participant lists yet, so no attendance.",
-    "ĚØN is missing from the collector's 25 Oct reading (lastasylum.gg showed 88 members, 87 rows were read; collector k5 now keeps such pages). Kills need two readings, so ĚØN's kills for this KvK cannot be measured and it is not in this week's standing. It is complete again from the KvK of 7 Nov."
-   ]
+    "ĚØN was skipped in the 25 Oct reading (lastasylum.gg showed 88 members, 87 rows were read; collector k5 now keeps such pages). Kills count again from the KvK of 7 Nov."
+   ],
+   "noKills": "The collector missed ĚØN in its 25 Oct reading, so ĚØN's kills for this KvK cannot be measured; to keep it fair, kills count for nobody this week."
   }
  },
- "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 0.4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. attendance: players on the R5's participant-list screenshot. Example: \"2026-10-31\": {\"top100\": {\"WPP\": 50, \"NEXT\": 20}, \"attendance\": {\"WPP\": 88}, \"enteredBy\": \"KaspaKopf\", \"notes\": []}. offWeeks: Saturdays with no KvK; skipped everywhere."
+ "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 0.4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. attendance: players on the R5's participant-list screenshot. Example: \"2026-10-31\": {\"top100\": {\"WPP\": 50, \"NEXT\": 20}, \"attendance\": {\"WPP\": 88}, \"enteredBy\": \"KaspaKopf\", \"notes\": []}. offWeeks: Saturdays with no KvK; skipped everywhere. noKills: a reason; leaves kill efficiency out of that KvK for every alliance, and top-100 presence and attendance count 50 points each."
 }
