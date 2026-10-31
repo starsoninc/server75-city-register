@@ -5218,7 +5218,6 @@
     "RAE": 1,
     "AURA": 1
    },
-   "attendance": {},
    "enteredBy": "KaspaKopf",
    "notes": [
     "From the top-100 board stored in the alliance dashboard (Kingdom KvK, 24 Oct), copied 27 Oct. No attendance entered yet."
@@ -5236,14 +5235,14 @@
     "RAE": 2,
     "NOPE": 1
    },
-   "attendance": {},
    "enteredBy": "KaspaKopf",
    "notes": [
-    "From the full top-100 board (screen recording, 31 Oct). No participant lists yet, so no attendance.",
-    "ĚØN was skipped in the 25 Oct reading (lastasylum.gg showed 88 members, 87 rows were read; collector k5 now keeps such pages). Kills count again from the KvK of 7 Nov."
+    "From the full top-100 board (screen recording, 31 Oct).",
+    "ĚØN was skipped in the 25 Oct reading (lastasylum.gg showed 88 members, 87 rows were read; collector k5 now keeps such pages). Kills and attendance count again from the KvK of 7 Nov."
    ],
-   "noKills": "The collector missed ĚØN in its 25 Oct reading, so ĚØN's kills for this KvK cannot be measured; to keep it fair, kills count for nobody this week."
+   "noKills": "The collector missed ĚØN in its 25 Oct reading, so ĚØN's kills for this KvK cannot be measured.",
+   "noAttendance": "Attendance comes from the same readings, so it cannot be measured for ĚØN either. To keep it fair, both are left out for every alliance this week."
   }
  },
- "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 0.4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. attendance: players on the R5's participant-list screenshot. Example: \"2026-10-31\": {\"top100\": {\"WPP\": 50, \"NEXT\": 20}, \"attendance\": {\"WPP\": 88}, \"enteredBy\": \"KaspaKopf\", \"notes\": []}. offWeeks: Saturdays with no KvK; skipped everywhere. noKills: a reason; leaves kill efficiency out of that KvK for every alliance, and top-100 presence and attendance count 50 points each."
+ "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. Attendance and kill efficiency are read by the collector (attendance = members with kills gained that week ÷ members read both times, Rules v4.1). noKills / noAttendance: a reason; leaves that measure out of that KvK for every alliance, and the measures left share the 100 points. offWeeks: Saturdays with no KvK; skipped everywhere."
 }
