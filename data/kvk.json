@@ -308,6 +308,56 @@
    "notes": [
     "From the top-100 board stored in the alliance dashboard (Kingdom KvK, 24 Oct), copied 27 Oct."
    ]
+  },
+  {
+   "date": "2026-10-31",
+   "saturday": "2026-10-31",
+   "opponent": 76,
+   "result": "won",
+   "tookCity": 76,
+   "kingdomShare": 44.9,
+   "places": 57,
+   "alliances": {
+    "WPP": {
+     "share": 40.7,
+     "places": 22
+    },
+    "ĚØN": {
+     "share": 20.6,
+     "places": 10
+    },
+    "NEXT": {
+     "share": 16.2,
+     "places": 11
+    },
+    "HoG": {
+     "share": 8.2,
+     "places": 4
+    },
+    "K13": {
+     "share": 4.2,
+     "places": 3
+    },
+    "UKR": {
+     "share": 3.5,
+     "places": 2
+    },
+    "AURA": {
+     "share": 2.9,
+     "places": 2
+    },
+    "RAE": {
+     "share": 2.6,
+     "places": 2
+    },
+    "NOPE": {
+     "share": 1.2,
+     "places": 1
+    }
+   },
+   "notes": [
+    "Full top-100 board read from KaspaKopf's screen recording of 31 Oct (16:37), all 100 places."
+   ]
   }
  ],
  "weeks": [
@@ -5172,6 +5222,24 @@
    "enteredBy": "KaspaKopf",
    "notes": [
     "From the top-100 board stored in the alliance dashboard (Kingdom KvK, 24 Oct), copied 27 Oct. No attendance entered yet."
+   ]
+  },
+  "2026-10-31": {
+   "top100": {
+    "WPP": 22,
+    "NEXT": 11,
+    "ĚØN": 10,
+    "HoG": 4,
+    "K13": 3,
+    "UKR": 2,
+    "AURA": 2,
+    "RAE": 2,
+    "NOPE": 1
+   },
+   "attendance": {},
+   "enteredBy": "KaspaKopf",
+   "notes": [
+    "From the full top-100 board (screen recording, 31 Oct). No participant lists yet, so no attendance."
    ]
   }
  },
