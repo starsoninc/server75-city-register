@@ -2796,12 +2796,13 @@ function renderPlanTab(){
   if(!PLAN) return;
   $("plan-title").textContent="KvK plan — "+PLAN.title+", "+kvkDay(PLAN.matchDay)+", "+PLAN.start;
   var names=planPlayers().map(function(p){ return '<option value="'+esc(p.name)+'">'; }).join("");
-  var h='<p class="lede">67 left, 75 right. One connected block per alliance. Inside a block, slot 1 is nearest the city and goes to the strongest player. Find yourself below and the map shows your base.</p>';
+  var opp=esc(PLAN.opponent||"the other side");
+  var h='<p class="lede">'+(PLAN.lede?esc(PLAN.lede):opp+' left, 75 right. One connected block per alliance. Inside a block, slot 1 is nearest the city and goes to the strongest player. Find yourself below and the map shows your base.')+'</p>';
   h+='<div class="kp-find"><input id="plan-q" list="plan-names" placeholder="Type your in-game name" autocomplete="off" aria-label="Your in-game name"><datalist id="plan-names">'+names+'</datalist>'+
      '<button id="plan-go">Show my base</button><button class="ghost" id="plan-clear">Clear</button></div><div id="plan-me"></div>';
   h+='<div class="kp-map" id="plan-map">'+PLAN.svg+'</div>';
-  h+='<p class="kp-legend">One square is one base (3 × 3 tiles). Light blue rows are one-tile flag rows: never park on them. Outlined bases touch the city wall. Blue flags are each alliance\'s flag stack point; dashed squares show how far a flag reaches. Gold turrets are ours. The middle column on top and bottom straddles the half-way line and stays empty.</p>';
-  h+='<h3>The agreement with 67</h3><ul class="kp-items">'+PLAN.agreement.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>';
+  h+='<p class="kp-legend">'+(PLAN.legend?esc(PLAN.legend):'One square is one base (3 × 3 tiles). Light blue rows are one-tile flag rows: never park on them. Outlined bases touch the city wall. Blue flags are each alliance\'s flag stack point; dashed squares show how far a flag reaches. Gold turrets are ours. The middle column on top and bottom straddles the half-way line and stays empty.')+'</p>';
+  h+='<h3>The agreement with '+opp+'</h3><ul class="kp-items">'+PLAN.agreement.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>';
   h+='<h3>Who parks where</h3><div class="kp-lists">'+PLAN.alliances.filter(function(a){ return a.players&&a.players.length; }).map(function(a){
     var shown=a.players.slice(0,12);
     return '<div class="kp-al"><h4>'+planChip(a)+'<span>'+esc(a.block)+'</span></h4><ol>'+shown.map(function(p){
