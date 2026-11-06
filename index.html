@@ -210,6 +210,50 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
 .kp-steps td:last-child{color:var(--ink-2)}
 .kp-items li{margin:0 0 8px}
 .kp-legend{font-size:13px;color:var(--ink-2);margin:8px 0 0}
+/* ---------- City planner tab ---------- */
+.sp-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.sp-seg{display:inline-flex;border:1px solid var(--ink);border-radius:3px;overflow:hidden}
+.sp-seg button{appearance:none;font:inherit;font-size:13px;font-weight:600;padding:7px 12px;min-height:38px;border:0;background:none;color:var(--ink);cursor:pointer}
+.sp-seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sp-state{font-size:13px;color:var(--ink-2)}
+.sp-state b{color:var(--rubric)}
+.sp-layout{display:grid;gap:12px}
+.sp-layout>div{min-width:0}
+.sp-map{overflow:auto;-webkit-overflow-scrolling:touch;background:#2b302a;border:1px solid var(--rule);border-radius:3px;max-height:82vh}
+.sp-map svg{display:block;width:820px;max-width:none;height:auto}
+@media(min-width:880px){.sp-map svg{width:100%}}
+.sp-map path.c{stroke:#1d211c;stroke-width:2.2;stroke-linejoin:round;cursor:pointer}
+.sp-map path.c:hover{filter:brightness(1.12)}
+.sp-map path.c.chg{stroke-dasharray:7 4;stroke:#fff;stroke-width:2.6}
+.sp-map path.c.sel{stroke:#fff;stroke-width:4.5;stroke-dasharray:none}
+.sp-map path.c.bad{stroke:#ff3b30;stroke-width:4;stroke-dasharray:none}
+.sp-map path.c.fixed{cursor:default}
+.sp-map text{pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:rgba(0,0,0,.82);stroke-width:2.6px;stroke-linejoin:round;fill:#fff;font-family:var(--sans)}
+.sp-map text.n{font-size:10.5px;font-weight:600}
+.sp-map text.n.b{font-size:12px}
+.sp-map text.l{font-size:8.5px;font-family:var(--mono);opacity:.85}
+.sp-side{display:grid;gap:12px;align-content:start;min-height:118px}
+.sp-card{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:12px 14px;font-size:14px}
+.sp-card h4{margin:0 0 6px;font-family:var(--display);font-size:18px;line-height:1.2}
+.sp-card .meta{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-bottom:8px}
+.sp-card select{font:inherit;font-size:15px;width:100%;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:3px;background:var(--panel-2);min-height:42px}
+.sp-card .note{font-size:13px;color:var(--ink-2);margin:8px 0 0}
+.sp-card .bad{color:var(--rubric);font-weight:600}
+.sp-legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;margin:8px 0 0;color:var(--ink-2)}
+.sp-legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.25)}
+.sp-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0;border:1px solid rgba(0,0,0,.25)}
+table.sp-t td,table.sp-t th{white-space:nowrap}
+table.sp-t td.over{color:var(--rubric);font-weight:700}
+table.sp-t td.zero{color:var(--ink-3)}
+table.sp-t .pos{color:#2f6a2b} table.sp-t .neg{color:var(--rubric)}
+.sp-warn{border-left:3px solid var(--rubric);background:var(--panel);padding:10px 14px;font-size:14px;margin:0 0 12px}
+.sp-warn ul{margin:6px 0 0;padding-left:18px}
+.sp-ok{border-left:3px solid #2f6a2b;background:var(--panel);padding:10px 14px;font-size:14px;margin:0 0 12px}
+ol.sp-steps{margin:0;padding-left:1.6em;max-width:72ch;font-size:14px}
+ol.sp-steps li{margin:0 0 6px}
+ol.sp-steps li.bad{color:var(--rubric)}
+.sp-why{display:grid;gap:10px;max-width:74ch}
+.sp-why div{font-size:14px} .sp-why b{display:block;font-size:14px}
 </style>
 </head>
 <body>
@@ -244,6 +288,11 @@ table.kvk-cs td .hb{font-family:var(--mono);font-size:10px;letter-spacing:.05em;
 <section id="tab-plan" hidden>
   <h2 id="plan-title">KvK plan</h2>
   <div id="plan-tab"><p class="muted">Loading…</p></div>
+</section>
+
+<section id="tab-split" hidden>
+  <h2>City planner</h2>
+  <div id="split-tab"><p class="muted">Loading…</p></div>
 </section>
 
 <section id="tab-changes" hidden>
@@ -1677,8 +1726,8 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","Overview"],["kvk","KvK"],["plan","KvK plan"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
-var active=(/^#plan/.test(location.hash)?"plan":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+var TABS=[["now","Overview"],["kvk","KvK"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
+var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
@@ -2839,6 +2888,208 @@ function renderPlanTab(){
     if(!j||!Array.isArray(j.alliances)||typeof j.svg!=="string") throw new Error("the file is not a KvK plan");
     PLAN=j; renderPlanTab();
   }).catch(function(e){ PLAN_ERR=String(e&&e.message||e); renderPlanTab(); });
+})();
+
+/* ---------- City planner tab ----------
+   Reads data/city-plan.json: every city's outline on the buff map, its buff,
+   today's holder, the proposed holder and its neighbours. The viewer can change
+   holders on their own copy (kept in this browser only) and reset it to the
+   proposal at any time. Nothing here writes to the register. */
+var SP=null, SP_ERR=null, SP_WORK=null, SP_SEL=null, SP_VIEW="work";
+var SP_KEY="cityPlannerV1";
+var SP_KINDS=[["Training Speed","Training"],["Building Speed","Building"],["Research Speed","Research"],["Grain Output","Grain out"],["Grain Gather Speed","Grain gather"],["Timber Output","Timber out"],["Herb Output","Herb out"]];
+function spCity(n){ for(var i=0;i<SP.cities.length;i++) if(SP.cities[i].name===n) return SP.cities[i]; return null; }
+function spAll(tag){ for(var i=0;i<SP.alliances.length;i++) if(SP.alliances[i].tag===tag) return SP.alliances[i]; return null; }
+function spIsAll(tag){ return !!spAll(tag); }
+function spPlan(){ var m={}; SP.cities.forEach(function(c){ m[c.name]=c.plan||null; }); return m; }
+function spNow(){ var m={}; SP.cities.forEach(function(c){ m[c.name]=c.now||null; }); return m; }
+function spFixed(c){ return c.level>=5; }
+function spSave(){ try{ localStorage.setItem(SP_KEY,JSON.stringify({v:SP.updated,h:SP_WORK})); }catch(e){} }
+function spLoad(){
+  var base=spPlan();
+  try{
+    var s=JSON.parse(localStorage.getItem(SP_KEY)||"null");
+    if(s&&s.v===SP.updated&&s.h){ Object.keys(base).forEach(function(n){ if(n in s.h) base[n]=s.h[n]; }); }
+  }catch(e){}
+  return base;
+}
+function spSame(a,b){ return SP.cities.every(function(c){ return (a[c.name]||null)===(b[c.name]||null); }); }
+function spColor(tag){ var a=spAll(tag); if(a) return a.color; return tag?"#6b6f68":"#4b5546"; }
+function spLabel(tag){ return tag?tag:"Unclaimed"; }
+
+/* Points, counts and buffs per alliance for one assignment. */
+function spTotals(h){
+  var t={};
+  SP.alliances.forEach(function(a){ t[a.tag]={n:0,pts:0,top:0,k:{}}; });
+  SP.cities.forEach(function(c){
+    var x=t[h[c.name]]; if(!x||c.level>=7) return;
+    x.n++; x.pts+=c.value; if(c.level>=3) x.top++;
+    if(c.kind) x.k[c.kind]=(x.k[c.kind]||0)+c.value;
+    else x.small=(x.small||0)+1;
+  });
+  return t;
+}
+
+/* Turn today → assignment into release-then-capture steps, each capture next
+   to land the new holder has at that point, and say what cannot be done. */
+function spSteps(from,to){
+  var cur={}; Object.keys(from).forEach(function(n){ cur[n]=from[n]; });
+  var steps=[], probs=[];
+  var changed=SP.cities.filter(function(c){ return (from[c.name]||null)!==(to[c.name]||null); });
+  var pending=changed.slice(), guard=0;
+  function count(tag){ return SP.cities.filter(function(c){ return c.level<7 && cur[c.name]===tag; }).length; }
+  function nextTo(c,tag){ return c.adj.some(function(n){ return cur[n]===tag; }); }
+  /* releases that free a city nobody takes go first; then captures in an order that works */
+  pending.filter(function(c){ return !to[c.name]; }).forEach(function(c){ steps.push({c:c,f:cur[c.name],t:null}); cur[c.name]=null; });
+  pending=pending.filter(function(c){ return to[c.name]; });
+  while(pending.length && guard++<500){
+    var done=false;
+    for(var i=0;i<pending.length;i++){
+      var c=pending[i], tag=to[c.name];
+      if(!nextTo(c,tag)) continue;
+      if(count(tag)>=SP.cap){
+        /* make room with a city this alliance is letting go of anyway */
+        var give=SP.cities.filter(function(x){ return cur[x.name]===tag && (to[x.name]||null)!==tag; })[0];
+        if(!give) continue;
+        steps.push({c:give,f:tag,t:null}); cur[give.name]=null;
+      }
+      var f=cur[c.name]; steps.push({c:c,f:f,t:tag}); cur[c.name]=tag;
+      pending.splice(i,1); done=true; break;
+    }
+    if(!done){
+      /* the holder may still have to let go first: do one release and retry */
+      var rel=null;
+      for(var j=0;j<pending.length&&!rel;j++){ if(cur[pending[j].name]){ rel=pending[j]; } }
+      if(rel){ steps.push({c:rel,f:cur[rel.name],t:null}); cur[rel.name]=null; continue; }
+      pending.forEach(function(c){ probs.push({c:c,t:to[c.name],why:nextTo(c,to[c.name])?"is full":"has no land next to it"}); steps.push({c:c,f:cur[c.name],t:to[c.name],bad:true}); });
+      break;
+    }
+  }
+  return {steps:steps,probs:probs};
+}
+
+function spProblems(h){
+  var out=[], t=spTotals(h);
+  SP.alliances.forEach(function(a){ if(t[a.tag].n>SP.cap) out.push(a.tag+" holds "+t[a.tag].n+" cities; the cap is "+SP.cap+"."); });
+  return out;
+}
+
+function spMapSvg(h,base){
+  var s='<svg viewBox="0 0 '+SP.width+' '+SP.height+'" role="img" aria-label="Map of Server 75 cities, coloured by holder">';
+  SP.cities.forEach(function(c){
+    var tag=h[c.name], cls="c"+(c.name===SP_SEL?" sel":"")+(spFixed(c)?" fixed":"")+(base&&(base[c.name]||null)!==(tag||null)?" chg":"");
+    s+='<path class="'+cls+'" data-c="'+esc(c.name)+'" d="'+c.d+'" fill="'+spColor(tag)+'"><title>'+esc(c.name+" · L"+c.level+" · "+spLabel(tag))+'</title></path>';
+  });
+  SP.cities.forEach(function(c){
+    var short=c.name.replace("Temple of ","T. ").replace(" Fortress"," Ft.").replace(" Market"," Mkt").replace(" Highlands","").replace(" Village","").replace(" Thicket","").replace(" Harbor","");
+    var hw=short.length*3.1+4, lx=Math.max(hw,Math.min(SP.width-hw,c.lx)), ly=Math.max(13,Math.min(SP.height-16,c.ly));
+    s+='<text class="n'+(c.level>=4?" b":"")+'" x="'+lx+'" y="'+ly+'">'+esc(short)+'</text><text class="l" x="'+lx+'" y="'+(ly+12)+'">L'+c.level+(h[c.name]?" · "+esc(h[c.name]):"")+'</text>';
+  });
+  return s+'</svg>';
+}
+
+function spSide(h){
+  if(!SP_SEL) return '<div class="sp-card"><h4>Pick a city</h4><p class="note" style="margin:0">Tap a city on the map to see its buff and give it to another alliance. Changes stay in this browser and change nothing in the register.</p></div>';
+  var c=spCity(SP_SEL), tag=h[c.name], plan=c.plan||null, now=c.now||null;
+  var hh='<div class="sp-card"><h4>'+esc(c.name)+'</h4><div class="meta">L'+c.level+' · '+esc(c.buff)+'</div>';
+  hh+='<div class="meta">Today: '+esc(spLabel(now))+' · Proposed: '+esc(spLabel(plan))+'</div>';
+  if(c.level>=7) hh+='<p class="note">The Royal City rotates under rule 1 and is not part of this plan.</p>';
+  else if(SP_VIEW!=="work") hh+='<p class="note">Switch to <b>Your plan</b> to change holders.</p>';
+  else{
+    var opts=SP.alliances.map(function(a){ return a.tag; });
+    if(now && !spIsAll(now)) opts.push(now);
+    hh+='<label class="meta" for="sp-holder" style="display:block;margin:4px 0">Holder in your plan</label><select id="sp-holder">'+
+      opts.map(function(o){ return '<option value="'+esc(o)+'"'+(o===tag?" selected":"")+'>'+esc(o)+(spIsAll(o)?"":" (not on the board)")+'</option>'; }).join("")+
+      '<option value=""'+(!tag?" selected":"")+'>Unclaimed</option></select>';
+    if(spFixed(c)) hh+='<p class="note">L5 and L6 cities stay with their holders in the proposal; the rules hand them out through the kept L6/L5 and the King\'s Challenge.</p>';
+  }
+  var nb=c.adj.map(function(n){ var x=h[n]; return esc(n)+' <span class="muted">('+esc(spLabel(x))+')</span>'; });
+  hh+='<p class="note"><b>Next to:</b> '+(nb.join(", ")||"—")+'</p>';
+  if(tag && c.level<7 && !c.adj.some(function(n){ return h[n]===tag; }) && now!==tag) hh+='<p class="note bad">'+esc(tag)+' has no land next to this city, so it cannot declare war on it.</p>';
+  return hh+'</div>';
+}
+
+function spTable(h,base){
+  var t=spTotals(h), b=spTotals(base);
+  var head='<tr><th>Alliance</th><th class="num">Board share</th><th class="num">Cities</th><th class="num">Points</th><th class="num">vs '+(SP_VIEW==="today"?"proposal":"today")+'</th><th class="num">L3+</th>'+
+    SP_KINDS.map(function(k){ return '<th class="num">'+esc(k[1])+'</th>'; }).join("")+'<th class="num">5% cities</th></tr>';
+  var rows=SP.alliances.map(function(a){
+    var x=t[a.tag], y=b[a.tag], d=x.pts-y.pts;
+    return '<tr><td><span class="sp-sw" style="background:'+a.color+'"></span><b>'+esc(a.tag)+'</b>'+(a.merged?' <span class="muted">(merged into '+esc(a.merged)+')</span>':'')+'</td>'+
+      '<td class="num">'+(a.share!=null?a.share.toFixed(1)+"%":"–")+'</td>'+
+      '<td class="num'+(x.n>SP.cap?" over":"")+'">'+x.n+' / '+SP.cap+'</td><td class="num"><b>'+x.pts+'</b></td>'+
+      '<td class="num '+(d>0?"pos":d<0?"neg":"")+'">'+(d>0?"+":"")+d+'</td><td class="num">'+x.top+'</td>'+
+      SP_KINDS.map(function(k){ var v=x.k[k[0]]; return '<td class="num'+(v?"":" zero")+'">'+(v?v+"%":"–")+'</td>'; }).join("")+
+      '<td class="num'+(x.small?"":" zero")+'">'+(x.small||"–")+'</td></tr>';
+  }).join("");
+  return '<div class="tablescroll"><table class="reg sp-t"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
+    '<p class="kp-legend">Points add up each city\'s buff in percent, without the Royal City. The buff columns add up the percentages of each kind; "5% cities" counts L1 and L2 cities with a small resource buff. Training Speed at Lionheart Fortress is not printed on the buff map and counts as 20%.</p>';
+}
+
+function renderSplitTab(){
+  var el=$("split-tab"); if(!el) return;
+  if(SP_ERR){ el.innerHTML='<p class="warn">The city planner could not be loaded ('+esc(SP_ERR)+').</p>'; return; }
+  if(!SP) return;
+  if(!SP_WORK) SP_WORK=spLoad();
+  var plan=spPlan(), now=spNow();
+  var shown = SP_VIEW==="today"?now : SP_VIEW==="plan"?plan : SP_WORK;
+  var base = SP_VIEW==="today"?plan : now;
+  var edited=!spSame(SP_WORK,plan);
+  var h='<p class="lede">A proposed split of the cities among the alliances on the '+esc(kvkDay?kvkDay(SP.boardDate):SP.boardDate)+' KvK board, within the game\'s rules: at most '+SP.cap+' cities per alliance, and a city can only be taken from next door. Try your own split on the map: tap a city and pick a holder. Your changes stay in this browser, and <b>Reset to proposal</b> brings the plan back.</p>';
+  h+='<div class="sp-bar"><div class="sp-seg" role="group" aria-label="Which map">'+
+     [["work","Your plan"],["plan","Proposal"],["today","Today"]].map(function(v){ return '<button data-v="'+v[0]+'" aria-pressed="'+(SP_VIEW===v[0])+'">'+v[1]+'</button>'; }).join("")+'</div>'+
+     '<button class="btn ghost small" id="sp-reset"'+(edited?"":" disabled")+'>Reset to proposal</button>'+
+     '<button class="btn ghost small" id="sp-fromnow">Start from today\'s map</button>'+
+     '<span class="sp-state">'+(SP_VIEW==="work"?(edited?'<b>Edited</b> — differs from the proposal':'Same as the proposal'):SP_VIEW==="plan"?"The proposal, read only":"Who holds what today, read only")+'</span></div>';
+  var probs=spProblems(shown), st=spSteps(now,shown);
+  if(SP_VIEW!=="today"){
+    var all=probs.concat(st.probs.map(function(p){ return p.t+" cannot take "+p.c.name+": it "+p.why+"."; }));
+    h+= all.length?'<div class="sp-warn"><b>This split does not work in the game yet</b><ul>'+all.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div>'
+                  :'<div class="sp-ok">This split works: nobody is over '+SP.cap+' cities, and every city can be taken from next door, in the order listed below.</div>';
+  }
+  h+='<div class="sp-layout"><div class="sp-side" id="sp-side">'+spSide(shown)+'</div><div><div class="sp-map" id="sp-map">'+spMapSvg(shown,base)+'</div>'+
+     '<div class="sp-legend">'+SP.alliances.map(function(a){ return '<span><i style="background:'+a.color+'"></i>'+esc(a.tag)+'</span>'; }).join("")+
+     '<span><i style="background:#6b6f68"></i>not on the board</span><span><i style="background:#4b5546"></i>unclaimed</span><span>dashed outline: '+(SP_VIEW==="today"?"proposal differs":"changes hands")+'</span></div></div></div>';
+  h+='<h3>What each alliance gets</h3>'+spTable(shown,base);
+  if(SP_VIEW!=="today"){
+    h+='<h3>Order of moves'+(SP_VIEW==="work"&&edited?" for your plan":"")+'</h3>';
+    h+= st.steps.length?'<ol class="sp-steps">'+st.steps.map(function(s){
+      var c=s.c, lv="L"+c.level+" "+esc(c.name);
+      var txt = !s.t ? '<b>'+esc(s.f)+'</b> lets go of '+lv : !s.f ? '<b>'+esc(s.t)+'</b> takes '+lv+' <span class="muted">(unclaimed)</span>' : '<b>'+esc(s.f)+'</b> lets go of '+lv+', then <b>'+esc(s.t)+'</b> takes it';
+      return '<li class="'+(s.bad?"bad":"")+'">'+txt+(s.bad?" — not possible yet":"")+'</li>';
+    }).join("")+'</ol><p class="kp-legend">A city has to be let go before the new holder can take it. The NAP covers the gap in between.</p>'
+    :'<p class="muted" style="font-size:14px">Nothing changes hands.</p>';
+  }
+  h+='<h3>Why the proposal looks like this</h3><div class="sp-why">'+SP.reasoning.map(function(r){ return '<div><b>'+esc(r[0])+'</b>'+esc(r[1])+'</div>'; }).join("")+'</div>';
+  h+='<p class="muted" style="font-size:13px;margin-top:14px">'+esc(SP.source)+' Updated '+esc(SP.updated)+'.</p>';
+  el.innerHTML=h;
+  Array.prototype.forEach.call(el.querySelectorAll(".sp-seg button"),function(b){ b.onclick=function(){ SP_VIEW=b.getAttribute("data-v"); renderSplitTab(); }; });
+  $("sp-reset").onclick=function(){ SP_WORK=spPlan(); spSave(); SP_VIEW="work"; renderSplitTab(); };
+  $("sp-fromnow").onclick=function(){ SP_WORK=spNow(); spSave(); SP_VIEW="work"; renderSplitTab(); };
+  spWire();
+}
+function spWire(){
+  Array.prototype.forEach.call(document.querySelectorAll("#sp-map path.c"),function(p){
+    p.onclick=function(){ SP_SEL=p.getAttribute("data-c"); spRefresh(); };
+  });
+  var sel=$("sp-holder");
+  if(sel) sel.onchange=function(){ SP_WORK[SP_SEL]=sel.value||null; spSave(); var m=$("sp-map"), x=m.scrollLeft, y=m.scrollTop; renderSplitTab(); var m2=$("sp-map"); m2.scrollLeft=x; m2.scrollTop=y; };
+}
+/* Selecting a city only redraws the outline and the side card, so the map keeps its scroll. */
+function spRefresh(){
+  var shown = SP_VIEW==="today"?spNow() : SP_VIEW==="plan"?spPlan() : SP_WORK;
+  Array.prototype.forEach.call(document.querySelectorAll("#sp-map path.c"),function(p){ p.classList.toggle("sel",p.getAttribute("data-c")===SP_SEL); });
+  $("sp-side").innerHTML=spSide(shown); spWire();
+}
+(function loadSplit(){
+  if(typeof fetch!=="function"){ SP_ERR="this browser cannot fetch it"; renderSplitTab(); return; }
+  fetch("data/city-plan.json",{cache:"no-cache"}).then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json();
+  }).then(function(j){
+    if(!j||!Array.isArray(j.cities)||!Array.isArray(j.alliances)) throw new Error("the file is not a city plan");
+    SP=j; renderSplitTab();
+  }).catch(function(e){ SP_ERR=String(e&&e.message||e); renderSplitTab(); });
 })();
 
 renderAll();
