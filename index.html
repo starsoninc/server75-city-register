@@ -2644,8 +2644,8 @@ function csOlderReading(tag){
 }
 /* w: the collector's week for that KvK, or (noKills only) the latest reading
    standing in for a week the collector has not recorded yet. */
-function csStanding(w, satIn){
-  var sat=satIn||csSat(w), en=csEntry(sat), nk=en.noKills!==null, na=en.noAtt!==null;
+function csStanding(w, satIn, pending){
+  var sat=satIn||csSat(w), en=csEntry(sat), nk=!!pending||en.noKills!==null, na=!!pending||en.noAtt!==null;
   var used=1+(nk?0:1)+(na?0:1), part=100/used, als={}, older=[];
   Object.keys(w.alliances||{}).forEach(function(aid){ als[aid]=w.alliances[aid]; });
   if(nk){
@@ -2678,8 +2678,8 @@ function csStanding(w, satIn){
   });
   rows.sort(function(x,y){ return (y.points-x.points)||(y.k-x.k)||(y.top-x.top)||(x.tag<y.tag?-1:1); });
   var small=Object.keys(als).map(function(aid){ return als[aid]; }).filter(function(a){ return !big(a); });
-  return { w:w, sat:sat, en:en, rows:rows, best:{ top:bt, k:bk, att:ba }, final:en.hasTop, small:small,
-    noKills:nk, noAtt:na, part:part, older:older, early:!!satIn };
+  return { w:w, sat:sat, en:en, rows:rows, best:{ top:bt, k:bk, att:ba }, final:en.hasTop&&!pending, small:small,
+    noKills:nk, noAtt:na, part:part, older:older, early:!!satIn, pending:!!pending };
 }
 function csLatest(){
   var ws=csKvkWeeks(), last=ws.length?ws[ws.length-1]:null, lastSat=last?csSat(last):"";
@@ -2688,6 +2688,12 @@ function csLatest(){
   var c=(KVK&&KVK.contribution)||{};
   var early=Object.keys(c).filter(function(s){ return c[s]&&c[s].noKills&&s>lastSat&&!csOff(s); }).sort().pop();
   if(early&&KVK.latest&&KVK.latest.alliances) return csStanding(KVK.latest, early);
+  /* cs4: a KvK whose top-100 board is entered but which the collector has not
+     read yet (it reads on Sunday morning) is shown at once, provisionally, on
+     top-100 presence alone. Nobody is named as a holder until the collector's
+     week for it is in and kills and attendance count again. */
+  var pend=Object.keys(c).filter(function(s){ return s>lastSat&&!csOff(s)&&csEntry(s).hasTop; }).sort().pop();
+  if(pend&&KVK.latest&&KVK.latest.alliances) return csStanding(KVK.latest, pend, true);
   return last?csStanding(last):null;
 }
 function csR1(v){ return (Math.round(v*10)/10).toFixed(1); }
@@ -2729,6 +2735,10 @@ function csTable(st, limit){
 }
 function csWaiting(st){
   var out='', off=[], why=[];
+  if(st.pending){
+    return '<div class="cs-wait"><b>Provisional — top-100 presence only.</b> The collector reads kills and attendance for the KvK of '+esc(kvkDay(st.sat))+
+      ' on Sunday morning; then all three measures count and the holders are named. Until then this ranking can still change.</div>';
+  }
   if(st.noKills){ off.push('kill efficiency'); if(st.en.noKills) why.push(st.en.noKills); }
   if(st.noAtt){ off.push('attendance'); if(st.en.noAtt&&st.en.noAtt!==st.en.noKills) why.push(st.en.noAtt); }
   if(off.length){
