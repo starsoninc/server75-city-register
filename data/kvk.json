@@ -358,6 +358,61 @@
    "notes": [
     "Full top-100 board read from KaspaKopf's screen recording of 31 Oct (16:37), all 100 places."
    ]
+  },
+  {
+   "date": "2026-11-07",
+   "saturday": "2026-11-07",
+   "opponent": 95,
+   "result": "lost",
+   "cityTakenBy": 95,
+   "kingdomShare": 58.5,
+   "places": 55,
+   "alliances": {
+    "WPP": {
+     "share": 54.8,
+     "places": 20
+    },
+    "NEXT": {
+     "share": 20.7,
+     "places": 12
+    },
+    "HoG": {
+     "share": 7.5,
+     "places": 8
+    },
+    "ĚØN": {
+     "share": 5.0,
+     "places": 5
+    },
+    "AURA": {
+     "share": 2.9,
+     "places": 3
+    },
+    "RISE": {
+     "share": 2.8,
+     "places": 2
+    },
+    "ZfP": {
+     "share": 2.4,
+     "places": 2
+    },
+    "RAE": {
+     "share": 2.0,
+     "places": 1
+    },
+    "UKR": {
+     "share": 1.2,
+     "places": 1
+    },
+    "K13": {
+     "share": 0.7,
+     "places": 1
+    }
+   },
+   "notes": [
+    "Full top-100 board read from KaspaKopf's screen recording of 7 Nov (16:36), all 100 places.",
+    "City taken by #95 at 15:35 UTC (lastasylum.gg: BĐSM, king Silentia; losses 159.5M attack / 110.2M defense)."
+   ]
   }
  ],
  "weeks": [
@@ -6168,6 +6223,25 @@
    ],
    "noKills": "The collector missed ĚØN in its 25 Oct reading, so ĚØN's kills for this KvK cannot be measured.",
    "noAttendance": "Attendance comes from the same readings, so it cannot be measured for ĚØN either. To keep it fair, both are left out for every alliance this week."
+  },
+  "2026-11-07": {
+   "top100": {
+    "WPP": 20,
+    "NEXT": 12,
+    "HoG": 8,
+    "ĚØN": 5,
+    "AURA": 3,
+    "RISE": 2,
+    "ZfP": 2,
+    "RAE": 1,
+    "UKR": 1,
+    "K13": 1
+   },
+   "enteredBy": "KaspaKopf",
+   "notes": [
+    "From the full top-100 board (screen recording, 7 Nov 16:36).",
+    "Tags as in game: RISE and ZfP are counted as their own alliances, as the collector reads them. Attendance and kills come from the collector's Sunday reading."
+   ]
   }
  },
  "contributionAbout": "Hand entries for the KvK contribution standing (Rules, section 4), keyed by the KvK Saturday. top100: places each alliance had on the KvK top-100 board. Attendance and kill efficiency are read by the collector (attendance = members with kills gained that week ÷ members read both times, Rules v4.1). noKills / noAttendance: a reason; leaves that measure out of that KvK for every alliance, and the measures left share the 100 points. offWeeks: Saturdays with no KvK; skipped everywhere."
