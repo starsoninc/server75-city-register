@@ -6137,7 +6137,88 @@
   },
   "skipped": []
  },
- "pending": null,
+ "pending": {
+  "startedAt": "2026-11-08T08:17:06.441Z",
+  "queue": [
+   {
+    "type": "alliance",
+    "aid": "57812",
+    "tag": "OGS7",
+    "name": "OLDER_GODS"
+   },
+   {
+    "type": "alliance",
+    "aid": "58652",
+    "tag": "NOPE",
+    "name": "NotOnMyWatch"
+   },
+   {
+    "type": "alliance",
+    "aid": "74589",
+    "tag": "MooN",
+    "name": "MoonPie"
+   }
+  ],
+  "alliances": {},
+  "players": {},
+  "skipped": [
+   {
+    "aid": "64968",
+    "tag": "WPP",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "58857",
+    "tag": "NEXT",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "58587",
+    "tag": "HoG",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "57861",
+    "tag": "ĚØN",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "58309",
+    "tag": "RAE",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "75195",
+    "tag": "ZzZ",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "72907",
+    "tag": "K13",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "57664",
+    "tag": "ZfP",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "57888",
+    "tag": "AURA",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "59371",
+    "tag": "RISE",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   },
+   {
+    "aid": "58331",
+    "tag": "UKR",
+    "why": "no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   }
+  ]
+ },
  "captures": {
   "2026-10-17": {
    "readAt": "2026-10-18T03:17:36.203Z",
@@ -6197,9 +6278,9 @@
  },
  "collector": {
   "lastRun": {
-   "at": "2026-11-08T04:17:37.690Z",
-   "ok": false,
-   "note": "no alliance page could be read — WPP: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed; NEXT: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed; HoG: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
+   "at": "2026-11-08T08:17:06.441Z",
+   "ok": true,
+   "note": "reading in progress, 3 left"
   },
   "lastOkAt": "2026-11-01T04:17:37.847Z",
   "failAt": "2026-11-08T04:17:37.690Z",
