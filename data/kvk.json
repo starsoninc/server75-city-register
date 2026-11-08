@@ -6163,6 +6163,12 @@
     "aid": "74589",
     "tag": "MooN",
     "name": "MoonPie"
+   },
+   {
+    "type": "alliance",
+    "aid": "57664",
+    "tag": "ZfP",
+    "name": "Psychiatrie"
    }
   ],
   "alliances": {
@@ -9763,13 +9769,7 @@
     9
    ]
   },
-  "skipped": [
-   {
-    "aid": "57664",
-    "tag": "ZfP",
-    "why": "1 row(s) could not be read — row 59 (Doctor182yR0Dl): rank \"-\""
-   }
-  ]
+  "skipped": []
  },
  "captures": {
   "2026-10-17": {

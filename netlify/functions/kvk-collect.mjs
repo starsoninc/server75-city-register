@@ -341,7 +341,9 @@ export function parseAlliance(html) {
     const problems = [];
     if (!name) problems.push("no name");
     if (!pid) problems.push("no player link");
-    if (!/^R[1-5]$/.test(rank)) problems.push('rank "' + cells[col.rank].text + '"');
+    // k7: rank is not stored; "-" (a member the site shows without a rank, ZfP
+    // 8 Nov 2026) is accepted, anything else odd still marks a misread page.
+    if (!/^(R[1-5]|-|–|—)$/.test(rank)) problems.push('rank "' + cells[col.rank].text + '"');
     if (!power || power <= 0) problems.push('power "' + cells[col.power].text + '"');
     if (!kills.ok) problems.push('kills "' + cells[col.kills].text + '"');
     if (problems.length) { bad.push("row " + (i + 1) + (name ? " (" + name + ")" : "") + ": " + problems.join(", ")); return; }
