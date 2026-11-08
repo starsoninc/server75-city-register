@@ -249,7 +249,15 @@ export function tables(html) {
 function findTable(ts, required) {
   for (const t of ts) {
     const col = {};
-    if (required.every((name) => { const at = t.headers.indexOf(name); if (at === -1) return false; col[name] = at; return true; })) return { table: t, col };
+    /* k6: a header may carry a qualifier after the name ("activity / week",
+       "kills (total)"); an exact match is still preferred. 8 Nov 2026 the site
+       renamed "Activity" to "Activity / week" and every alliance was refused. */
+    const find = (name) => {
+      const exact = t.headers.indexOf(name);
+      if (exact !== -1) return exact;
+      return t.headers.findIndex((h) => h.indexOf(name + " /") === 0 || h.indexOf(name + " (") === 0);
+    };
+    if (required.every((name) => { const at = find(name); if (at === -1) return false; col[name] = at; return true; })) return { table: t, col };
   }
   return null;
 }
