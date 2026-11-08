@@ -6202,7 +6202,6 @@
    "note": "no alliance page could be read — WPP: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed; NEXT: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed; HoG: no member table with the columns #, player, rank, power, kills, castle, activity, joined — the page layout has changed"
   },
   "lastOkAt": "2026-11-01T04:17:37.847Z",
-  "failAt": "2026-11-08T08:17:37.254Z",
   "errors": [
    {
     "at": "2026-11-08T04:17:37.690Z",
