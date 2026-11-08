@@ -1,5 +1,5 @@
 /* ============================================================================
-   Server 75 City Register — weekly KvK collector (k1)
+   Server 75 City Register — weekly KvK collector (k7)
 
    A Netlify scheduled function. Once a week, after Saturday's KvK, it reads a
    few public lastasylum.gg pages and records, per alliance on server 75:
@@ -38,6 +38,10 @@
      and both sides' power losses, puts cities that were attacked and held in
      a separate "held" list, and skips the rows of servers without a battle.
      Same reader as the dashboard collector's c13.
+   - k6 (8 Nov 2026): a column header may carry a qualifier ("Activity / week");
+     an exact header is still preferred.
+   - k7 (8 Nov 2026): a member shown with rank "-" no longer refuses the page
+     (rank is not stored).
    - k5: an alliance whose page summary names up to two more or fewer members
      than the table holds is kept, with a warning; before, a gap of one dropped
      the whole alliance from that week's reading (and so from two weeks of the
@@ -56,7 +60,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k5";
+export const VERSION = "k7";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
