@@ -3021,12 +3021,12 @@ function spSide(h){
 
 function spTable(h,base){
   var t=spTotals(h), b=spTotals(base);
-  var head='<tr><th>Alliance</th><th class="num">Board share</th><th class="num">Cities</th><th class="num">Points</th><th class="num">vs '+(SP_VIEW==="today"?"proposal":"today")+'</th><th class="num">L3+</th>'+
+  var head='<tr><th>Alliance</th><th class="num">'+esc(SP.shareLabel||"Board share")+'</th><th class="num">Cities</th><th class="num">Points</th><th class="num">vs '+(SP_VIEW==="today"?"proposal":"today")+'</th><th class="num">L3+</th>'+
     SP_KINDS.map(function(k){ return '<th class="num">'+esc(k[1])+'</th>'; }).join("")+'<th class="num">5% cities</th></tr>';
   var rows=SP.alliances.map(function(a){
     var x=t[a.tag], y=b[a.tag], d=x.pts-y.pts;
     return '<tr><td><span class="sp-sw" style="background:'+a.color+'"></span><b>'+esc(a.tag)+'</b>'+(a.merged?' <span class="muted">(merged into '+esc(a.merged)+')</span>':'')+'</td>'+
-      '<td class="num">'+(a.share!=null?a.share.toFixed(1)+"%":"–")+'</td>'+
+      '<td class="num">'+(a.share!=null?a.share.toFixed(1)+(SP.shareUnit==="pts"?"":"%"):"–")+'</td>'+
       '<td class="num'+(x.n>SP.cap?" over":"")+'">'+x.n+' / '+SP.cap+'</td><td class="num"><b>'+x.pts+'</b></td>'+
       '<td class="num '+(d>0?"pos":d<0?"neg":"")+'">'+(d>0?"+":"")+d+'</td><td class="num">'+x.top+'</td>'+
       SP_KINDS.map(function(k){ var v=x.k[k[0]]; return '<td class="num'+(v?"":" zero")+'">'+(v?v+"%":"–")+'</td>'; }).join("")+
@@ -3045,7 +3045,8 @@ function renderSplitTab(){
   var shown = SP_VIEW==="today"?now : SP_VIEW==="plan"?plan : SP_WORK;
   var base = SP_VIEW==="today"?plan : now;
   var edited=!spSame(SP_WORK,plan);
-  var h='<p class="lede">A proposed split of the cities among the alliances on the '+esc(kvkDay?kvkDay(SP.boardDate):SP.boardDate)+' KvK board, within the game\'s rules: at most '+SP.cap+' cities per alliance, and a city can only be taken from next door. Try your own split on the map: tap a city and pick a holder. Your changes stay in this browser, and <b>Reset to proposal</b> brings the plan back.</p>';
+  var dy=function(x){ return esc(kvkDay?kvkDay(x):x); };
+  var h='<p class="lede">A proposed split of the cities among the alliances '+(SP.cycle&&SP.cycle.length?'of the Kingdom War cycle '+dy(SP.cycle[0])+' – '+dy(SP.cycle[SP.cycle.length-1]):'on the '+dy(SP.boardDate)+' KvK board')+', within the game\'s rules: at most '+SP.cap+' cities per alliance, and a city can only be taken from next door. Try your own split on the map: tap a city and pick a holder. Your changes stay in this browser, and <b>Reset to proposal</b> brings the plan back.</p>';
   h+='<div class="sp-bar"><div class="sp-seg" role="group" aria-label="Which map">'+
      [["work","Your plan"],["plan","Proposal"],["today","Today"]].map(function(v){ return '<button data-v="'+v[0]+'" aria-pressed="'+(SP_VIEW===v[0])+'">'+v[1]+'</button>'; }).join("")+'</div>'+
      '<button class="btn ghost small" id="sp-reset"'+(edited?"":" disabled")+'>Reset to proposal</button>'+
