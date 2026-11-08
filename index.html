@@ -3011,7 +3011,7 @@ function spSide(h){
     hh+='<label class="meta" for="sp-holder" style="display:block;margin:4px 0">Holder in your plan</label><select id="sp-holder">'+
       opts.map(function(o){ return '<option value="'+esc(o)+'"'+(o===tag?" selected":"")+'>'+esc(o)+(spIsAll(o)?"":" (not on the board)")+'</option>'; }).join("")+
       '<option value=""'+(!tag?" selected":"")+'>Unclaimed</option></select>';
-    if(spFixed(c)) hh+='<p class="note">L5 and L6 cities stay with their holders in the proposal; the rules hand them out through the kept L6/L5 and the King\'s Challenge.</p>';
+    if(spFixed(c)) hh+='<p class="note">L5 and L6 cities follow the rules, not the board share: the top two keep theirs, the rest go to the King\'s Challenge winners.</p>';
   }
   var nb=c.adj.map(function(n){ var x=h[n]; return esc(n)+' <span class="muted">('+esc(spLabel(x))+')</span>'; });
   hh+='<p class="note"><b>Next to:</b> '+(nb.join(", ")||"—")+'</p>';
