@@ -57,6 +57,7 @@ section[hidden]{display:none}
 .hold .holder{font-size:16px;font-weight:600}
 .hold .meta{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:8px;line-height:1.7}
 .hold .buff{font-size:13px;color:var(--ink-2);margin-top:8px;border-top:1px solid var(--rule);padding-top:8px}
+@media (max-width:560px){#cities-table th:nth-child(3),#cities-table td:nth-child(3){display:none}}
 
 .lattice-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
 table.lattice{border-collapse:collapse;font-family:var(--mono);font-size:12px}
@@ -1752,18 +1753,28 @@ function renderQueries(){
     q.map(function(x){ return "<li>"+esc(x)+"</li>"; }).join("")+"</ul>";
 }
 
+/* A city's buff for the Cities tab. A buff recorded in the register wins;
+   otherwise the one from the K75 buff map in data/city-plan.json. The register
+   block itself is not changed by this. Blank until that file has loaded. */
+var CITY_PLAN_NAMES={"Nightfall Forest":"Nightfall Fortress"};
+function cityBuffOf(c){
+  if(c.buff) return c.buff;
+  if(!SP) return "";
+  var p=spCity(CITY_PLAN_NAMES[c.name]||c.name);
+  return p&&p.value>0?p.buff:"";
+}
 function renderCities(){
   var hm=holderMapNow(), f=cityFilter.toLowerCase();
   var list=REGISTER.cities.slice().sort(function(a,b){ return (b.level-a.level)||a.name.localeCompare(b.name); });
-  if(f) list=list.filter(function(c){ return (c.name+" "+(hm[c.id]||"")+" "+c.type).toLowerCase().indexOf(f)>=0; });
+  if(f) list=list.filter(function(c){ return (c.name+" "+(hm[c.id]||"")+" "+c.type+" "+cityBuffOf(c)).toLowerCase().indexOf(f)>=0; });
   $("cities-lede").innerHTML="Every city held by an alliance of this server, managed as a server asset. "+
-    REGISTER.cities.length+" recorded"+(f?" · showing "+list.length:"")+". Buffs and coordinates are filled in as they are confirmed in game.";
+    REGISTER.cities.length+" recorded"+(f?" · showing "+list.length:"")+". "+(SP?"Buffs are read from the K75 buff map by AllMightyP. Small cities are listed there only as a small resource buff.":"Buffs and coordinates are filled in as they are confirmed in game.");
   $("cities-table").innerHTML="<thead><tr><th class='num'>Lvl</th><th>City</th><th>Type</th><th>Holder</th><th>Buff</th></tr></thead><tbody>"+
     (list.length?list.map(function(c){
       return "<tr><td class='num'>"+esc(c.level)+"</td><td><b>"+esc(c.name)+"</b>"+
         (c.crown?" <span class='pill'>crown</span>":"")+"</td>"+
         "<td class='muted'>"+esc(c.type||"")+"</td><td>"+esc(hm[c.id]||"— unclaimed —")+"</td>"+
-        "<td class='muted' style='font-size:13px'>"+esc(c.buff||"—")+"</td></tr>";
+        "<td class='muted' style='font-size:13px'>"+esc(cityBuffOf(c)||"—")+"</td></tr>";
     }).join(""):"<tr><td colspan='5' class='muted'>Nothing matches that.</td></tr>")+"</tbody>";
 }
 
@@ -3144,7 +3155,7 @@ function spRefresh(){
     return r.json();
   }).then(function(j){
     if(!j||!Array.isArray(j.cities)||!Array.isArray(j.alliances)) throw new Error("the file is not a city plan");
-    SP=j; renderSplitTab();
+    SP=j; renderSplitTab(); renderCities();
   }).catch(function(e){ SP_ERR=String(e&&e.message||e); renderSplitTab(); });
 })();
 
