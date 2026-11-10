@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Origin of the Curse — Server 75 prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--paper:#d5d8cf;--panel:#e3e5dd;--panel-2:#edeee8;--ink:#161b17;--ink-2:#4e574e;--ink-3:#79837a;--rule:#b2b8ac;--rule-strong:#8f978b;--rubric:#a32b1e;--indigo:#2f4b6e;--green:#2f6b49;--amber:#b5530f;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI","Noto Sans KR","Noto Sans JP",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--display:"Fraunces",Georgia,serif}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 90px}
+.mast{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:6px}
+.back{font-family:var(--mono);font-size:12px;color:var(--ink-2);text-decoration:none}.back:hover{color:var(--ink)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,5.5vw,40px);line-height:1.05;letter-spacing:-.015em;margin:8px 0 0}
+h1 .sub{display:block;font-size:.42em;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-bottom:6px}
+.mast-note{font-size:13px;color:var(--ink-2);margin:10px 0 0;max-width:70ch}
+.dl{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dl a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--rule-strong);background:var(--panel-2);padding:8px 12px;min-height:40px;display:inline-flex;align-items:center}
+.dl a:hover{border-color:var(--ink)}
+h2{font-family:var(--display);font-size:22px;font-weight:700;margin:30px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--rule-strong)}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:0 0 8px}ul,ol{margin:4px 0 10px;padding-left:20px}li{margin:3px 0}
+.ts{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0 10px;border:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--panel-2)}
+th{background:var(--ink);color:var(--paper);text-align:left;padding:7px 8px;font-weight:600;white-space:nowrap}
+td{padding:7px 8px;border-top:1px solid var(--rule);vertical-align:top}
+tr:nth-child(even) td{background:var(--panel)}
+td.num,th.num{text-align:right;white-space:nowrap;font-family:var(--mono);font-size:12.5px}
+.box{border-left:4px solid var(--rubric);background:var(--panel-2);padding:10px 14px;margin:12px 0}
+.box.green{border-color:var(--green)}.box.blue{border-color:var(--indigo)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--panel-2);border:1px solid var(--rule);padding:12px 14px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;padding:1px 6px;color:#fff;vertical-align:1px;white-space:nowrap}
+.vh{background:var(--rubric)}.hi{background:var(--amber)}.lo{background:var(--green)}.us{background:var(--indigo)}
+.small{font-size:12.5px;color:var(--ink-2)}
+b.r{color:var(--rubric)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <a class="back" href="./">← Server 75 City Register</a>
+  <h1><span class="sub">Event prep · Fri 14 Nov 2026</span>Origin of the Curse — Server #75 Battle Brief</h1>
+  <p class="mast-note">Opponents: #85 · #91 · #76. Prepared 10 Nov 2026 from lastasylum.gg leaderboards (top 100 by power, hero might and kills) and the wiki event page. Round times are estimated from the in-game countdown — confirm them in game.</p>
+  <div class="dl"><a href="files/origin-of-the-curse-brief-en.pdf" download>Download PDF (English)</a><a href="files/origin-of-the-curse-brief-ru.pdf" download>Скачать PDF (русский)</a></div>
+</header>
+
+
+
+
+<div class="box">
+<b>The one thing to know:</b> the first earthquake hits <b>our own Royal City (#75)</b>. By the in-game countdown, <b>Round 1 starts around Fri 14 Nov, ~03:10 Berlin time</b> — that is <b>~11:10 in Korea/Japan</b>, prime time for #85 and #91, and the middle of the night for us and #76. <b>Round 2 follows ~11 h 50 min after Round 1 ends (~15:30 Berlin, Fri)</b> at a server revealed after Round 1. Check the exact times in-game (Event rules → local time).
+</div>
+
+<h2>1. How the event scores (60-second version)</h2>
+<ul>
+<li>Points = <b>Cursed Potions</b>. Your Sanctuary standing in the zone earns <b>40/s = 72,000 per round</b> with zero effort.</li>
+<li>Gathering points (≈1 min each): <b>Healing Kit</b> 2,700 total (allowed under shield) · <b>Beast Bone</b> ~6,300 + <b>30/s</b> while you hold it · <b>Runestone</b> ~15,600 + <b>120/s</b> while you hold it. Bones/Runestones remove your shield.</li>
+<li>An early Runestone is everything: one gathered at minute 2–4 is worth ~200,000 by the end of the round; each minute of delay costs ~7,200.</li>
+<li><b>Red circle (0–100 tiles):</b> no shields; only red-circle Sanctuaries can gather/scout red-circle points. <b>Yellow circle (101–150):</b> shields allowed.</li>
+<li><b>Artifacts are lost</b> if you shield, if you leave the zone, or if someone beats your Sanctuary. <b>Earned potions are never lost.</b> Enemy players can also hit your march on a point and take it.</li>
+<li>Chests use the <b>total of both rounds</b> (15k / 30k / 60k / 100k … up to 600k). Rankings use your <b>best single round</b>.</li>
+</ul>
+<div class="box green"><b>Floor for everyone:</b> just sitting in the zone for both full rounds = 144,000 potions = the first four chests, with no fighting at all.</div>
+
+<h2>2. Opponent overview</h2>
+<div class="ts"><table>
+<tr><th style="width:13%">Server</th><th class="num">Power<br>top 100</th><th class="num">Hero might<br>top 100</th><th class="num">Hero avg<br>top 10</th><th class="num">Hero<br>#50</th><th class="num">≥75M<br>hero</th><th class="num">Kills<br>top 10</th><th style="width:31%">Main alliances (alliance power)</th><th>Threat</th></tr>
+<tr><td><b>#85</b> (Korean core)</td><td class="num">12.9B</td><td class="num"><b>6.91B</b></td><td class="num">94.9M</td><td class="num">67.0M</td><td class="num">19</td><td class="num">167M</td><td>DESA 7.8B · NEX 6.4B · 9to6 6.3B · KDCE 6.2B · EBRR 6.0B</td><td><span class="tag vh">VERY HIGH</span></td></tr>
+<tr><td><b>#75 (us)</b></td><td class="num">11.5B</td><td class="num"><b>6.54B</b></td><td class="num">93.3M</td><td class="num">61.3M</td><td class="num">20</td><td class="num">104M</td><td>WPP 9.7B · HoG 7.7B · NEXT 6.7B · ĚØN 4.7B · AURA 3.9B</td><td><span class="tag us">US</span></td></tr>
+<tr><td><b>#91</b> (Japanese/mixed)</td><td class="num">11.6B</td><td class="num">6.20B</td><td class="num">86.2M</td><td class="num">59.3M</td><td class="num">11</td><td class="num">122M</td><td>HERA 8.5B · RAV 6.9B · ASVA 6.1B · CGR1 4.4B · PPL 4.2B</td><td><span class="tag hi">MEDIUM</span></td></tr>
+<tr><td><b>#76</b> (EU)</td><td class="num">10.6B</td><td class="num">5.84B</td><td class="num">80.3M</td><td class="num">56.8M</td><td class="num">10</td><td class="num">99M</td><td>NTX 7.3B · WSH 6.2B · EoC 6.2B · STLY 5.0B · ShW 3.8B</td><td><span class="tag lo">LOW</span></td></tr>
+</table></div>
+<p class="small" style="margin-top:-2px">Hero might is the better guide to who wins a fight; power also counts buildings and research. On hero might <b>we rank 2nd of 4</b> — ahead of #91, which looks our equal on power.</p>
+
+<div class="grid2">
+<div class="card"><h3><span class="tag vh">#85</span> Strongest server — the gap is depth</h3>
+<p>Ahead on every measure, but on hero might their top 10 (avg 94.9M) is barely above ours (93.3M). The real gap is behind that: their #50 has 67M hero might (ours 61M), every one of their top 100 has 56.6M+, and they carry the most kills, led by one extreme hitter. Round 1 is their lunch hour.</p>
+<p><b>Read:</b> our top heroes can stand next to theirs; our mid-range can't. Avoid their Sanctuaries, take their marches on points only when you clearly outsize the march.</p></div>
+<div class="card"><h3><span class="tag hi">#91</span> Big power, lighter heroes</h3>
+<p>Equal to us on power, but clearly behind on hero might (6.20B vs 6.54B): only 11 players at 75M+ hero (we have 20) and 29 of their top 100 under 55M. HERA (Jeer 105.8M) is the force; RAV / ASVA / CGR1 behind it mostly have 55–70M heroes. Round 1 is their prime time.</p>
+<p><b>Read:</b> beatable outside HERA's top 5. Their second line is a target, not a threat.</p></div>
+<div class="card"><h3><span class="tag lo">#76</span> The softest target — and we know them</h3>
+<p>We beat #76 in KvK on 26 Sep and 31 Oct. Weakest heroes in the group: nobody at 90M+, 45 of their top 100 under 55M. Their whale WhereAreMyPills (174M power) has only 81.7M hero might — softer than he looks. Their real fighters are JustAri (87.5M) and PH4NTOM (86.3M).</p>
+<p><b>Read:</b> their Sanctuaries holding artifacts are our primary prey. #85/#91 will hunt them too — get there first.</p></div>
+<div class="card"><h3><span class="tag us">#75</span> Where we stand</h3>
+<p>2nd on hero might, with the <b>strongest single hero roster in the group</b>: ArchaicKaspa (WPP) 117.6M, ahead of 탱구리 (112.1M). Three of us are at 100M+ (ArchaicKaspa, جحيم, Anjutka) — #85 has two, #91 one, #76 none. Our edges: home ground and <b>Round 2 timing</b> (Friday afternoon EU).</p>
+<p><b>Read:</b> survive Round 1 cheaply, win Round 2 — rankings only count the best round.</p></div>
+</div>
+
+<h2>3. Watch list — who to stay away from</h2>
+<p>Ranked by danger: hero might first, then power and proven kills (kills are lifetime totals). If one of these is next to you and you hold artifacts, <b>move or call for reinforcements before they hit</b>.</p>
+<div class="ts"><table>
+<tr><th>#</th><th>Player</th><th>Server · Alliance</th><th class="num">Hero might</th><th class="num">Power</th><th class="num">Kills</th><th>Why</th></tr>
+<tr><td>1</td><td><b>탱구리</b></td><td>#85 · NEX</td><td class="num"><b class="r">112.1M</b></td><td class="num"><b class="r">216.7M</b></td><td class="num">27.9M</td><td>Strongest opponent on every measure, and fights</td></tr>
+<tr><td>2</td><td><b>OGU리</b></td><td>#85 · 9to6</td><td class="num">90.3M</td><td class="num">170.9M</td><td class="num"><b class="r">45.4M</b></td><td>Biggest killer in all four servers — almost twice the next player</td></tr>
+<tr><td>3</td><td><b>블루스BlueS</b></td><td>#85 · NEX</td><td class="num">107.1M</td><td class="num">203.8M</td><td class="num">16.2M</td><td>Second NEX whale</td></tr>
+<tr><td>4</td><td><b>Jeer</b></td><td>#91 · HERA</td><td class="num">105.8M</td><td class="num">214.8M</td><td class="num">19.1M</td><td>#91's only 100M+ hero player and their top killer</td></tr>
+<tr><td>5</td><td><b>옥소리</b></td><td>#85 · KDCE</td><td class="num">99.9M</td><td class="num">209.5M</td><td class="num">9.9M</td><td>Huge, less aggressive</td></tr>
+<tr><td>6</td><td><b>WitchWendy</b></td><td>#85 · 9to6</td><td class="num">97.3M</td><td class="num">152.3M</td><td class="num">5.0M</td><td>Heroes far above her power — #85's 4th-best hero roster</td></tr>
+<tr><td>7</td><td><b>Doctor37shxubdnc</b></td><td>#85 · no tag</td><td class="num">93.2M</td><td class="num">194.2M</td><td class="num">18.1M</td><td>Untagged lone wolf: can hit anyone</td></tr>
+<tr><td>8</td><td><b>Skrow</b> · <b>AUAMC</b></td><td>#91 · HERA / RAV</td><td class="num">93.5M each</td><td class="num">151 / 168M</td><td class="num">9.6M / –</td><td>#91's next-strongest heroes after Jeer</td></tr>
+<tr><td>9</td><td><b>LucidDream</b></td><td>#85 · 9to6</td><td class="num">91.3M</td><td class="num">127.6M</td><td class="num">15.4M</td><td>Hitter far above his power — heroes confirm it</td></tr>
+<tr><td>10</td><td><b>JustAri</b> · <b>PH4NTOM</b></td><td>#76 · NTX / STLY</td><td class="num">87.5 / 86.3M</td><td class="num">126 / 108M</td><td class="num">13.4 / 16.0M</td><td>#76's real fighters — strongest heroes and most kills there</td></tr>
+</table></div>
+<p class="small">Also strong heroes on #85: 닥터WHO (87.9M), Klappi (85.2M), AtlasSage (85.1M), 리오내 (82.2M). #91: Daddyˢʰᵃʳᵏ (89.6M), Obsidious (88.7M). Kill specialists with modest heroes — dangerous mainly to smaller accounts: -Farewell- (#91, 18.6M kills, 60.1M hero), Radаhn (#91, 14.8M kills, 56.7M hero).</p>
+
+<h2>4. Focus targets — who to hit</h2>
+<div class="box blue"><b>Rule:</b> we fight for <b>artifacts</b>, not kills. Every attack should either take a Runestone/Bone out of an enemy Sanctuary or steal a point from an enemy march. Scout first — scouting shows how many artifacts a Sanctuary holds. <b>Compare hero might, not power</b>, before you hit.</div>
+<ol>
+<li><b>Enemy marches sitting on Runestones.</b> Highest value, lowest risk: you take the point and its potions, and a gathering march is often lighter than the owner's home defence. Applies to all three servers.</li>
+<li><b>#76 Sanctuaries holding artifacts</b> — NTX, EoC, STLY, WSH players with 50–70M hero might. Most of our core outsizes them. Primary target in both rounds.</li>
+<li><b>#91 second line holding artifacts</b> — RAV, ASVA, CGR1, SK48, PPL players with 55–70M hero might. Avoid HERA's top 5.</li>
+<li><b>#85 only opportunistically</b> — single marches on points where you clearly outsize them. Never their Sanctuaries unless several of us hit a confirmed artifact-holder together.</li>
+</ol>
+
+<h2>5. Brackets across all four servers (hero might, top 100 of each)</h2>
+<div class="ts"><table>
+<tr><th>Bracket</th><th class="num">#85</th><th class="num">#91</th><th class="num">#76</th><th class="num">#75 (us)</th><th>What it means for us</th></tr>
+<tr><td><b>Elite</b> ≥90M</td><td class="num">7</td><td class="num">3</td><td class="num">0</td><td class="num">4</td><td>Our four (ArchaicKaspa, جحيم, Anjutka, Voodooya) can stand next to anyone. Everyone else avoids #85's seven.</td></tr>
+<tr><td><b>Heavy</b> 75–90M</td><td class="num">12</td><td class="num">8</td><td class="num">10</td><td class="num">16</td><td>We have the most players here. Even with #85, ahead of #91 and #76.</td></tr>
+<tr><td><b>Core</b> 65–75M</td><td class="num">37</td><td class="num">19</td><td class="num">12</td><td class="num">15</td><td><b>#85's real advantage — depth.</b> Their 37 vs our 15. Our core beats most of #76 and #91 here.</td></tr>
+<tr><td><b>Field</b> 55–65M</td><td class="num">44</td><td class="num">41</td><td class="num">33</td><td class="num">48</td><td>Even fights vs #91 and #76; lose vs #85 (their weakest top-100 player has 56.6M).</td></tr>
+<tr><td><b>Light</b> under 55M</td><td class="num">0</td><td class="num">29</td><td class="num">45</td><td class="num">17</td><td>#76's and #91's tails are soft. Everyone below our top 100 is in this group too.</td></tr>
+</table></div>
+<p class="small">By power the picture is harsher: players at 120M+ are #85 58 · #91 32 · #75 21 · #76 9. Hero might shows our top end is much closer to #85 than power suggests.</p>
+
+<h2>6. Strategy by strength</h2><p class="small" style="margin-top:-2px">Use whichever number fits you — power and hero might (Profile → Heroes) line up roughly like this on #75. If your hero might puts you a bracket higher than your power, play the higher bracket.</p>
+<div class="grid2">
+<div class="card"><h3>Whales — 140M+ power · 85M+ hero might</h3>
+<ul>
+<li><b>Red circle near the throne</b>, next to another #75 whale. Never alone.</li>
+<li>Free every march; send them at Runestones from <b>second 10</b>. Goal: 2–3 Runestones by minute 10.</li>
+<li>No shield, never leave the zone. Strong troops stay home; heal between hits.</li>
+<li>Don't chase kills. Your job is to hold Runestones until the bell.</li>
+<li>If one of #85's top 5 (hero might 97M+) parks next to you: relocate early (1 free move per 5 min inside the zone) — don't wait to be hit.</li>
+</ul></div>
+<div class="card"><h3>Core — 115–140M · 65–85M hero might</h3>
+<ul>
+<li><b>Red circle, beside a whale</b> — you are their bodyguard and hunter.</li>
+<li>Beast Bones early; Runestones when one drops close.</li>
+<li>Keep one march free to <b>snipe enemy marches on Runestones</b> and to hit scouted #76 / #91-second-line Sanctuaries with artifacts.</li>
+<li>Reinforce allied whales when they're attacked.</li>
+</ul></div>
+<div class="card"><h3>Field — 100–115M · 55–65M hero might</h3>
+<ul>
+<li><b>Inner edge of the yellow circle</b> (around 101–120 tiles), in a group of #75 players.</li>
+<li>Bones and Healing Kits nearby; points spawn in both circles every 30 s and a big drop comes every 3 min (10-second warning) — keep a march ready for it.</li>
+<li>Hit #76 marches on points; leave #85 alone.</li>
+<li>Threatened while holding bones? Calculate: if the attacker clearly outsizes you, shielding (losing the bones) beats losing troops <i>and</i> bones.</li>
+</ul></div>
+<div class="card"><h3>Developing — under 100M · under 55M hero</h3>
+<ul>
+<li><b>Yellow circle, shield up, stay all 30 minutes.</b> That alone is 72,000 per round.</li>
+<li>Gather <b>Healing Kits only</b> — allowed under shield. Don't touch Bones/Runestones (they drop your shield).</li>
+<li>Two full rounds = 144,000+ → first four chests, zero risk.</li>
+<li>Every #75 player in the zone also helps our alliance ranking.</li>
+</ul></div>
+</div>
+
+<h2>7. Round plan</h2>
+<div class="ts"><table>
+<tr><th style="width:24%">When</th><th>What</th></tr>
+<tr><td><b>Round 1</b> · Fri ~03:10 Berlin<br><span class="small">at our Royal City · KR/JP prime time</span></td><td><b>Survive cheaply.</b> Night owls play per their bracket above, grouped near the city. Everyone else: if you can't be online, make sure your troops are healed and don't leave artifacts unguarded. #85 and #91 will be at full strength — expect them to hunt anyone holding Runestones, including #76. Bank presence points and Healing Kits; don't fight #85 at 3 am.</td></tr>
+<tr><td><b>Between rounds</b></td><td>Check the event page for the Round 2 location and opponents. Heal everything. Post who scored what and who hit us in alliance chat.</td></tr>
+<tr><td><b>Round 2</b> · Fri ~15:30 Berlin<br><span class="small">location revealed after R1 · EU afternoon, ~23:30 KR/JP</span></td><td><b>Our ranking round — full turnout.</b> Relocate in before the first wave (free from outside the zone, any free tile, only while that round runs). Whales and core straight into the red circle on Runestones; field and developing per bracket. Rankings only count the best round, so one strong Round 2 is worth more than two average rounds.</td></tr>
+</table></div>
+
+<h2>8. Checklist before each round</h2>
+<ul>
+<li>All troops healed · <b>all marches free</b> (no gathering/rallies elsewhere) · a cheap single-hero march ready for Healing Kits.</li>
+<li>Direct Relocate items on hand (they work during the 5-minute free-move cooldown).</li>
+<li>Know your bracket and your buddy (whale ⇄ core). Agree in alliance chat who goes red, who stays yellow.</li>
+<li>Remember: shield = artifacts gone; leaving the zone = artifacts gone; potions you've earned are always safe.</li>
+<li>Last 3 minutes: only start gathers that will finish before the bell.</li>
+</ul>
+
+<p class="small" style="margin-top:8px">Sources: lastasylum.gg server leaderboards (#75, #76, #85, #91 — players by power, hero might rank, players by kills, alliances by power), read 10 Nov 2026; wiki-last-asylum.com "Origin of the Curse" (update of 23 Oct). Kill figures are lifetime totals, not per-event. Round times are estimated from the in-game countdown on 10 Nov 20:57 Berlin — confirm in-game. Shield/relocation rules as stated by the wiki; "how many artifacts one raid takes" is not yet known.</p>
+
+</div>
+</body>
+</html>
