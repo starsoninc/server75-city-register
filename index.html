@@ -2996,7 +2996,7 @@ function spTotals(h){
   SP.alliances.forEach(function(a){ t[a.tag]={n:0,pts:0,top:0,k:{}}; });
   SP.cities.forEach(function(c){
     var x=t[h[c.name]]; if(!x||c.level>=7) return;
-    x.n++; x.pts+=c.value; if(c.level>=3) x.top++;
+    x.n++; x.pts+=(SP.levelPoints&&SP.levelPoints[c.level]!=null?SP.levelPoints[c.level]:c.value); if(c.level>=3) x.top++;
     if(c.kind) x.k[c.kind]=(x.k[c.kind]||0)+c.value;
     else x.small=(x.small||0)+1;
   });
@@ -3096,7 +3096,7 @@ function spTable(h,base){
       '<td class="num'+(x.small?"":" zero")+'">'+(x.small||"–")+'</td></tr>';
   }).join("");
   return '<div class="tablescroll"><table class="reg sp-t"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
-    '<p class="kp-legend">Points add up each city\'s buff in percent, without the Royal City. The buff columns add up the percentages of each kind; "5% cities" counts L1 and L2 cities with a small resource buff.</p>';
+    '<p class="kp-legend">Points count each city by its level, whatever its buff: L1 and L2 5, L3 10, L4 15, L5 and L6 20, without the Royal City. The buff columns add up the percentages of each kind; "5% cities" counts L1 and L2 cities with a small resource buff.</p>';
 }
 
 function renderSplitTab(){
