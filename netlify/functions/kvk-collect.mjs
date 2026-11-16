@@ -1,5 +1,5 @@
 /* ============================================================================
-   Server 75 City Register — weekly KvK collector (k7)
+   Server 75 City Register — weekly KvK collector (k8)
 
    A Netlify scheduled function. Once a week, after Saturday's KvK, it reads a
    few public lastasylum.gg pages and records, per alliance on server 75:
@@ -42,6 +42,12 @@
      an exact header is still preferred.
    - k7 (8 Nov 2026): a member shown with rank "-" no longer refuses the page
      (rank is not stored).
+   - k8 (16 Nov 2026): a bigger member-count gap no longer drops the alliance.
+     The page is read again GAP_RETRY_HOURS later; if the gap is still there,
+     the member table is kept with a warning. The summary above the table is
+     the part that lags (15 Nov: ZfP's said 61 while its table, rightly, held
+     13; RAE and NEXT a few behind), and a member missing from a table only
+     means that member is not counted — the both-readings rule covers it.
    - k5: an alliance whose page summary names up to two more or fewer members
      than the table holds is kept, with a warning; before, a gap of one dropped
      the whole alliance from that week's reading (and so from two weeks of the
@@ -60,7 +66,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k7";
+export const VERSION = "k8";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -76,6 +82,7 @@ const FETCH_TIMEOUT_MS = 7000;
 const RUN_BUDGET_MS = 15000;       // stop starting new pages after this
 const MAX_BYTES = 3000000;
 const RETRY_AFTER_HOURS = 3;
+const GAP_RETRY_HOURS = 2;        // k8: a page whose member count is off is read again this much later
 const KEEP_WEEKS = 104;
 const KEEP_ERRORS = 20;
 
@@ -372,15 +379,17 @@ export function parseAlliance(html) {
   // warning; skipping the whole alliance cost it two weeks of the standing
   // (ĚØN, 25 Oct 2026: 88 on the page, 87 rows). A bigger gap is still refused.
   const gap = summary && summary.members !== null ? summary.members - rows.length : 0;
-  if (Math.abs(gap) > MEMBER_SLACK) {
-    return refuse("the page says " + summary.members + " members but " + rows.length + " rows were read");
-  }
-  return {
+  const big = Math.abs(gap) > MEMBER_SLACK;
+  const result = {
     ok: true, rows, tag: tn.tag, name: tn.name, level: summary ? summary.level : null,
     power: summary && summary.power !== null ? summary.power : rows.reduce((s, r) => s + r.power, 0),
     warnings: [srv ? null : "the page title does not name the server", summary ? null : "no summary above the table to cross-check the member count",
-      gap ? "the page says " + summary.members + " members, " + rows.length + " rows were read — kept (within " + MEMBER_SLACK + ")" : null].filter(Boolean)
+      gap ? "the page says " + summary.members + " members, " + rows.length + " rows were read — kept (" + (big ? "still off when read again; the table is used" : "within " + MEMBER_SLACK) + ")" : null].filter(Boolean)
   };
+  // k8: a bigger gap is not used straight away; the caller reads the page again
+  // later and, if the gap is still there, keeps `kept` (the table) instead.
+  if (big) return Object.assign(refuse("the page says " + summary.members + " members but " + rows.length + " rows were read"), { countGap: true, kept: result });
+  return result;
 }
 
 /* One Saturday's Royal City captures, kept only where #75 is involved.
@@ -606,8 +615,14 @@ export async function runOnce(data, opts) {
   }
 
   const p = data.pending;
-  while (p.queue.length && Date.now() - started < RUN_BUDGET_MS) {
+  // k8: an item may wait (notBefore) for a second read; the others go first.
+  const ready = () => p.queue.findIndex((q) => !q.notBefore || Date.parse(q.notBefore) <= nowMs);
+  let done = 0;
+  while (p.queue.length && ready() !== -1 && Date.now() - started < RUN_BUDGET_MS) {
+    const qi = ready();
+    if (qi > 0) p.queue.unshift(p.queue.splice(qi, 1)[0]);
     const item = p.queue[0];
+    done++;
     if (item.type === "alliance") {
       const path = LANG + "/leaderboard/alliance/" + item.aid;
       const r = await get(path);
@@ -618,7 +633,15 @@ export async function runOnce(data, opts) {
       }
       p.queue.shift();
       if (err) { p.skipped.push({ aid: item.aid, tag: item.tag, why: err }); report.pages.push({ path, ok: false, error: err }); continue; }
-      const out = parseAlliance(r.body);
+      let out = parseAlliance(r.body);
+      if (!out.ok && out.countGap) {
+        if (!item.retried) {
+          p.queue.push(Object.assign({}, item, { retried: true, notBefore: new Date(nowMs + GAP_RETRY_HOURS * 3600000).toISOString() }));
+          report.pages.push({ path, ok: false, error: out.error + " — read again in " + GAP_RETRY_HOURS + " hours" });
+          continue;
+        }
+        out = out.kept;
+      }
       if (!out.ok) { p.skipped.push({ aid: item.aid, tag: item.tag, why: out.error }); report.pages.push({ path, ok: false, error: out.error }); continue; }
       p.alliances[item.aid] = { tag: out.tag || item.tag, name: out.name || item.name, members: out.rows.length, power: out.power };
       if (out.level != null) p.alliances[item.aid].level = out.level;
@@ -637,6 +660,10 @@ export async function runOnce(data, opts) {
     } else {
       p.queue.shift();
     }
+  }
+  if (p.queue.length && !done) {
+    report.notes.push(p.queue.length + " page(s) waiting to be read again");
+    return Object.assign(report, { ok: true });
   }
   report.changed = true;
 
