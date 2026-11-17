@@ -290,6 +290,12 @@ ol.sp-steps li.bad{color:var(--rubric)}
   <div id="kvk-tab"><p class="muted">Loading…</p></div>
 </section>
 
+<section id="tab-health" hidden>
+  <h2>Server health</h2>
+  <p class="lede">How every alliance on #75 is doing, from one reading a night in the last hour before the reset (api.lastasylumtracker.com, via the WPP alliance dashboard). <b>Active</b> = a sign of play that server day: tech or honor donated, weekly activity points up, power up, or the base moved. Power change counts the same players only, so joiners and leavers never look like growth. <b>KvK attendance</b> = members whose kills went up between Friday night and Saturday night, of those read both nights. It is shown for information; it is not part of the KvK contribution standing.</p>
+  <div id="health-tab"><p class="muted">Loading…</p></div>
+</section>
+
 <section id="tab-plan" hidden>
   <h2 id="plan-title">KvK plan</h2>
   <div id="plan-tab"><p class="muted">Loading…</p></div>
@@ -1765,13 +1771,55 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","Overview"],["kvk","KvK"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
-var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+var TABS=[["now","Overview"],["kvk","KvK"],["health","Server health"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
+var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":/^#health/.test(location.hash)?"health":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+
+/* Server health (17 Nov 2026): read-only summary from the alliance dashboard's
+   nightly sweep. Not part of the register block or its fingerprint. */
+var HEALTH_URL="https://regn-9mrtv4.netlify.app/watch-api?op=health&server=75", HEALTH=null, HEALTH_ERR=null, HEALTH_SORT="power";
+function loadHealth(){
+  if(HEALTH||HEALTH_ERR==="loading") return;
+  HEALTH_ERR="loading";
+  fetch(HEALTH_URL,{cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
+    if(!j||!j.ok){ HEALTH_ERR=(j&&j.error)||"no data yet"; } else { HEALTH=j; HEALTH_ERR=null; }
+    renderHealth();
+  }).catch(function(e){ HEALTH_ERR=String(e&&e.message||e); renderHealth(); });
+}
+function hNum(v){ if(v===null||v===undefined||!isFinite(v)) return "–"; var a=Math.abs(v),s=a>=1e9?(a/1e9).toFixed(2)+"B":a>=1e6?(a/1e6).toFixed(a>=1e8?0:1)+"M":a>=1e3?Math.round(a/1e3)+"K":String(Math.round(a)); return (v<0?"−":"")+s; }
+function renderHealth(){
+  var el=$("health-tab"); if(!el) return;
+  if(HEALTH_ERR&&HEALTH_ERR!=="loading"){ el.innerHTML='<p class="muted">No health reading yet ('+esc(HEALTH_ERR)+'). The first nightly sweep runs in the hour before the reset (02:00–03:00 Berlin).</p>'; return; }
+  if(!HEALTH){ el.innerHTML='<p class="muted">Loading…</p>'; return; }
+  var H=HEALTH, rows=H.alliances.slice();
+  var key={power:function(a){return -(a.power||0);},active:function(a){return -(a.activeShare||0);},growth:function(a){return -(a.dPower7===null?-1e18:a.dPower7);},members:function(a){return -(a.members||0);}}[HEALTH_SORT];
+  rows.sort(function(a,b){ return key(a)-key(b); });
+  var mx=Math.max.apply(null,rows.map(function(r){return r.activeShare||0;}).concat([1]));
+  var sorts=[["power","Power"],["active","Active"],["growth","Growth"],["members","Members"]].map(function(x){ return '<button type="button" class="hsort" data-hs="'+x[0]+'" aria-pressed="'+(HEALTH_SORT===x[0])+'">'+x[1]+'</button>'; }).join(" ");
+  var html='<p class="muted" style="font-size:13px">Last night read: server day <span class="mono">'+esc(H.lastDay)+'</span> · '+H.days+' night(s) in the figures'+(H.complete?'':' · last sweep did not reach every alliance')+'. Sort: '+sorts+'</p>';
+  html+='<div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th><th class="num">Members</th><th class="num">Power</th><th class="num">Power Δ 7d</th><th>Active (avg per night)</th><th class="num">Tech 7d</th><th class="num">Honor 7d</th><th class="num">Joined / left 7d</th></tr></thead><tbody>'+
+    rows.map(function(r){
+      return '<tr><td><b>'+esc(r.tag)+'</b> <span style="color:var(--ink-2);font-size:13px">'+esc(r.name)+'</span></td><td class="num">'+r.members+'</td><td class="num">'+hNum(r.power)+'</td>'+
+        '<td class="num">'+(r.dPower7===null?'–':(r.dPower7>0?'+':'')+hNum(r.dPower7))+'</td>'+
+        '<td style="min-width:150px"><span class="mono" style="display:inline-block;width:3.2em">'+(r.activeShare===null?'–':r.activeShare+'%')+'</span><span style="display:inline-block;vertical-align:middle;height:8px;border-radius:4px;background:var(--rubric);opacity:.75;width:'+Math.round(90*(r.activeShare||0)/mx)+'px"></span></td>'+
+        '<td class="num">'+hNum(r.tech7)+'</td><td class="num">'+hNum(r.honor7)+'</td><td class="num">'+(r.joins7?'+'+r.joins7:'0')+' / '+(r.leaves7?'−'+r.leaves7:'0')+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+  if(H.kvk&&H.kvk.alliances.length){
+    html+='<h3>KvK attendance — '+esc(kvkDay?kvkDay(H.kvk.saturday):H.kvk.saturday)+'</h3><div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th><th class="num">Fought</th><th class="num">Share</th><th class="num">Kills</th></tr></thead><tbody>'+
+      H.kvk.alliances.map(function(k){ return '<tr><td><b>'+esc(k.tag)+'</b></td><td class="num">'+k.f+' of '+k.both+'</td><td class="num">'+(k.share===null?'–':k.share+'%')+'</td><td class="num">'+hNum(k.kills)+'</td></tr>'; }).join("")+'</tbody></table></div>';
+  }
+  if(H.moves14&&H.moves14.length){
+    html+='<h3>Moves between alliances — last 14 days</h3><div class="tablescroll"><table class="reg"><thead><tr><th>From</th><th>To</th><th class="num">Players</th></tr></thead><tbody>'+
+      H.moves14.map(function(m){ return '<tr><td><b>'+esc(m.from)+'</b></td><td>'+(m.to==="—"?'<span style="color:var(--ink-2)">no alliance on #75</span>':'<b>'+esc(m.to)+'</b>')+'</td><td class="num">'+m.n+'</td></tr>'; }).join("")+'</tbody></table></div>';
+  }
+  el.innerHTML=html;
+  Array.prototype.forEach.call(el.querySelectorAll("[data-hs]"),function(b){ b.onclick=function(){ HEALTH_SORT=b.dataset.hs; renderHealth(); }; });
+}
 
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
   Array.prototype.forEach.call($("tabs").children,function(b){ b.onclick=function(){ active=b.dataset.tab; renderTabs(); window.scrollTo(0,0); }; });
   TABS.forEach(function(t){ $("tab-"+t[0]).hidden=(active!==t[0]); });
+  if(active==="health"){ loadHealth(); renderHealth(); }
   if(active==="edit") renderSubnav();
   updateDirty();
 }
