@@ -1807,6 +1807,20 @@ function renderHealth(){
     html+='<h3>KvK attendance — '+esc(kvkDay?kvkDay(H.kvk.saturday):H.kvk.saturday)+'</h3><div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th><th class="num">Fought</th><th class="num">Share</th><th class="num">Kills</th></tr></thead><tbody>'+
       H.kvk.alliances.map(function(k){ return '<tr><td><b>'+esc(k.tag)+'</b></td><td class="num">'+k.f+' of '+k.both+'</td><td class="num">'+(k.share===null?'–':k.share+'%')+'</td><td class="num">'+hNum(k.kills)+'</td></tr>'; }).join("")+'</tbody></table></div>';
   }
+  var KM=H.kvkMight;
+  if(KM&&KM.saturdays&&KM.saturdays.length&&KM.alliances.length){
+    var kp=function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v).toFixed(1)+'%'; };
+    var kc=function(v){ return v<0?'color:var(--rubric)':v>0?'color:#2e7d4f':''; };
+    html+='<h3>Might on KvK day — week by week</h3><p class="muted" style="font-size:13px">Same players only: power Saturday night (after KvK) against Friday night, in % of Friday’s. Fighting costs troops, so alliances that fought lose power; alliances that sat out keep growing. Percent keeps big and small alliances fair. Most power lost in the latest KvK first.</p>'+
+      '<div class="tablescroll"><table class="reg"><thead><tr><th>Alliance</th>'+KM.saturdays.map(function(d){ return '<th class="num">'+esc(kvkDay?kvkDay(d):d)+'</th>'; }).join("")+'<th class="num">Average</th></tr></thead><tbody>'+
+      KM.alliances.map(function(r){
+        return '<tr><td><b>'+esc(r.tag)+'</b> <span style="color:var(--ink-2);font-size:13px">'+esc(r.name)+'</span></td>'+
+          KM.saturdays.map(function(d){ var w=r.weeks[d]; return w?'<td class="num" style="'+kc(w.pct)+'" title="'+esc((w.d>0?'+':'')+hNum(w.d)+' power · '+w.n+' players read both nights')+'">'+kp(w.pct)+'</td>':'<td class="num">–</td>'; }).join("")+
+          '<td class="num" style="'+(r.avg===null?'':kc(r.avg))+'">'+(r.avg===null?'–':kp(r.avg))+'</td></tr>';
+      }).join("")+'</tbody></table></div>';
+  } else {
+    html+='<h3>Might on KvK day — week by week</h3><p class="muted" style="font-size:13px">Fills in after the first KvK Saturday night with a Friday-night reading before it (from Sat 22 Nov).</p>';
+  }
   if(H.moves14&&H.moves14.length){
     html+='<h3>Moves between alliances — last 14 days</h3><div class="tablescroll"><table class="reg"><thead><tr><th>From</th><th>To</th><th class="num">Players</th></tr></thead><tbody>'+
       H.moves14.map(function(m){ return '<tr><td><b>'+esc(m.from)+'</b></td><td>'+(m.to==="—"?'<span style="color:var(--ink-2)">no alliance on #75</span>':'<b>'+esc(m.to)+'</b>')+'</td><td class="num">'+m.n+'</td></tr>'; }).join("")+'</tbody></table></div>';
