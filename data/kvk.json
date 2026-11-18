@@ -3,6 +3,9 @@
  "server": 75,
  "about": "KvK record for server 75. 'matches' are the officers' own top-100 board records (share of #75's points per alliance); they are added by hand. 'weeks' are written by the weekly collector from lastasylum.gg: kills gained per alliance between two readings, a stand-in for KvK fighting, not KvK points.",
  "aliases": {
+  "ARK": [
+    "RISE"
+  ],
   "ĒØN": [
    "ĚØN",
    "ĔØN"
