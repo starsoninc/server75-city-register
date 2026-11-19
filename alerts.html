@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alerts</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+/* push p1 — one page for both sites: the alliance dashboard and the City Register.
+   It works out which site it is on from the address. */
+:root{--bg:#100b18;--panel:#1c160f;--ink:#f5eddb;--ink2:#c7b998;--muted:#a3957a;--rule:rgba(212,175,55,.25);--accent:#f0cf72;--accent-bg:rgba(212,175,55,.14);--bad:#ff9a82;--good:#8fd18f;--font:system-ui,-apple-system,"Segoe UI",sans-serif}
+html.reg{--bg:#d5d8cf;--panel:#e3e5dd;--ink:#161b17;--ink2:#4e574e;--muted:#5d665d;--rule:#b2b8ac;--accent:#a32b1e;--accent-bg:rgba(163,43,30,.08);--bad:#a32b1e;--good:#2e6b2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);-webkit-text-size-adjust:100%}
+main{max-width:640px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 16px 48px}
+a{color:var(--accent)}
+h1{font-size:22px;margin:4px 0 2px}
+h2{font-size:16px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+.note{font-size:13px;color:var(--ink2);margin:4px 0 10px}
+.status{font-size:14px;padding:10px 12px;border-radius:10px;border:1px solid var(--rule);background:var(--accent-bg);margin:0 0 14px}
+.status.bad{border-color:var(--bad);color:var(--bad)}
+.status.good{border-color:var(--good)}
+label.t{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--rule);cursor:pointer}
+label.t:first-of-type{border-top:0}
+label.t input{width:20px;height:20px;margin:2px 0 0;flex:0 0 auto;accent-color:var(--accent)}
+label.t b{display:block;font-weight:600;font-size:14px}
+label.t span{display:block;font-size:12.5px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 10px}
+input[type=password],input[type=text],select{font:inherit;padding:9px 11px;border-radius:9px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);min-width:0;flex:1 1 180px}
+button{font:inherit;font-weight:600;padding:11px 16px;border-radius:10px;border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);cursor:pointer;min-height:44px}
+button.primary{background:var(--accent);color:var(--bg)}
+button:disabled{opacity:.5;cursor:default}
+.actions{display:flex;gap:10px;flex-wrap:wrap;position:sticky;bottom:0;padding:12px 0 max(12px,env(safe-area-inset-bottom));background:var(--bg)}
+.hide{display:none}
+ol{padding-left:20px;margin:6px 0}
+.small{font-size:12px;color:var(--muted)}
+.all{font-size:12.5px;margin-left:auto;background:none;border:0;min-height:0;padding:2px 0;color:var(--accent);font-weight:500}
+.ghead{display:flex;align-items:baseline;gap:8px}
+</style>
+</head>
+<body>
+<main>
+  <p class="small"><a id="back" href="/">← Back</a></p>
+  <h1 id="title">Alerts</h1>
+  <p class="sub" id="lede">Push notifications on this phone or computer. Pick what you want; change it any time.</p>
+  <div id="status" class="status">Checking this browser…</div>
+  <div id="install" class="card hide"></div>
+  <div id="groups"></div>
+  <div class="actions">
+    <button id="save" class="primary" disabled>Turn on alerts</button>
+    <button id="test" class="hide">Send a test</button>
+    <button id="off" class="hide">Turn off here</button>
+  </div>
+  <p class="small" id="foot"></p>
+</main>
+<script>
+(function(){
+"use strict";
+var REG = /server75-cities/.test(location.hostname) || /[?&]site=reg\b/.test(location.search);
+var SITE = REG ? "reg" : "dash";
+var API = REG ? "https://regn-9mrtv4.netlify.app/push-api" : "/push-api";
+var HEALTH = REG ? "https://regn-9mrtv4.netlify.app/watch-api?op=health&server=75" : "/watch-api?op=health&server=75";
+var PASS_KEY = "regn:officer_pass", ALLI_KEY = "push:alli";
+if (REG) document.documentElement.className = "reg";
+var $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+var CAT = null, SUB = null, STORED = null, REGN = null;
+$("title").textContent = REG ? "Server 75 alerts" : "Alliance alerts";
+document.title = $("title").textContent;
+$("back").textContent = REG ? "← City Register" : "← Dashboard";
+
+function status(msg, kind){ var s = $("status"); s.className = "status" + (kind ? " " + kind : ""); s.innerHTML = msg; }
+function lsGet(k){ try { return localStorage.getItem(k) || ""; } catch(e){ return ""; } }
+function lsSet(k, v){ try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); } catch(e){} }
+function b64ToBytes(s){ s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; var r = atob(s), out = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) out[i] = r.charCodeAt(i); return out; }
+function sameKey(sub, key){
+  try { var a = new Uint8Array(sub.options.applicationServerKey), b = b64ToBytes(key); if (a.length !== b.length) return false; for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) return false; return true; } catch(e){ return true; }
+}
+function post(body){
+  return fetch(API, { method: "POST", headers: { "content-type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })
+    .then(function(r){ return r.json().catch(function(){ return { ok: false, error: "HTTP " + r.status }; }); });
+}
+var ua = navigator.userAgent || "";
+var IOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+var STANDALONE = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+var SUPPORTED = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+
+function installHelp(){
+  var c = $("install"); c.classList.remove("hide");
+  if (IOS && !STANDALONE) {
+    c.innerHTML = "<h2>iPhone and iPad: add to Home Screen first</h2><p class='note'>Apple only allows alerts for sites opened from the Home Screen (iOS 16.4 or later).</p>" +
+      "<ol><li>In Safari, tap the <b>Share</b> button (square with an arrow).</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li><li>Open the new icon on your Home Screen and come back to this page" + (REG ? " (tab <b>Alerts</b>)" : " (Operations → <b>Alerts</b>)") + ".</li></ol>";
+    return true;
+  }
+  if (!SUPPORTED) { c.innerHTML = "<h2>This browser can't receive alerts</h2><p class='note'>Use Chrome, Edge, Firefox or Samsung Internet on Android or a computer, or Safari on iPhone after adding the site to the Home Screen.</p>"; return true; }
+  c.classList.add("hide");
+  return false;
+}
+
+function topicsOf(g){ return CAT.topics.filter(function(t){ return t.group === g.id; }); }
+function render(){
+  var groups = CAT.groups.filter(function(g){ return g.site === SITE; });
+  var picked = STORED ? STORED.topics : null;
+  $("groups").innerHTML = groups.map(function(g){
+    var extra = "";
+    if (g.id === "officers") extra = "<div class='row'><input type='password' id='pass' placeholder='Officer passcode' autocomplete='current-password' value='" + esc(lsGet(PASS_KEY)) + "'></div>";
+    if (g.id === "leaders") extra = "<div class='row'><select id='alli'><option value=''>Your alliance…</option>" + (REGN || []).map(function(t){ return "<option>" + esc(t) + "</option>"; }).join("") + "<option value='?'>Other (type it)</option></select><input type='text' id='alliTyped' class='hide' placeholder='Alliance tag' maxlength='12'></div>";
+    var ts = topicsOf(g);
+    var anyOn = picked ? ts.some(function(t){ return picked.indexOf(t.id) >= 0; }) : (g.id === "members" || g.id === "players");
+    return "<div class='card' data-g='" + g.id + "'><div class='ghead'><h2>" + esc(g.label) + "</h2><button class='all' data-all='" + g.id + "'>" + (anyOn ? "None" : "All") + "</button></div><p class='note'>" + esc(g.note) + "</p>" + extra +
+      ts.map(function(t){
+        var on = picked ? picked.indexOf(t.id) >= 0 : ((g.id === "members" || g.id === "players") && t.on);
+        return "<label class='t'><input type='checkbox' data-t='" + t.id + "'" + (on ? " checked" : "") + "><div><b>" + esc(t.label) + "</b><span>" + esc(t.desc) + "</span></div></label>";
+      }).join("") + "</div>";
+  }).join("");
+  Array.prototype.forEach.call(document.querySelectorAll("[data-all]"), function(b){
+    b.onclick = function(){
+      var boxes = document.querySelectorAll("[data-g='" + b.dataset.all + "'] input[type=checkbox]");
+      var anyChecked = Array.prototype.some.call(boxes, function(x){ return x.checked; });
+      Array.prototype.forEach.call(boxes, function(x){ x.checked = !anyChecked; });
+      b.textContent = anyChecked ? "All" : "None";
+    };
+  });
+  var sel = $("alli");
+  if (sel) {
+    var a = (STORED && STORED.alli) || lsGet(ALLI_KEY);
+    if (a) { if ((REGN || []).indexOf(a) >= 0) sel.value = a; else { sel.value = "?"; $("alliTyped").value = a; $("alliTyped").classList.remove("hide"); } }
+    sel.onchange = function(){ $("alliTyped").classList.toggle("hide", sel.value !== "?"); };
+  }
+}
+function chosen(){ return Array.prototype.filter.call(document.querySelectorAll("input[data-t]"), function(x){ return x.checked; }).map(function(x){ return x.dataset.t; }); }
+function alliValue(){ var s = $("alli"); if (!s) return ""; return s.value === "?" ? ($("alliTyped").value || "").trim() : s.value; }
+
+function refreshButtons(){
+  $("save").textContent = SUB && STORED ? "Save changes" : "Turn on alerts";
+  $("test").classList.toggle("hide", !(SUB && STORED));
+  $("off").classList.toggle("hide", !(SUB && STORED));
+}
+
+function swReady(){
+  return navigator.serviceWorker.register("/sw.js", { scope: "/" }).then(function(){ return navigator.serviceWorker.ready; });
+}
+
+function save(){
+  // Permission first, straight from the tap: Safari refuses it after an await.
+  var permP = Notification.permission === "granted" ? Promise.resolve("granted") : Notification.requestPermission();
+  var topics = chosen();
+  var body = { op: "subscribe", site: SITE, topics: topics };
+  if (topics.some(function(t){ return t.indexOf("o.") === 0; })) { body.passcode = ($("pass") && $("pass").value || "").trim(); if (!body.passcode) { status("Officer alerts need the officer passcode.", "bad"); return; } }
+  if (topics.some(function(t){ return t.indexOf("l.") === 0; })) { body.alli = alliValue(); if (!body.alli) { status("Pick your alliance for the leader alerts.", "bad"); return; } }
+  if (!topics.length) { status("Pick at least one alert, or use “Turn off here”.", "bad"); return; }
+  $("save").disabled = true;
+  status("Turning alerts on…");
+  Promise.resolve(permP).then(function(p){
+    if (p !== "granted") throw new Error(p === "denied" ? "Notifications are blocked for this site. Allow them in your browser or phone settings, then try again." : "Notifications were not allowed.");
+    return swReady();
+  }).then(function(reg){
+    return reg.pushManager.getSubscription().then(function(s){
+      if (s && !sameKey(s, CAT.publicKey)) return s.unsubscribe().then(function(){ return null; });
+      return s;
+    }).then(function(s){ return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(CAT.publicKey) }); });
+  }).then(function(s){
+    SUB = s;
+    body.sub = s.toJSON();
+    return post(body);
+  }).then(function(r){
+    if (!r.ok) throw new Error(r.error || "Could not save.");
+    STORED = r.sub;
+    if (body.passcode) lsSet(PASS_KEY, body.passcode);
+    if (body.alli) lsSet(ALLI_KEY, body.alli);
+    status("✓ Alerts are on for this device: " + STORED.topics.length + " picked. Tap “Send a test” to check.", "good");
+    refreshButtons();
+  }).catch(function(e){
+    status(esc(e.message || e), "bad");
+  }).then(function(){ $("save").disabled = false; });
+}
+function test(){
+  $("test").disabled = true;
+  post({ op: "test", endpoint: SUB.endpoint }).then(function(r){
+    status(r.ok ? "Test sent. It should arrive within a few seconds." : esc(r.error || "Test failed."), r.ok ? "good" : "bad");
+  }).catch(function(e){ status(esc(e.message), "bad"); }).then(function(){ $("test").disabled = false; });
+}
+function off(){
+  $("off").disabled = true;
+  var ep = SUB.endpoint;
+  post({ op: "unsubscribe", endpoint: ep }).then(function(){ return SUB.unsubscribe(); }).then(function(){
+    SUB = null; STORED = null; render(); refreshButtons(); status("Alerts are off on this device.");
+  }).catch(function(e){ status(esc(e.message), "bad"); }).then(function(){ $("off").disabled = false; });
+}
+
+function start(){
+  var blocked = installHelp();
+  var cat = fetch(API + "?op=key").then(function(r){ return r.json(); });
+  var tags = SITE === "reg" ? fetch(HEALTH).then(function(r){ return r.json(); }).then(function(h){ return (h.alliances || []).map(function(a){ return a.tag; }); }).catch(function(){ return []; }) : Promise.resolve([]);
+  var existing = (!blocked && SUPPORTED) ? navigator.serviceWorker.getRegistration("/").then(function(reg){ return reg ? reg.pushManager.getSubscription() : null; }).catch(function(){ return null; }) : Promise.resolve(null);
+  Promise.all([cat, tags, existing]).then(function(x){
+    CAT = x[0]; REGN = x[1]; SUB = x[2];
+    if (!CAT || !CAT.ok) throw new Error((CAT && CAT.error) || "The alert service is not answering.");
+    return SUB ? post({ op: "status", endpoint: SUB.endpoint }) : { ok: true, sub: null };
+  }).then(function(r){
+    STORED = r && r.sub ? r.sub : null;
+    render();
+    refreshButtons();
+    $("foot").textContent = "Alerts " + CAT.version + ". Times follow the dashboard's Events calendar (server time and Berlin). Morning digests arrive after 08:00 Berlin.";
+    if (blocked) { status("Alerts can't be turned on in this browser yet — see below.", "bad"); return; }
+    $("save").disabled = false;
+    if (Notification.permission === "denied") status("Notifications are blocked for this site. Allow them in your browser or phone settings first.", "bad");
+    else if (STORED) status("✓ Alerts are on for this device (" + STORED.topics.length + " picked)" + (STORED.alli ? " · alliance " + esc(STORED.alli) : "") + ".", "good");
+    else status("Alerts are off on this device. Pick what you want below, then tap “Turn on alerts”.");
+  }).catch(function(e){ status(esc(e.message || e), "bad"); });
+}
+$("save").onclick = save;
+$("test").onclick = test;
+$("off").onclick = off;
+start();
+})();
+</script>
+</body>
+</html>

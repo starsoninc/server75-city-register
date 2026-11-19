@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Server 75 — City Register</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Server 75">
+<meta name="theme-color" content="#a32b1e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -362,6 +368,15 @@ ol.sp-steps li.bad{color:var(--rubric)}
   <h2>Record</h2>
   <p class="lede">Every skip, penalty, pool change and correction, with the date it was decided. Entries are added, never edited away.</p>
   <div class="card" id="log-list"></div>
+</section>
+
+<section id="tab-alerts" hidden>
+  <h2>Alerts</h2>
+  <p class="lede">Push notifications on your phone or computer: KvK opponent and start, the base plan, shield before reset, results, bye weeks, a new King, city plan and rule changes. Alliance leaders can add alerts for their own alliance: who left or joined last night, KvK attendance, your block and your planned cities.</p>
+  <p><a class="event-banner" href="alerts.html"><b>Set up alerts on this device →</b></a></p>
+  <h3>iPhone or iPad</h3>
+  <ol style="font-size:14px"><li>Open this page in Safari, tap <b>Share</b>, then <b>Add to Home Screen</b>.</li><li>Open the <b>Server 75</b> icon from your Home Screen.</li><li>Come back to this tab and tap <b>Set up alerts</b>.</li></ol>
+  <p class="muted" style="font-size:13px">Android, Windows and Mac: just tap Set up alerts in Chrome, Edge, Firefox or Safari. Nothing about you is stored except the browser's push address and the alerts you picked.</p>
 </section>
 
 <section id="tab-edit" hidden>
@@ -1778,8 +1793,8 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","Overview"],["kvk","KvK"],["health","Server health"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["edit","Edit and publish"]];
-var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":/^#health/.test(location.hash)?"health":"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+var TABS=[["now","Overview"],["kvk","KvK"],["health","Server health"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["alerts","Alerts"],["edit","Edit and publish"]];
+var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":/^#health/.test(location.hash)?"health":/^#(kvk|cities|rules|log|alerts)\b/.test(location.hash)?/^#(kvk|cities|rules|log|alerts)\b/.exec(location.hash)[1]:"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 /* Server health (17 Nov 2026): read-only summary from the alliance dashboard's
    nightly sweep. Not part of the register block or its fingerprint. */
