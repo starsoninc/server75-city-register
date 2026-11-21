@@ -314,7 +314,7 @@ ol.sp-steps li.bad{color:var(--rubric)}
 
 <section id="tab-ava" hidden>
   <h2>AvA</h2>
-  <p class="lede">Who each #75 alliance faces in AvA this week, and who to watch out for. Each alliance picks its opponent here once a week (server, then alliance; anyone can set or fix it, every change is listed below). From then on the opponent's roster is read by itself about every 4 hours from api.lastasylumtracker.com, so growth shows day over day. In AvA only the opponent alliance can come to us, so only those players are counted as threats. <b>Power</b> is total power as the tracker reports it, not hero might. Our side comes from last night's reading of #75.</p>
+  <p class="lede">Who each #75 alliance faces in AvA this week, and who to watch out for. Each alliance picks its opponent here once a week (server, then alliance; anyone can set or fix it, every change is listed below). From then on the opponent's roster is read by itself about every 4 hours from api.lastasylumtracker.com, so growth shows day over day. In AvA only the opponent alliance can come to us, so only those players are counted as threats. Everything is compared by <b>hero might</b> (total hero might): each server's top 100 come from lastasylum.gg's Hero Might Rank, the opponents' other members from the tracker. Below #75's top 100, your own figure is looked up when you pick yourself, or you type it in.</p>
   <div id="ava-tab"><p class="muted">Loading…</p></div>
 </section>
 
@@ -1889,9 +1889,13 @@ function renderHealth(){
 
 /* AvA (21 Nov 2026): each #75 alliance names its AvA opponent for the week;
    the alliance dashboard reads that roster every few hours (duel-api, d1).
+   d2: compared by hero might. Arrays from duel-api: players [uid, name, tag,
+   power, lv, heroMight|null]; opponent players [uid, name, heroMight|null, lv,
+   x, y, Δ24h, Δweek, power]. A player whose hero might is unknown is "–". 
    Read and written through the dashboard, not part of the register block. */
 var AVA_URL="https://regn-9mrtv4.netlify.app/duel-api", AVA=null, AVA_ERR=null, AVA_EDIT=null, AVA_LISTS={}, AVA_MSG="";
 var AVA_ME=(function(){ try{ return localStorage.getItem("ava_me")||""; }catch(e){ return ""; } })();
+var AVA_HM=(function(){ try{ var v=JSON.parse(localStorage.getItem("ava_hm")||"null"); return v&&v.uid&&v.hm>0?v:null; }catch(e){ return null; } })(), AVA_LOOK={};
 function loadAva(force){
   if(AVA_ERR==="loading") return;
   if(AVA&&!force) return;
@@ -1909,16 +1913,19 @@ function avaCopyBtn(x,y,srv){ var l=avaLink(x,y,srv); return l?'<button type="bu
 function avaPlayer(V,uid){
   var me=null; for(var i=0;i<V.players.length;i++) if(V.players[i][0]===String(uid)){ me=V.players[i]; break; }
   if(!me) return null;
-  var pick=V.picks[me[2]]||null, o=pick?V.opponents[pick.id]:null, p=me[3];
-  var list=o?o.players:[];
-  return { me:me, pick:pick, o:o,
-    threats:list.filter(function(r){ return r[2]>p; }),
-    targets:list.filter(function(r){ return r[2]<=p&&r[2]>=p*V.targetShare; }),
-    weaker:list.filter(function(r){ return r[2]<p*V.targetShare; }).length };
+  var pick=V.picks[me[2]]||null, o=pick?V.opponents[pick.id]:null;
+  var typed=AVA_HM&&AVA_HM.uid===me[0]?AVA_HM.hm:null, p=me[5]!==null&&me[5]!==undefined?me[5]:typed;
+  var all=o?o.players:[], list=all.filter(function(r){ return r[2]!==null&&r[2]!==undefined; });
+  var has=p>0;
+  return { me:me, hm:has?p:null, typed:!(me[5]>0)&&has, pick:pick, o:o,
+    threats:has?list.filter(function(r){ return r[2]>p; }):[],
+    targets:has?list.filter(function(r){ return r[2]<=p&&r[2]>=p*V.targetShare; }):[],
+    weaker:has?list.filter(function(r){ return r[2]<p*V.targetShare; }).length:0,
+    unknown:all.length-list.length };
 }
 function avaPlayerTable(rows,srv,me){
   if(!rows.length) return '<p class="muted" style="font-size:13px">Nobody.</p>';
-  return '<div class="tablescroll"><table class="reg"><thead><tr><th>Player</th><th class="num">Power</th><th class="num">vs you</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Base</th></tr></thead><tbody>'+
+  return '<div class="tablescroll"><table class="reg"><thead><tr><th>Player</th><th class="num">Hero might</th><th class="num">vs you</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Base</th></tr></thead><tbody>'+
     rows.map(function(r){ return '<tr><td>'+esc(r[1])+(r[3]?' <span class="pill">HQ'+r[3]+'</span>':'')+'</td><td class="num">'+hNum(r[2])+'</td><td class="num">'+Math.round(100*r[2]/me)+'%</td><td class="num">'+avaDelta(r[6])+'</td><td class="num">'+avaDelta(r[7])+'</td><td>'+avaCopyBtn(r[4],r[5],srv)+'</td></tr>'; }).join("")+'</tbody></table></div>';
 }
 function renderAva(){
@@ -1935,32 +1942,40 @@ function renderAva(){
   h+='<h3>Your threats and targets</h3><div class="av-me"><input id="ava-me" list="ava-players" placeholder="Type your name as in the game" value="'+esc(meName)+'" autocomplete="off"><datalist id="ava-players">'+opts+'</datalist>'+(AVA_ME?'<button type="button" class="btn small ghost" id="ava-forget">Forget me</button>':'')+'</div>';
   var P=AVA_ME?avaPlayer(V,AVA_ME):null;
   if(AVA_ME&&!P) h+='<p class="muted" style="font-size:13px">You are not in last night\'s reading of #75 (new name or no alliance?). Pick your name again.</p>';
-  if(P){
-    if(!P.pick) h+='<p style="font-size:14px"><b>'+esc(P.me[1])+'</b> · '+hNum(P.me[3])+' power · <b>['+esc(P.me[2])+']</b> has not named its AvA opponent for this week yet. Set it below.</p>';
-    else if(!P.o||(!P.o.players.length&&P.o.error)) h+='<p style="font-size:14px"><b>['+esc(P.me[2])+']</b> faces <b>['+esc(P.pick.tag)+'] on #'+P.pick.server+'</b>, but their roster '+(P.o&&P.o.error?'could not be read: '+esc(P.o.error):'has not been read yet — check back in a few minutes')+'.</p>';
+  if(P&&!P.hm){
+    var lk=AVA_LOOK[P.me[0]];
+    if(!lk) avaLookMe(P.me[0]);
+    h+='<p style="font-size:14px"><b>'+esc(P.me[1])+'</b> is not in #75\'s hero might top 100. '+(!lk||lk==="loading"?'Looking up your hero might…':esc(lk)+' ')+'</p>';
+    if(lk&&lk!=="loading") h+='<div class="av-set" style="margin-bottom:14px">Your total hero might <input class="mono" id="ava-hm" inputmode="numeric" placeholder="e.g. 45000000" style="width:12em"> <button type="button" class="btn small" id="ava-hm-save">Use</button></div>';
+  }
+  if(P&&P.hm){
+    var who='<b>'+esc(P.me[1])+'</b> · '+hNum(P.hm)+' hero might'+(P.typed?' (typed in) <button type="button" class="av-copy" id="ava-hm-clear">change</button>':'')+' · ';
+    if(!P.pick) h+='<p style="font-size:14px">'+who+'<b>['+esc(P.me[2])+']</b> has not named its AvA opponent for this week yet. Set it below.</p>';
+    else if(!P.o||(!P.o.players.length&&P.o.error)) h+='<p style="font-size:14px">'+who+'<b>['+esc(P.me[2])+']</b> faces <b>['+esc(P.pick.tag)+'] on #'+P.pick.server+'</b>, but their roster '+(P.o&&P.o.error?'could not be read: '+esc(P.o.error):'has not been read yet — check back in a few minutes')+'.</p>';
     else {
-      h+='<p style="font-size:14px"><b>'+esc(P.me[1])+'</b> · '+hNum(P.me[3])+' power · <b>['+esc(P.me[2])+']</b> vs <b>['+esc(P.pick.tag)+']</b> '+esc(P.o.name)+' on #'+P.pick.server+' · read '+avaAgo(P.o.readAt)+'</p>';
-      h+='<div class="av-grid"><div class="card"><h3 style="margin-top:0">Threats — stronger than you <span class="pill rub">'+P.threats.length+'</span></h3>'+avaPlayerTable(P.threats,P.pick.server,P.me[3])+'</div>'+
-         '<div class="card"><h3 style="margin-top:0">Targets — up to 20 % weaker <span class="pill">'+P.targets.length+'</span></h3>'+avaPlayerTable(P.targets,P.pick.server,P.me[3])+(P.weaker?'<p class="muted" style="font-size:13px;margin-bottom:0">'+P.weaker+' more are over 20 % weaker.</p>':'')+'</div></div>';
+      h+='<p style="font-size:14px">'+who+'<b>['+esc(P.me[2])+']</b> vs <b>['+esc(P.pick.tag)+']</b> '+esc(P.o.name)+' on #'+P.pick.server+' · read '+avaAgo(P.o.readAt)+'</p>';
+      h+='<div class="av-grid"><div class="card"><h3 style="margin-top:0">Threats — more hero might <span class="pill rub">'+P.threats.length+'</span></h3>'+avaPlayerTable(P.threats,P.pick.server,P.hm)+'</div>'+
+         '<div class="card"><h3 style="margin-top:0">Targets — up to 20 % less <span class="pill">'+P.targets.length+'</span></h3>'+avaPlayerTable(P.targets,P.pick.server,P.hm)+(P.weaker?'<p class="muted" style="font-size:13px;margin-bottom:0">'+P.weaker+' more have over 20 % less.</p>':'')+'</div></div>';
+      if(P.unknown) h+='<p class="muted" style="font-size:13px">'+P.unknown+' of their '+P.o.players.length+' members have no hero might yet (being read; the ones with most power first).</p>';
     }
   }
 
   /* 2. Top threats to #75 */
   h+='<h3>Top threats to #75 this week</h3>';
   if(!V.threats.length) h+='<p class="muted" style="font-size:13px">Shows up once alliances have named their opponents and the first rosters are read.</p>';
-  else h+='<p class="muted" style="font-size:13px">The strongest players of every named opponent. “Outweighs” = how many members of the #75 alliance they face have less power.</p><div class="tablescroll"><table class="reg"><thead><tr><th>#</th><th>Player</th><th>Alliance</th><th class="num">Power</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Faces</th><th>Base</th></tr></thead><tbody>'+
-    V.threats.map(function(t,i){ return '<tr><td class="num">'+(i+1)+'</td><td>'+esc(t.name)+(t.lv?' <span class="pill">HQ'+t.lv+'</span>':'')+'</td><td><b>['+esc(t.tag)+']</b> #'+t.server+'</td><td class="num">'+hNum(t.power)+'</td><td class="num">'+avaDelta(t.d1)+'</td><td class="num">'+avaDelta(t.dw)+'</td><td>'+
+  else h+='<p class="muted" style="font-size:13px">The players with the most hero might in every named opponent. “Outweighs” = how many players of the #75 alliance they face have less hero might (of those whose hero might is known: #75\'s top 100 and anyone who looked themselves up here).</p><div class="tablescroll"><table class="reg"><thead><tr><th>#</th><th>Player</th><th>Alliance</th><th class="num">Hero might</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Faces</th><th>Base</th></tr></thead><tbody>'+
+    V.threats.map(function(t,i){ return '<tr><td class="num">'+(i+1)+'</td><td>'+esc(t.name)+(t.lv?' <span class="pill">HQ'+t.lv+'</span>':'')+'</td><td><b>['+esc(t.tag)+']</b> #'+t.server+'</td><td class="num">'+hNum(t.hero)+'</td><td class="num">'+avaDelta(t.d1)+'</td><td class="num">'+avaDelta(t.dw)+'</td><td>'+
       t.vs.map(function(v){ return '<b>'+esc(v.tag)+'</b> <span class="muted" style="font-size:13px">outweighs '+v.weaker+' of '+v.of+'</span>'; }).join("<br>")+'</td><td>'+avaCopyBtn(t.x,t.y,t.server)+'</td></tr>'; }).join("")+'</tbody></table></div>';
 
   /* 3. Opponents per alliance */
-  h+='<h3>Opponents this week</h3><div class="tablescroll"><table class="reg"><thead><tr><th>#75 alliance</th><th class="num">Power</th><th class="num">Top 10</th><th>Opponent</th><th class="num">Power</th><th class="num">Top 10</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th></th></tr></thead><tbody>'+
+  h+='<h3>Opponents this week</h3><div class="tablescroll"><table class="reg"><thead><tr><th>#75 alliance</th><th class="num">Hero might</th><th class="num">Top 10</th><th>Opponent</th><th class="num">Hero might</th><th class="num">Top 10</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th></th></tr></thead><tbody>'+
     V.ours.map(function(a){
       var pk=V.picks[a.tag], o=pk?V.opponents[pk.id]:null, lw=V.lastWeek[a.tag];
       var oc=pk?'<b>['+esc(pk.tag)+']</b> #'+pk.server+(o&&o.name?' <span style="color:var(--ink-2);font-size:13px">'+esc(o.name)+'</span>':'')+
-          '<br><span class="muted" style="font-size:12px">'+(o&&o.error?'<span class="av-down">'+esc(o.error)+'</span>':o&&o.readAt?o.members+' members · read '+avaAgo(o.readAt):'reading…')+'</span>'
+          '<br><span class="muted" style="font-size:12px">'+(o&&o.error?'<span class="av-down">'+esc(o.error)+'</span>':o&&o.readAt?o.members+' members · hero might known for '+o.known+' · read '+avaAgo(o.readAt):'reading…')+'</span>'
         :'<span class="muted">not set</span>'+(lw?'<br><span class="muted" style="font-size:12px">last week: ['+esc(lw.tag)+'] #'+lw.server+'</span>':'');
-      var row='<tr><td><b>'+esc(a.tag)+'</b> <span style="color:var(--ink-2);font-size:13px">'+esc(a.name)+'</span><br><span class="muted" style="font-size:12px">'+a.members+' members</span></td><td class="num">'+hNum(a.power)+'</td><td class="num">'+hNum(a.top10)+'</td><td>'+oc+'</td>'+
-        '<td class="num">'+(o&&o.power!==null?hNum(o.power):'–')+'</td><td class="num">'+(o&&o.top10!==null?'<span class="'+(o.top10>a.top10?'av-down':'')+'">'+hNum(o.top10)+'</span>':'–')+'</td><td class="num">'+(o?avaDelta(o.d1):'–')+'</td><td class="num">'+(o?avaDelta(o.dw):'–')+'</td>'+
+      var row='<tr><td><b>'+esc(a.tag)+'</b> <span style="color:var(--ink-2);font-size:13px">'+esc(a.name)+'</span><br><span class="muted" style="font-size:12px">'+a.members+' members · hero might known for '+a.known+'</span></td><td class="num">'+hNum(a.hero)+'</td><td class="num">'+hNum(a.top10)+'</td><td>'+oc+'</td>'+
+        '<td class="num">'+(o&&o.hero!==null?hNum(o.hero):'–')+'</td><td class="num">'+(o&&o.top10!==null?'<span class="'+(o.top10>a.top10?'av-down':'')+'">'+hNum(o.top10)+'</span>':'–')+'</td><td class="num">'+(o?avaDelta(o.d1):'–')+'</td><td class="num">'+(o?avaDelta(o.dw):'–')+'</td>'+
         '<td><button type="button" class="btn small ghost" data-avaset="'+esc(a.tag)+'">'+(pk?'Change':'Set')+'</button></td></tr>';
       if(AVA_EDIT&&AVA_EDIT.our===a.tag){
         var L=AVA_EDIT.server?AVA_LISTS[AVA_EDIT.server]:null;
@@ -1977,6 +1992,14 @@ function renderAva(){
   if(V.log&&V.log.length) h+='<details style="margin-top:14px"><summary class="muted" style="cursor:pointer;font-size:13px">Recent changes</summary><ul style="font-size:13px">'+V.log.map(function(l){ return '<li><span class="mono">'+esc(String(l[0]).slice(0,16).replace("T"," "))+'</span> UTC — <b>'+esc(l[2])+'</b> → '+(l[3]==="-"?'cleared':'<b>'+esc(l[3])+'</b>')+'</li>'; }).join("")+'</ul></details>';
   el.innerHTML=h;
   avaWire(el);
+}
+function avaLookMe(uid){
+  AVA_LOOK[uid]="loading";
+  fetch(AVA_URL+"?op=me&server=75&uid="+encodeURIComponent(uid),{cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
+    if(j&&j.ok){ AVA_LOOK[uid]="found"; AVA.players.forEach(function(p){ if(p[0]===uid) p[5]=j.hero; }); }
+    else AVA_LOOK[uid]=(j&&j.error)||"Could not look it up — type it instead.";
+    renderAva();
+  }).catch(function(){ AVA_LOOK[uid]="Could not look it up — type it instead."; renderAva(); });
 }
 function avaLoadList(srv){
   if(AVA_LISTS[srv]&&!AVA_LISTS[srv].error) return;
@@ -2003,6 +2026,8 @@ function avaWire(el){
     if(!hit){ var lo=v.toLowerCase(); AVA.players.forEach(function(p){ if(!hit&&p[1].toLowerCase()===lo) hit=p; }); }
     if(hit){ AVA_ME=hit[0]; try{ localStorage.setItem("ava_me",AVA_ME); }catch(e){} renderAva(); }
   };
+  var hs=$("ava-hm-save"); if(hs) hs.onclick=function(){ var n=parseInt(String($("ava-hm").value).replace(/[^0-9]/g,""),10); if(n>0){ AVA_HM={uid:AVA_ME,hm:n}; try{ localStorage.setItem("ava_hm",JSON.stringify(AVA_HM)); }catch(e){} renderAva(); } };
+  var hc=$("ava-hm-clear"); if(hc) hc.onclick=function(){ AVA_HM=null; try{ localStorage.removeItem("ava_hm"); }catch(e){} renderAva(); };
   var fg=$("ava-forget"); if(fg) fg.onclick=function(){ AVA_ME=""; try{ localStorage.removeItem("ava_me"); }catch(e){} renderAva(); };
   Array.prototype.forEach.call(el.querySelectorAll("[data-avaset]"),function(b){ b.onclick=function(){
     var pk=AVA.picks[b.dataset.avaset];
