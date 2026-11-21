@@ -1,5 +1,5 @@
 /* ============================================================================
-   Server 75 City Register — weekly KvK collector (k8)
+   Server 75 City Register — weekly KvK collector (k9)
 
    A Netlify scheduled function. Once a week, after Saturday's KvK, it reads a
    few public lastasylum.gg pages and records, per alliance on server 75:
@@ -48,6 +48,8 @@
      the part that lags (15 Nov: ZfP's said 61 while its table, rightly, held
      13; RAE and NEXT a few behind), and a member missing from a table only
      means that member is not counted — the both-readings rule covers it.
+   - k9 (21 Nov 2026): the alliance page summary may show "-" for Kills; the
+     member-count cross-check and the page's power figure are read again.
    - k5: an alliance whose page summary names up to two more or fewer members
      than the table holds is kept, with a warning; before, a gap of one dropped
      the whole alliance from that week's reading (and so from two weeks of the
@@ -66,7 +68,7 @@
                        site owner can reach whoever runs this
    ========================================================================= */
 
-export const VERSION = "k8";
+export const VERSION = "k9";
 const BASE = "https://lastasylum.gg";
 const LANG = "/en";
 export const SERVER = 75;
@@ -372,7 +374,8 @@ export function parseAlliance(html) {
   const text = textOf(html);
   // The site dropped "Alliance level" from this summary in October 2026; it is
   // optional here so the member-count cross-check keeps working either way.
-  const sm = /(\d[\d,]*)\s*Power\s*(\d[\d,]*)\s*Members\s*(?:(\d[\d,]*)\s*Alliance level\s*)?(\d[\d,]*)\s*Kills/i.exec(text);
+  // k9: since 21 Nov 2026 the Kills figure may be a placeholder ("-").
+  const sm = /(\d[\d,]*)\s*Power\s*(\d[\d,]*)\s*Members\s*(?:(\d[\d,]*)\s*Alliance level\s*)?(\d[\d,]*|[-–—])\s*Kills/i.exec(text);
   const summary = sm ? { power: int(sm[1]), members: int(sm[2]), level: sm[3] ? int(sm[3]) : null, kills: int(sm[4]) } : null;
   // k5: the summary and the table are not always in step on the site (a member
   // who just joined or left). A gap of up to MEMBER_SLACK is kept with a
