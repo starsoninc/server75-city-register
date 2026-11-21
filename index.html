@@ -264,6 +264,16 @@ ol.sp-steps li{margin:0 0 6px}
 ol.sp-steps li.bad{color:var(--rubric)}
 .sp-why{display:grid;gap:10px;max-width:74ch}
 .sp-why div{font-size:14px} .sp-why b{display:block;font-size:14px}
+/* AvA tab (21 Nov 2026) */
+.av-me{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.av-me input{flex:1 1 260px;min-width:min(320px,100%)}
+.av-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:16px;margin:0 0 22px}
+.av-set{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.av-set input,.av-set select{width:auto;min-height:36px;font-size:15px;padding:5px 8px}
+.av-set input.av-srv{width:6em}
+.av-up{color:#2e7d4f}.av-down{color:var(--rubric)}
+.av-big{font-family:var(--mono);font-size:22px}
+.av-copy{appearance:none;border:1px solid var(--rule-strong);background:var(--panel-2);border-radius:2px;font-family:var(--mono);font-size:12px;padding:2px 6px;cursor:pointer;color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -300,6 +310,12 @@ ol.sp-steps li.bad{color:var(--rubric)}
   <h2>Server health</h2>
   <p class="lede">How every alliance on #75 is doing, from one reading a night in the last hour before the reset (api.lastasylumtracker.com, via the WPP alliance dashboard). <b>Active</b> = a sign of play that server day: tech or honor donated, weekly activity points up, power up, or the base moved. Power change counts the same players only, so joiners and leavers never look like growth. <b>KvK attendance</b> = members whose kills went up between Friday night and Saturday night, of those read both nights. It is shown for information; it is not part of the KvK contribution standing.</p>
   <div id="health-tab"><p class="muted">Loading…</p></div>
+</section>
+
+<section id="tab-ava" hidden>
+  <h2>AvA</h2>
+  <p class="lede">Who each #75 alliance faces in AvA this week, and who to watch out for. Each alliance picks its opponent here once a week (server, then alliance; anyone can set or fix it, every change is listed below). From then on the opponent's roster is read by itself about every 4 hours from api.lastasylumtracker.com, so growth shows day over day. In AvA only the opponent alliance can come to us, so only those players are counted as threats. <b>Power</b> is total power as the tracker reports it, not hero might. Our side comes from last night's reading of #75.</p>
+  <div id="ava-tab"><p class="muted">Loading…</p></div>
 </section>
 
 <section id="tab-plan" hidden>
@@ -1813,8 +1829,8 @@ function updateDirty(){
   if(dirty && subActive!=="publish") renderSubnav();
 }
 
-var TABS=[["now","Overview"],["kvk","KvK"],["health","Server health"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["alerts","Alerts"],["edit","Edit and publish"]];
-var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":/^#health/.test(location.hash)?"health":/^#(kvk|cities|rules|log|alerts)\b/.test(location.hash)?/^#(kvk|cities|rules|log|alerts)\b/.exec(location.hash)[1]:"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
+var TABS=[["now","Overview"],["kvk","KvK"],["health","Server health"],["ava","AvA"],["plan","KvK plan"],["split","City planner"],["cities","Cities"],["history","History"],["changes","Changes"],["import","Import"],["alliances","Alliances"],["rules","Rules"],["log","Record"],["alerts","Alerts"],["edit","Edit and publish"]];
+var active=(/^#plan/.test(location.hash)?"plan":/^#split/.test(location.hash)?"split":/^#health/.test(location.hash)?"health":/^#ava/.test(location.hash)?"ava":/^#(kvk|cities|rules|log|alerts)\b/.test(location.hash)?/^#(kvk|cities|rules|log|alerts)\b/.exec(location.hash)[1]:"now"), viewCycle=null, cityFilter="", histFilter="", cdFilter="", SELWEEK=null;
 
 /* Server health (17 Nov 2026): read-only summary from the alliance dashboard's
    nightly sweep. Not part of the register block or its fingerprint. */
@@ -1871,11 +1887,154 @@ function renderHealth(){
   Array.prototype.forEach.call(el.querySelectorAll("[data-hs]"),function(b){ b.onclick=function(){ HEALTH_SORT=b.dataset.hs; renderHealth(); }; });
 }
 
+/* AvA (21 Nov 2026): each #75 alliance names its AvA opponent for the week;
+   the alliance dashboard reads that roster every few hours (duel-api, d1).
+   Read and written through the dashboard, not part of the register block. */
+var AVA_URL="https://regn-9mrtv4.netlify.app/duel-api", AVA=null, AVA_ERR=null, AVA_EDIT=null, AVA_LISTS={}, AVA_MSG="";
+var AVA_ME=(function(){ try{ return localStorage.getItem("ava_me")||""; }catch(e){ return ""; } })();
+function loadAva(force){
+  if(AVA_ERR==="loading") return;
+  if(AVA&&!force) return;
+  AVA_ERR="loading";
+  fetch(AVA_URL+"?op=state&server=75",{cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
+    if(!j||!j.ok){ AVA_ERR=(j&&j.error)||"no data"; } else { AVA=j; AVA_ERR=null; }
+    renderAva();
+  }).catch(function(e){ AVA_ERR=String(e&&e.message||e); renderAva(); });
+}
+function avaDelta(v){ if(v===null||v===undefined) return '<span class="muted">–</span>'; return '<span class="'+(v>0?'av-up':v<0?'av-down':'')+'">'+(v>0?'+':'')+hNum(v)+'</span>'; }
+function avaAgo(iso){ if(!iso) return "never"; var m=Math.round((Date.now()-Date.parse(iso))/60e3); return m<60?m+" min ago":m<2880?Math.round(m/60)+" h ago":Math.round(m/1440)+" days ago"; }
+function avaLink(x,y,srv){ return (x===null||y===null||x===undefined||y===undefined)?"":"<link="+x+"&"+y+"&"+srv+">S"+srv+"</link>"; }
+function avaCopyBtn(x,y,srv){ var l=avaLink(x,y,srv); return l?'<button type="button" class="av-copy" data-copy="'+esc(l)+'" title="Copy the map link for game chat">'+x+':'+y+'</button>':''; }
+/* One player's threats and targets: the same rule as the dashboard's Targets (stronger / down to 20 % weaker). */
+function avaPlayer(V,uid){
+  var me=null; for(var i=0;i<V.players.length;i++) if(V.players[i][0]===String(uid)){ me=V.players[i]; break; }
+  if(!me) return null;
+  var pick=V.picks[me[2]]||null, o=pick?V.opponents[pick.id]:null, p=me[3];
+  var list=o?o.players:[];
+  return { me:me, pick:pick, o:o,
+    threats:list.filter(function(r){ return r[2]>p; }),
+    targets:list.filter(function(r){ return r[2]<=p&&r[2]>=p*V.targetShare; }),
+    weaker:list.filter(function(r){ return r[2]<p*V.targetShare; }).length };
+}
+function avaPlayerTable(rows,srv,me){
+  if(!rows.length) return '<p class="muted" style="font-size:13px">Nobody.</p>';
+  return '<div class="tablescroll"><table class="reg"><thead><tr><th>Player</th><th class="num">Power</th><th class="num">vs you</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Base</th></tr></thead><tbody>'+
+    rows.map(function(r){ return '<tr><td>'+esc(r[1])+(r[3]?' <span class="pill">HQ'+r[3]+'</span>':'')+'</td><td class="num">'+hNum(r[2])+'</td><td class="num">'+Math.round(100*r[2]/me)+'%</td><td class="num">'+avaDelta(r[6])+'</td><td class="num">'+avaDelta(r[7])+'</td><td>'+avaCopyBtn(r[4],r[5],srv)+'</td></tr>'; }).join("")+'</tbody></table></div>';
+}
+function renderAva(){
+  var el=$("ava-tab"); if(!el) return;
+  if(AVA_ERR&&AVA_ERR!=="loading"&&!AVA){ el.innerHTML='<p class="muted">The AvA data could not be loaded ('+esc(AVA_ERR)+'). <button type="button" class="btn small ghost" id="ava-retry">Try again</button></p>'; $("ava-retry").onclick=function(){ AVA_ERR=null; loadAva(true); }; return; }
+  if(!AVA){ el.innerHTML='<p class="muted">Loading…</p>'; return; }
+  var V=AVA, h='';
+  if(AVA_MSG) h+='<p class="card" style="padding:10px 14px;font-size:14px">'+esc(AVA_MSG)+'</p>';
+  h+='<p class="muted" style="font-size:13px">Week of <span class="mono">'+esc(V.week)+'</span> (server time) · #75 read: server day <span class="mono">'+esc(V.sweepDay||"–")+'</span>'+(V.keySet?'':' · <b>the tracker key is not set on the dashboard, nothing can be read</b>')+'</p>';
+
+  /* 1. Me */
+  var opts=V.players.map(function(p){ return '<option value="'+esc(p[1]+' ['+p[2]+']')+'"></option>'; }).join("");
+  var meName=""; V.players.forEach(function(p){ if(p[0]===AVA_ME) meName=p[1]+' ['+p[2]+']'; });
+  h+='<h3>Your threats and targets</h3><div class="av-me"><input id="ava-me" list="ava-players" placeholder="Type your name as in the game" value="'+esc(meName)+'" autocomplete="off"><datalist id="ava-players">'+opts+'</datalist>'+(AVA_ME?'<button type="button" class="btn small ghost" id="ava-forget">Forget me</button>':'')+'</div>';
+  var P=AVA_ME?avaPlayer(V,AVA_ME):null;
+  if(AVA_ME&&!P) h+='<p class="muted" style="font-size:13px">You are not in last night\'s reading of #75 (new name or no alliance?). Pick your name again.</p>';
+  if(P){
+    if(!P.pick) h+='<p style="font-size:14px"><b>'+esc(P.me[1])+'</b> · '+hNum(P.me[3])+' power · <b>['+esc(P.me[2])+']</b> has not named its AvA opponent for this week yet. Set it below.</p>';
+    else if(!P.o||(!P.o.players.length&&P.o.error)) h+='<p style="font-size:14px"><b>['+esc(P.me[2])+']</b> faces <b>['+esc(P.pick.tag)+'] on #'+P.pick.server+'</b>, but their roster '+(P.o&&P.o.error?'could not be read: '+esc(P.o.error):'has not been read yet — check back in a few minutes')+'.</p>';
+    else {
+      h+='<p style="font-size:14px"><b>'+esc(P.me[1])+'</b> · '+hNum(P.me[3])+' power · <b>['+esc(P.me[2])+']</b> vs <b>['+esc(P.pick.tag)+']</b> '+esc(P.o.name)+' on #'+P.pick.server+' · read '+avaAgo(P.o.readAt)+'</p>';
+      h+='<div class="av-grid"><div class="card"><h3 style="margin-top:0">Threats — stronger than you <span class="pill rub">'+P.threats.length+'</span></h3>'+avaPlayerTable(P.threats,P.pick.server,P.me[3])+'</div>'+
+         '<div class="card"><h3 style="margin-top:0">Targets — up to 20 % weaker <span class="pill">'+P.targets.length+'</span></h3>'+avaPlayerTable(P.targets,P.pick.server,P.me[3])+(P.weaker?'<p class="muted" style="font-size:13px;margin-bottom:0">'+P.weaker+' more are over 20 % weaker.</p>':'')+'</div></div>';
+    }
+  }
+
+  /* 2. Top threats to #75 */
+  h+='<h3>Top threats to #75 this week</h3>';
+  if(!V.threats.length) h+='<p class="muted" style="font-size:13px">Shows up once alliances have named their opponents and the first rosters are read.</p>';
+  else h+='<p class="muted" style="font-size:13px">The strongest players of every named opponent. “Outweighs” = how many members of the #75 alliance they face have less power.</p><div class="tablescroll"><table class="reg"><thead><tr><th>#</th><th>Player</th><th>Alliance</th><th class="num">Power</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th>Faces</th><th>Base</th></tr></thead><tbody>'+
+    V.threats.map(function(t,i){ return '<tr><td class="num">'+(i+1)+'</td><td>'+esc(t.name)+(t.lv?' <span class="pill">HQ'+t.lv+'</span>':'')+'</td><td><b>['+esc(t.tag)+']</b> #'+t.server+'</td><td class="num">'+hNum(t.power)+'</td><td class="num">'+avaDelta(t.d1)+'</td><td class="num">'+avaDelta(t.dw)+'</td><td>'+
+      t.vs.map(function(v){ return '<b>'+esc(v.tag)+'</b> <span class="muted" style="font-size:13px">outweighs '+v.weaker+' of '+v.of+'</span>'; }).join("<br>")+'</td><td>'+avaCopyBtn(t.x,t.y,t.server)+'</td></tr>'; }).join("")+'</tbody></table></div>';
+
+  /* 3. Opponents per alliance */
+  h+='<h3>Opponents this week</h3><div class="tablescroll"><table class="reg"><thead><tr><th>#75 alliance</th><th class="num">Power</th><th class="num">Top 10</th><th>Opponent</th><th class="num">Power</th><th class="num">Top 10</th><th class="num">Δ 24h</th><th class="num">Δ week</th><th></th></tr></thead><tbody>'+
+    V.ours.map(function(a){
+      var pk=V.picks[a.tag], o=pk?V.opponents[pk.id]:null, lw=V.lastWeek[a.tag];
+      var oc=pk?'<b>['+esc(pk.tag)+']</b> #'+pk.server+(o&&o.name?' <span style="color:var(--ink-2);font-size:13px">'+esc(o.name)+'</span>':'')+
+          '<br><span class="muted" style="font-size:12px">'+(o&&o.error?'<span class="av-down">'+esc(o.error)+'</span>':o&&o.readAt?o.members+' members · read '+avaAgo(o.readAt):'reading…')+'</span>'
+        :'<span class="muted">not set</span>'+(lw?'<br><span class="muted" style="font-size:12px">last week: ['+esc(lw.tag)+'] #'+lw.server+'</span>':'');
+      var row='<tr><td><b>'+esc(a.tag)+'</b> <span style="color:var(--ink-2);font-size:13px">'+esc(a.name)+'</span><br><span class="muted" style="font-size:12px">'+a.members+' members</span></td><td class="num">'+hNum(a.power)+'</td><td class="num">'+hNum(a.top10)+'</td><td>'+oc+'</td>'+
+        '<td class="num">'+(o&&o.power!==null?hNum(o.power):'–')+'</td><td class="num">'+(o&&o.top10!==null?'<span class="'+(o.top10>a.top10?'av-down':'')+'">'+hNum(o.top10)+'</span>':'–')+'</td><td class="num">'+(o?avaDelta(o.d1):'–')+'</td><td class="num">'+(o?avaDelta(o.dw):'–')+'</td>'+
+        '<td><button type="button" class="btn small ghost" data-avaset="'+esc(a.tag)+'">'+(pk?'Change':'Set')+'</button></td></tr>';
+      if(AVA_EDIT&&AVA_EDIT.our===a.tag){
+        var L=AVA_EDIT.server?AVA_LISTS[AVA_EDIT.server]:null;
+        var sel=L&&L.rows&&L.rows.length?'<select id="ava-e-tag"><option value="">Alliance on #'+AVA_EDIT.server+'…</option>'+L.rows.map(function(r){ return '<option value="'+esc(r.tag)+'"'+(AVA_EDIT.tag===r.tag?' selected':'')+'>['+esc(r.tag)+'] '+esc(r.name)+'</option>'; }).join("")+'</select> or ':'';
+        row+='<tr><td colspan="9" style="background:var(--panel-2)"><b>'+esc(a.tag)+'</b> faces this week:<div class="av-set">Server <input class="av-srv mono" id="ava-e-srv" inputmode="numeric" placeholder="80" value="'+(AVA_EDIT.server||"")+'"> '+
+          (L&&L.loading?'<span class="muted">loading alliances…</span> ':sel)+'<input id="ava-e-free" placeholder="tag, exactly as in game" value="'+esc(AVA_EDIT.free||"")+'" style="width:12em">'+
+          '<button type="button" class="btn small" id="ava-e-save">Save</button>'+(pk?'<button type="button" class="btn small ghost" id="ava-e-clear">Clear</button>':'')+'<button type="button" class="btn small ghost" id="ava-e-cancel">Cancel</button></div>'+
+          (L&&L.error?'<p class="muted" style="font-size:12px;margin:6px 0 0">Alliance list: '+esc(L.error)+' — type the tag instead.</p>':'')+'<p class="muted" style="font-size:12px;margin:6px 0 0">Tags are case-sensitive.</p></td></tr>';
+      }
+      return row;
+    }).join("")+'</tbody></table></div>';
+
+  /* 4. Log */
+  if(V.log&&V.log.length) h+='<details style="margin-top:14px"><summary class="muted" style="cursor:pointer;font-size:13px">Recent changes</summary><ul style="font-size:13px">'+V.log.map(function(l){ return '<li><span class="mono">'+esc(String(l[0]).slice(0,16).replace("T"," "))+'</span> UTC — <b>'+esc(l[2])+'</b> → '+(l[3]==="-"?'cleared':'<b>'+esc(l[3])+'</b>')+'</li>'; }).join("")+'</ul></details>';
+  el.innerHTML=h;
+  avaWire(el);
+}
+function avaLoadList(srv){
+  if(AVA_LISTS[srv]&&!AVA_LISTS[srv].error) return;
+  AVA_LISTS[srv]={loading:true};
+  fetch(AVA_URL+"?op=alliances&server=75&of="+srv,{cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
+    AVA_LISTS[srv]=j&&j.ok?{rows:j.rows}:{error:(j&&j.error)||"not available",rows:[]};
+    renderAva();
+  }).catch(function(e){ AVA_LISTS[srv]={error:String(e&&e.message||e),rows:[]}; renderAva(); });
+}
+function avaPost(body){
+  AVA_MSG="Saving…"; renderAva();
+  fetch(AVA_URL,{method:"POST",headers:{"content-type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){ return r.json(); }).then(function(j){
+    AVA_MSG=j&&j.ok?(j.note||"Saved")+".":"Not saved: "+((j&&j.error)||"unknown error");
+    if(j&&j.ok){ AVA_EDIT=null; }
+    loadAva(true);
+    if(j&&j.reading) setTimeout(function(){ loadAva(true); },12000);
+  }).catch(function(e){ AVA_MSG="Not saved: "+String(e&&e.message||e); renderAva(); });
+}
+function avaWire(el){
+  var me=$("ava-me");
+  if(me) me.onchange=function(){
+    var v=me.value.trim(), hit=null;
+    AVA.players.forEach(function(p){ if(!hit&&(p[1]+' ['+p[2]+']'===v||p[1]===v)) hit=p; });
+    if(!hit){ var lo=v.toLowerCase(); AVA.players.forEach(function(p){ if(!hit&&p[1].toLowerCase()===lo) hit=p; }); }
+    if(hit){ AVA_ME=hit[0]; try{ localStorage.setItem("ava_me",AVA_ME); }catch(e){} renderAva(); }
+  };
+  var fg=$("ava-forget"); if(fg) fg.onclick=function(){ AVA_ME=""; try{ localStorage.removeItem("ava_me"); }catch(e){} renderAva(); };
+  Array.prototype.forEach.call(el.querySelectorAll("[data-avaset]"),function(b){ b.onclick=function(){
+    var pk=AVA.picks[b.dataset.avaset];
+    AVA_EDIT={our:b.dataset.avaset,server:pk?pk.server:null,tag:pk?pk.tag:"",free:""}; AVA_MSG="";
+    if(AVA_EDIT.server) avaLoadList(AVA_EDIT.server);
+    renderAva();
+  }; });
+  Array.prototype.forEach.call(el.querySelectorAll("[data-copy]"),function(b){ b.onclick=function(){
+    var t=b.dataset.copy, done=function(){ var o=b.textContent; b.textContent="copied"; setTimeout(function(){ b.textContent=o; },1200); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,function(){ window.prompt("Copy:",t); });
+    else window.prompt("Copy:",t);
+  }; });
+  var srv=$("ava-e-srv");
+  if(srv) srv.onchange=function(){ var n=parseInt(srv.value,10); AVA_EDIT.server=n>0&&n!==75?n:null; AVA_EDIT.tag=""; if(AVA_EDIT.server) avaLoadList(AVA_EDIT.server); renderAva(); };
+  var st=$("ava-e-tag"); if(st) st.onchange=function(){ AVA_EDIT.tag=st.value; AVA_EDIT.free=""; var f=$("ava-e-free"); if(f) f.value=""; };
+  var fr=$("ava-e-free"); if(fr) fr.oninput=function(){ AVA_EDIT.free=fr.value; };
+  var sv=$("ava-e-save"); if(sv) sv.onclick=function(){
+    var n=parseInt(($("ava-e-srv")||{}).value,10), tag=(AVA_EDIT.free||"").trim()||AVA_EDIT.tag;
+    if(!(n>0)||n===75){ AVA_MSG="Enter the opponent's server number (not 75)."; renderAva(); return; }
+    if(!tag){ AVA_MSG="Pick or type the opponent alliance's tag."; renderAva(); return; }
+    avaPost({op:"pick",server:75,our:AVA_EDIT.our,opp:{server:n,tag:tag}});
+  };
+  var cl=$("ava-e-clear"); if(cl) cl.onclick=function(){ avaPost({op:"clear",server:75,our:AVA_EDIT.our}); };
+  var cc=$("ava-e-cancel"); if(cc) cc.onclick=function(){ AVA_EDIT=null; renderAva(); };
+}
+
 function renderTabs(){
   $("tabs").innerHTML=TABS.map(function(t){ return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(active===t[0])+'">'+esc(t[1])+'</button>'; }).join("");
   Array.prototype.forEach.call($("tabs").children,function(b){ b.onclick=function(){ active=b.dataset.tab; renderTabs(); window.scrollTo(0,0); }; });
   TABS.forEach(function(t){ $("tab-"+t[0]).hidden=(active!==t[0]); });
   if(active==="health"){ loadHealth(); renderHealth(); }
+  if(active==="ava"){ loadAva(); renderAva(); }
   if(active==="edit") renderSubnav();
   updateDirty();
 }
