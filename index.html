@@ -2976,6 +2976,7 @@ function csSweepStanding(sat){
     var x=src[t]; if(!x) return;
     var tag=kvkCanon(t), a=by[tag]||(by[tag]={ tag:tag, members:0, readBoth:0, fighters:0, kills:0, power:0, powerKnown:true, late:null });
     if(typeof x.late==="number") a.late=Math.max(a.late||0,x.late);
+    if(x.base&&typeof x.base==="object"){ a.base=a.base||{}; ["morning","thursday"].forEach(function(k){ if(typeof x.base[k]==="number") a.base[k]=(a.base[k]||0)+x.base[k]; }); }
     a.members+=Number(x.m)||0; a.readBoth+=Number(x.both)||0; a.fighters+=Number(x.f)||0; a.kills+=Number(x.kills)||0;
     if(typeof x.power==="number"&&x.power>0) a.power+=x.power; else a.powerKnown=false;
   });
@@ -2994,7 +2995,9 @@ function csSweepStanding(sat){
   return { w:null, sat:sat, en:csEntry(sat), rows:rows, best:{ top:0, k:bk, att:ba }, final:true,
     small:all.filter(function(a){ return !big(a); }), noKills:false, noAtt:false, part:50, older:[], early:false, pending:false, sweep:true,
     missed:((HEALTH.kvkMissed||{})[sat]||[]).map(kvkCanon).filter(function(t,i,l){ return l.indexOf(t)===i&&!by[t]; }),
-    late:all.filter(function(a){ return a.late!==null; }) };
+    late:all.filter(function(a){ return a.late!==null; }),
+    morning:all.filter(function(a){ return a.base&&a.base.morning; }),
+    thursday:all.filter(function(a){ return a.base&&a.base.thursday; }) };
 }
 /* Every scored KvK, oldest first: the collector's weeks before CS_SWEEP_FROM,
    then the sweep's Saturdays from it on. */
@@ -3155,13 +3158,15 @@ function csTable(st, limit){
         '<br>Kills: '+(r.kUnknown?'might not read → 0.0':kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk))+
         '<br>Attendance: '+r.fought+' of '+r.read+' members made kills = '+csR1(r.att)+'% (best '+csR1(b.att)+'%) → '+csR1(r.pa)+
         (r.a.late!==null?'<br>Read '+r.a.late+' min after the reset (Saturday night’s read failed)':'')+
+        (r.a.base&&r.a.base.morning?'<br>'+r.a.base.morning+' of '+r.read+' compared with Saturday morning (Friday night’s read failed)':'')+
+        (r.a.base&&r.a.base.thursday?'<br>⚠ '+r.a.base.thursday+' of '+r.read+' compared with Thursday night: Friday’s kills count too':'')+
         '<br>= '+csR1(r.points)+' points' : '<b>'+esc(r.tag)+'</b> — KvK of '+esc(kvkDay(st.sat))+
         '<br>Top 100: '+(en.hasTop?r.places+' of '+r.members+' members = '+csR1(r.top)+'% (best '+csR1(b.top)+'%) → '+csR1(r.pt):'board not entered yet')+
         (st.noKills?'<br>Kills: not counted for this KvK':'<br>Kills: '+kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk))+
         (st.noAtt?'<br>Attendance: not counted for this KvK':'<br>Attendance: '+(r.fought!==null?r.fought+' of '+r.read+' members made kills = '+csR1(r.att)+'% (best '+csR1(b.att)+'%) → '+csR1(r.pa):'not measured → 0.0'))+
         '<br>= '+csR1(r.points)+' points';
       return '<tr tabindex="0" data-tip="'+esc(tip)+'"><td class="num tag">'+(i+1)+'</td>'+
-        '<td class="'+(hold?'cs-h':'')+'"><b>'+esc(r.tag)+'</b>'+'</td>'+
+        '<td class="'+(hold?'cs-h':'')+'"><b>'+esc(r.tag)+'</b>'+(st.sweep&&r.a.base&&r.a.base.thursday?' <span class="tag" title="compared with Thursday night">⚠ Thu</span>':'')+'</td>'+
         '<td class="num on">'+csR1(r.points)+'<span class="kvk-mini"><span style="width:'+(r.points/max*100).toFixed(1)+'%"></span></span></td>'+
         (st.sweep?'':'<td class="num">'+(en.hasTop?Math.round(r.top)+'% <span class="tag">'+r.places+'p</span>':na)+'</td>')+
         '<td class="num">'+(st.noKills||r.kUnknown?na:kvkBig(r.k))+'</td>'+
@@ -3212,6 +3217,8 @@ function csFootnotes(st){
   if(st.en.by&&!st.sweep) n.push('top-100 board entered by '+esc(st.en.by));
   if(st.sweep&&st.missed.length) n.push('<b>not read on Saturday night, left out of this KvK</b>: '+st.missed.map(esc).join(", "));
   if(st.sweep&&st.late.length) n.push('read after the reset because Saturday night’s read failed (a few minutes of Sunday kills count): '+st.late.map(function(a){ return esc(a.tag)+' +'+a.late+' min'; }).join(", "));
+  if(st.sweep&&st.morning.length) n.push('compared with Saturday morning before KvK, because Friday night’s read failed: '+st.morning.map(function(a){ return esc(a.tag); }).join(", "));
+  if(st.sweep&&st.thursday.length) n.push('<b>⚠ compared with Thursday night</b> (no Friday-night or Saturday-morning reading), so Friday’s kills count too: '+st.thursday.map(function(a){ return esc(a.tag)+' ('+a.base.thursday+' of '+a.readBoth+')'; }).join(", "));
   if(st.sweep) n.push('Saturday kills from the alliance dashboard’s nightly sweep');
   return n.length?'<p class="tag" style="margin:6px 0 0">'+n.join(' · ')+'</p>':'';
 }
