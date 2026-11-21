@@ -416,6 +416,53 @@
     "Full top-100 board read from KaspaKopf's screen recording of 7 Nov (16:36), all 100 places.",
     "City taken by #95 at 15:35 UTC (lastasylum.gg: BĐSM, king Silentia; losses 159.5M attack / 110.2M defense)."
    ]
+  },
+  {
+   "date": "2026-11-21",
+   "saturday": "2026-11-21",
+   "opponent": 76,
+   "result": "won",
+   "tookCity": 76,
+   "kingdomShare": 51.8,
+   "places": 61,
+   "alliances": {
+    "WPP": {
+     "share": 38.6,
+     "places": 23
+    },
+    "ĚØN": {
+     "share": 24.9,
+     "places": 12
+    },
+    "NEXT": {
+     "share": 14.7,
+     "places": 11
+    },
+    "HoG": {
+     "share": 11.3,
+     "places": 7
+    },
+    "AURA": {
+     "share": 3.0,
+     "places": 3
+    },
+    "K13": {
+     "share": 2.9,
+     "places": 2
+    },
+    "RAE": {
+     "share": 2.4,
+     "places": 2
+    },
+    "NOPE": {
+     "share": 2.3,
+     "places": 1
+    }
+   },
+   "notes": [
+    "Full top-100 board read from KaspaKopf's screen recording of 21 Nov (16:39), all 100 places.",
+    "#75 took #76's Royal City at 15:00 UTC (lastasylum.gg: NEXT, king Voodooya)."
+   ]
   }
  ],
  "weeks": [
@@ -6642,6 +6689,23 @@
    "notes": [
     "From the full top-100 board (screen recording, 7 Nov 16:36).",
     "Tags as in game: RISE and ZfP are counted as their own alliances, as the collector reads them. Attendance and kills come from the collector's Sunday reading."
+   ]
+  },
+  "2026-11-21": {
+   "top100": {
+    "WPP": 23,
+    "ĚØN": 12,
+    "NEXT": 11,
+    "HoG": 7,
+    "AURA": 3,
+    "K13": 2,
+    "RAE": 2,
+    "NOPE": 1
+   },
+   "enteredBy": "KaspaKopf",
+   "notes": [
+    "From the full top-100 board (screen recording, 21 Nov 16:39), all 100 places.",
+    "For the record only: from this KvK on, contribution is scored on Saturday kills and attendance (Rules v4.4), not on the board."
    ]
   }
  },
