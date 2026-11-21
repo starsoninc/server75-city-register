@@ -2974,7 +2974,8 @@ function csSweepStanding(sat){
   var src=HEALTH.kvkWeeks[sat]||{}, by={};
   Object.keys(src).forEach(function(t){
     var x=src[t]; if(!x) return;
-    var tag=kvkCanon(t), a=by[tag]||(by[tag]={ tag:tag, members:0, readBoth:0, fighters:0, kills:0, power:0, powerKnown:true });
+    var tag=kvkCanon(t), a=by[tag]||(by[tag]={ tag:tag, members:0, readBoth:0, fighters:0, kills:0, power:0, powerKnown:true, late:null });
+    if(typeof x.late==="number") a.late=Math.max(a.late||0,x.late);
     a.members+=Number(x.m)||0; a.readBoth+=Number(x.both)||0; a.fighters+=Number(x.f)||0; a.kills+=Number(x.kills)||0;
     if(typeof x.power==="number"&&x.power>0) a.power+=x.power; else a.powerKnown=false;
   });
@@ -2991,7 +2992,9 @@ function csSweepStanding(sat){
   rows.forEach(function(r){ r.pt=0; r.pk=bk>0?50*r.k/bk:0; r.pa=ba>0?50*r.att/ba:0; r.points=r.pk+r.pa; });
   rows.sort(function(x,y){ return (y.points-x.points)||(y.k-x.k)||(y.att-x.att)||(x.tag<y.tag?-1:1); });
   return { w:null, sat:sat, en:csEntry(sat), rows:rows, best:{ top:0, k:bk, att:ba }, final:true,
-    small:all.filter(function(a){ return !big(a); }), noKills:false, noAtt:false, part:50, older:[], early:false, pending:false, sweep:true };
+    small:all.filter(function(a){ return !big(a); }), noKills:false, noAtt:false, part:50, older:[], early:false, pending:false, sweep:true,
+    missed:((HEALTH.kvkMissed||{})[sat]||[]).map(kvkCanon).filter(function(t,i,l){ return l.indexOf(t)===i&&!by[t]; }),
+    late:all.filter(function(a){ return a.late!==null; }) };
 }
 /* Every scored KvK, oldest first: the collector's weeks before CS_SWEEP_FROM,
    then the sweep's Saturdays from it on. */
@@ -3151,6 +3154,7 @@ function csTable(st, limit){
       var tip=st.sweep?'<b>'+esc(r.tag)+'</b> — KvK of '+esc(kvkDay(st.sat))+', Saturday reset to reset'+
         '<br>Kills: '+(r.kUnknown?'might not read → 0.0':kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk))+
         '<br>Attendance: '+r.fought+' of '+r.read+' members made kills = '+csR1(r.att)+'% (best '+csR1(b.att)+'%) → '+csR1(r.pa)+
+        (r.a.late!==null?'<br>Read '+r.a.late+' min after the reset (Saturday night’s read failed)':'')+
         '<br>= '+csR1(r.points)+' points' : '<b>'+esc(r.tag)+'</b> — KvK of '+esc(kvkDay(st.sat))+
         '<br>Top 100: '+(en.hasTop?r.places+' of '+r.members+' members = '+csR1(r.top)+'% (best '+csR1(b.top)+'%) → '+csR1(r.pt):'board not entered yet')+
         (st.noKills?'<br>Kills: not counted for this KvK':'<br>Kills: '+kvkBig(r.a.kills)+' at '+kvkBig(r.a.power)+' might = '+kvkBig(r.k)+' per 1B (best '+kvkBig(b.k)+') → '+csR1(r.pk))+
@@ -3206,6 +3210,8 @@ function csFootnotes(st){
   if(st.early) n.push('member counts from the collector’s reading of '+esc(kvkDay(String(st.w.at).slice(0,10)))+'; they update when the collector reads this KvK');
   st.en.notes.forEach(function(t){ n.push(esc(t)); });
   if(st.en.by&&!st.sweep) n.push('top-100 board entered by '+esc(st.en.by));
+  if(st.sweep&&st.missed.length) n.push('<b>not read on Saturday night, left out of this KvK</b>: '+st.missed.map(esc).join(", "));
+  if(st.sweep&&st.late.length) n.push('read after the reset because Saturday night’s read failed (a few minutes of Sunday kills count): '+st.late.map(function(a){ return esc(a.tag)+' +'+a.late+' min'; }).join(", "));
   if(st.sweep) n.push('Saturday kills from the alliance dashboard’s nightly sweep');
   return n.length?'<p class="tag" style="margin:6px 0 0">'+n.join(' · ')+'</p>':'';
 }
