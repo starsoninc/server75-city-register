@@ -3445,6 +3445,9 @@ function spSteps(from,to){
   var pending=changed.slice(), guard=0;
   function count(tag){ return SP.cities.filter(function(c){ return c.level<7 && cur[c.name]===tag; }).length; }
   function nextTo(c,tag){ return c.adj.some(function(n){ return cur[n]===tag; }); }
+  /* x is the only land that links its holder to a city that holder still has to take */
+  function isLink(x){ var h=cur[x.name]; return !!h && pending.some(function(p){ return p!==x && to[p.name]===h && cur[p.name]!==h &&
+    p.adj.indexOf(x.name)>=0 && !p.adj.some(function(n){ return n!==x.name && cur[n]===h; }); }); }
   /* releases that free a city nobody takes go first; then captures in an order that works */
   pending.filter(function(c){ return !to[c.name]; }).forEach(function(c){ steps.push({c:c,f:cur[c.name],t:null}); cur[c.name]=null; });
   pending=pending.filter(function(c){ return to[c.name]; });
@@ -3452,12 +3455,19 @@ function spSteps(from,to){
     var done=false;
     for(var i=0;i<pending.length;i++){
       var c=pending[i], tag=to[c.name];
-      if(!nextTo(c,tag)) continue;
+      if(!nextTo(c,tag) || isLink(c)) continue;
       if(count(tag)>=SP.cap){
-        /* make room with a city this alliance is letting go of anyway */
-        var give=SP.cities.filter(function(x){ return cur[x.name]===tag && (to[x.name]||null)!==tag; })[0];
+        /* make room with a city this alliance is letting go of anyway, but never the one that links it to c */
+        var stays=function(x){ return c.adj.some(function(n){ return n!==x.name && cur[n]===tag; }); };
+        var give=SP.cities.filter(function(x){ return x.level<7 && cur[x.name]===tag && (to[x.name]||null)!==tag && stays(x); })[0], tmp=false;
+        if(!give){
+          /* else let go of a small city it keeps for a moment and take it back afterwards */
+          give=SP.cities.filter(function(x){ return x.level<7 && cur[x.name]===tag && to[x.name]===tag && stays(x) &&
+            x.adj.some(function(n){ return cur[n]===tag && to[n]===tag; }); }).sort(function(a,b){ return a.level-b.level; })[0]; tmp=true;
+        }
         if(!give) continue;
-        steps.push({c:give,f:tag,t:null}); cur[give.name]=null;
+        steps.push({c:give,f:tag,t:null,tmp:tmp}); cur[give.name]=null;
+        if(tmp) pending.push(give);
       }
       var f=cur[c.name]; steps.push({c:c,f:f,t:tag}); cur[c.name]=tag;
       pending.splice(i,1); done=true; break;
@@ -3465,8 +3475,21 @@ function spSteps(from,to){
     if(!done){
       /* the holder may still have to let go first: do one release and retry */
       var rel=null;
-      for(var j=0;j<pending.length&&!rel;j++){ if(cur[pending[j].name]){ rel=pending[j]; } }
+      for(var j=0;j<pending.length&&!rel;j++){ if(cur[pending[j].name] && !isLink(pending[j])){ rel=pending[j]; } }
+      for(var j2=0;j2<pending.length&&!rel;j2++){ if(cur[pending[j2].name]){ rel=pending[j2]; } }
       if(rel){ steps.push({c:rel,f:cur[rel.name],t:null}); cur[rel.name]=null; continue; }
+      /* no land next to it: hold a neighbouring city for a moment as a bridge, then hand it back */
+      var br=null;
+      for(var k=0;k<pending.length&&!br;k++){
+        var pc=pending[k], pt=to[pc.name];
+        if(count(pt)>=SP.cap) continue;
+        pc.adj.forEach(function(bn){
+          var b=SP.cities.filter(function(x){ return x.name===bn; })[0];
+          if(br||!b||b.level>=7||cur[b.name]===pt||(to[b.name]||null)===pt||pending.indexOf(b)>=0) return;
+          if(nextTo(b,pt)) br={b:b,t:pt};
+        });
+      }
+      if(br){ steps.push({c:br.b,f:cur[br.b.name],t:br.t,tmp:true}); cur[br.b.name]=br.t; if(to[br.b.name]) pending.push(br.b); continue; }
       pending.forEach(function(c){ probs.push({c:c,t:to[c.name],why:nextTo(c,to[c.name])?"is full":"has no land next to it"}); steps.push({c:c,f:cur[c.name],t:to[c.name],bad:true}); });
       break;
     }
@@ -3563,6 +3586,7 @@ function renderSplitTab(){
     h+= st.steps.length?'<ol class="sp-steps">'+st.steps.map(function(s){
       var c=s.c, lv="L"+c.level+" "+esc(c.name);
       var txt = !s.t ? '<b>'+esc(s.f)+'</b> lets go of '+lv : !s.f ? '<b>'+esc(s.t)+'</b> takes '+lv+' <span class="muted">(unclaimed)</span>' : '<b>'+esc(s.f)+'</b> lets go of '+lv+', then <b>'+esc(s.t)+'</b> takes it';
+      if(s.tmp) txt+= s.t ? ' <span class="muted">for now, as a bridge; it goes back later</span>' : ' <span class="muted">for a moment, to make room; it takes it back later</span>';
       return '<li class="'+(s.bad?"bad":"")+'">'+txt+(s.bad?" — not possible yet":"")+'</li>';
     }).join("")+'</ol><p class="kp-legend">A city has to be let go before the new holder can take it. The NAP covers the gap in between.</p>'
     :'<p class="muted" style="font-size:14px">Nothing changes hands.</p>';
