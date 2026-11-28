@@ -463,6 +463,52 @@
     "Full top-100 board read from KaspaKopf's screen recording of 21 Nov (16:39), all 100 places.",
     "#75 took #76's Royal City at 15:00 UTC (lastasylum.gg: NEXT, king Voodooya)."
    ]
+  },
+  {
+   "date": "2026-11-28",
+   "saturday": "2026-11-28",
+   "opponent": 80,
+   "result": "lost",
+   "kingdomShare": 49.2,
+   "places": 45,
+   "alliances": {
+    "WPP": {
+     "share": 61.0,
+     "places": 20
+    },
+    "NEXT": {
+     "share": 18.1,
+     "places": 10
+    },
+    "ĚØN": {
+     "share": 5.9,
+     "places": 5
+    },
+    "HoG": {
+     "share": 4.8,
+     "places": 3
+    },
+    "UKR": {
+     "share": 4.8,
+     "places": 3
+    },
+    "AURA": {
+     "share": 2.0,
+     "places": 2
+    },
+    "RAE": {
+     "share": 1.7,
+     "places": 1
+    },
+    "ARK": {
+     "share": 1.7,
+     "places": 1
+    }
+   },
+   "notes": [
+    "Full top-100 board read from KaspaKopf's screen recording of 28 Nov (16:13), all 100 places.",
+    "Lost against #80 (KaspaKopf)."
+   ]
   }
  ],
  "weeks": [
@@ -7101,6 +7147,22 @@
    "notes": [
     "From the full top-100 board (screen recording, 21 Nov 16:39), all 100 places.",
     "Counts for top-100 presence under Rules v4.5 (one of five measures, 20 points)."
+   ]
+  },
+  "2026-11-28": {
+   "top100": {
+    "WPP": 20,
+    "NEXT": 10,
+    "ĚØN": 5,
+    "HoG": 3,
+    "UKR": 3,
+    "AURA": 2,
+    "RAE": 1,
+    "ARK": 1
+   },
+   "enteredBy": "KaspaKopf",
+   "notes": [
+    "From the full top-100 board (screen recording, 28 Nov 16:13), all 100 places."
    ]
   }
  },
